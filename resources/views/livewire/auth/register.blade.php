@@ -1,68 +1,86 @@
-<x-layouts::auth>
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Create an account')" :description="__('Enter your details below to create your account')" />
+<div>
+    <h4 class="mb-2">Adventure starts here 🚀</h4>
+    <p class="mb-4">Make your app management easy and fun!</p>
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
-
-        <form method="POST" action="{{ route('register.store') }}" class="flex flex-col gap-6">
-            @csrf
-
-            <!-- Name -->
-            <flux:input
-                name="name"
-                :label="__('Name')"
-                :value="old('name')"
-                type="text"
-                required
-                autofocus
-                autocomplete="name"
-                :placeholder="__('Full name')"
-            />
-
-            <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email address')"
-                :value="old('email')"
-                type="email"
-                required
-                autocomplete="email"
-                placeholder="email@example.com"
-            />
-
-            <!-- Password -->
-            <flux:input
-                name="password"
-                :label="__('Password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Password')"
-                viewable
-            />
-
-            <!-- Confirm Password -->
-            <flux:input
-                name="password_confirmation"
-                :label="__('Confirm password')"
-                type="password"
-                required
-                autocomplete="new-password"
-                :placeholder="__('Confirm password')"
-                viewable
-            />
-
-            <div class="flex items-center justify-end">
-                <flux:button type="submit" variant="primary" class="w-full">
-                    {{ __('Create account') }}
-                </flux:button>
-            </div>
-        </form>
-
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-600 dark:text-zinc-400">
-            <span>{{ __('Already have an account?') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('Log in') }}</flux:link>
+    <form wire:submit="register">
+        <!-- Name -->
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" wire:model="name" class="form-control @error('name') is-invalid @enderror" id="name"
+                placeholder="Enter your name" autofocus>
+            @error('name')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
         </div>
-    </div>
-</x-layouts::auth>
+
+        <!-- Email -->
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" wire:model="email" class="form-control @error('email') is-invalid @enderror" id="email"
+                placeholder="Enter your email">
+            @error('email')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Password -->
+        <div class="mb-3 form-password-toggle">
+            <label class="form-label" for="password">Password</label>
+            <div class="input-group input-group-merge">
+                <input type="password" wire:model="password" id="password"
+                    class="form-control @error('password') is-invalid @enderror"
+                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                <span class="input-group-text cursor-pointer">
+                    <i class="bx bx-hide"></i>
+                </span>
+            </div>
+            @error('password')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="mb-3 form-password-toggle">
+            <label class="form-label" for="password_confirmation">Confirm Password</label>
+            <div class="input-group input-group-merge">
+                <input type="password" wire:model="password_confirmation" id="password_confirmation"
+                    class="form-control"
+                    placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;" />
+                <span class="input-group-text cursor-pointer">
+                    <i class="bx bx-hide"></i>
+                </span>
+            </div>
+        </div>
+
+        <!-- Terms & Privacy -->
+        <div class="mb-3">
+            <div class="form-check">
+                <input class="form-check-input @error('terms') is-invalid @enderror" type="checkbox" wire:model="terms"
+                    id="terms-conditions">
+                <label class="form-check-label" for="terms-conditions">
+                    I agree to
+                    <a href="javascript:void(0);">privacy policy & terms</a>
+                </label>
+            </div>
+            @error('terms')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <!-- Submit Button -->
+        <button class="btn btn-primary d-grid w-100" type="submit" wire:loading.attr="disabled">
+            <span wire:loading.remove>Sign up</span>
+            <span wire:loading>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Creating account...
+            </span>
+        </button>
+    </form>
+
+    <p class="text-center mt-4">
+        <span>Already have an account?</span>
+        <a href="{{ route('login') }}" wire:navigate>
+            <span>Sign in instead</span>
+        </a>
+    </p>
+</div>
