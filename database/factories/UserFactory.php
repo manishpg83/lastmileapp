@@ -97,11 +97,4 @@ class UserFactory extends Factory
             'vehicle_number' => null,
         ]);
     }
-
-    public function unverified()
-    {
-        return $this->state(fn (array $attributes) => [
-            'email_verified_at' => null,
-        ]);
-    }
 }
