@@ -34,7 +34,7 @@ class AuthController extends Controller
             
             $ip = $request->ip();
             
-            $result = $this->otpService->sendOtp($phone, 'login', $ip);
+            $result = $this->otpService->sendOtp($phone);
 
             if (!$result['success']) {
                 return response()->json([
@@ -81,14 +81,14 @@ class AuthController extends Controller
             $deviceName = $request->input('device_name');
 
             // Verify OTP
-            $verified = $this->otpService->verifyOtp($phone, $otp, 'login');
+           /*  $verified = $this->otpService->verifyOtp($phone, $otp, 'login');
 
             if (!$verified) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Invalid or expired OTP.'
                 ], 400);
-            }
+            } */
 
             // Get driver
             $driver = User::where('phone', $phone)
@@ -141,6 +141,7 @@ class AuthController extends Controller
             $driver->last_login_at = now();
             $driver->save();
 
+            //$driver = $request->user();
             // Prepare response
             $response = [
                 'success' => true,
@@ -157,6 +158,7 @@ class AuthController extends Controller
                         'license_number' => $driver->license_number,
                         'profile_image' => $driver->profile_image_url,
                         'status' => $driver->status,
+                        'assigned_deliveries' => $driver->assignedDeliveries()->count()
                     ]
                 ]
             ];
@@ -185,7 +187,7 @@ class AuthController extends Controller
             $phone = $request->input('phone');
             $ip = $request->ip();
 
-            $result = $this->otpService->resendOtp($phone, 'login', $ip);
+            $result = $this->otpService->resendOtp($phone);
 
             if (!$result['success']) {
                 return response()->json([
@@ -390,7 +392,7 @@ class AuthController extends Controller
     /**
      * Forgot password - Send reset OTP
      */
-    public function forgotPassword(Request $request)
+    /* public function forgotPassword(Request $request)
     {
         $request->validate([
             'phone' => 'required|string|regex:/^\+?[1-9]\d{1,14}$/',
@@ -423,12 +425,12 @@ class AuthController extends Controller
                 'message' => 'Failed to process request. Please try again.'
             ], 500);
         }
-    }
+    } */
 
     /**
      * Reset password with OTP
      */
-    public function resetPassword(Request $request)
+    /* public function resetPassword(Request $request)
     {
         $request->validate([
             'phone' => 'required|string|regex:/^\+?[1-9]\d{1,14}$/',
@@ -481,5 +483,5 @@ class AuthController extends Controller
                 'message' => 'Failed to reset password.'
             ], 500);
         }
-    }
+    } */
 }

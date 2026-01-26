@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\OTP;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -17,7 +16,7 @@ class OtpService
         $this->smsService = config('services.sms.default');
     }
 
-    public function sendOtp($phone, $purpose = OTP::PURPOSE_LOGIN, $ip = null): array
+    public function sendOtp($phone): array
     {
         try {
             // Check if user exists and is a driver
@@ -40,7 +39,7 @@ class OtpService
             }
 
             // Rate limiting: Check for too many OTP requests
-            $recentOtpCount = OTP::where('phone', $phone)
+            /* $recentOtpCount = OTP::where('phone', $phone)
                 ->where('created_at', '>=', now()->subHour())
                 ->count();
 
@@ -49,23 +48,24 @@ class OtpService
                     'success' => false,
                     'message' => 'Too many OTP requests. Please try again after 1 hour.'
                 ];
-            }
+            } */
 
             // Generate and save OTP
-            $otp = OTP::generateOTP($phone, $purpose, $ip);
+            //$otp = OTP::generateOTP($phone);
+            $otp = $six_digit_random_number = random_int(100000, 999999);
 
             // For development/testing, return OTP directly
             if (app()->environment('local', 'testing')) {
                 return [
                     'success' => true,
                     'message' => 'OTP sent successfully.',
-                    'otp' => $otp->otp, // Only for development
+                    'otp' => $otp, // Only for development
                     'phone' => $phone
                 ];
             }
 
             // For production, send SMS
-            $smsSent = $this->sendSms($phone, $otp->otp);
+            $smsSent = $this->sendSms($phone, $otp);
 
             if ($smsSent) {
                 return [
@@ -89,7 +89,7 @@ class OtpService
         }
     }
 
-    public function verifyOtp($phone, $otp, $purpose = OTP::PURPOSE_LOGIN): bool
+    /* public function verifyOtp($phone, $otp, $purpose = OTP::PURPOSE_LOGIN): bool
     {
         try {
             return OTP::verifyOTP($phone, $otp, $purpose);
@@ -97,18 +97,18 @@ class OtpService
             Log::error('OTP Verify Error: ' . $e->getMessage());
             return false;
         }
-    }
+    } */
 
-    public function resendOtp($phone, $purpose = OTP::PURPOSE_LOGIN, $ip = null): array
+    public function resendOtp($phone): array
     {
         // Clear old unused OTPs
-        OTP::where('phone', $phone)
+        /* OTP::where('phone', $phone)
             ->where('purpose', $purpose)
             ->where('used', false)
             ->where('expires_at', '<', now())
-            ->delete();
+            ->delete(); */
 
-        return $this->sendOtp($phone, $purpose, $ip);
+        return $this->sendOtp($phone);
     }
 
     private function sendSms($phone, $otp): bool
@@ -159,6 +159,6 @@ class OtpService
             ];
         }
 
-        return $this->sendOtp($phone, OTP::PURPOSE_RESET_PASSWORD);
+        return $this->sendOtp($phone);
     }
 }
