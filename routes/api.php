@@ -10,32 +10,38 @@ use Illuminate\Support\Facades\Route;
 
 
 use App\Http\Controllers\Api\V1\Auth\AdminAuthController;
-use App\Http\Controllers\Api\V1\Auth\DriverAuthController;
-use App\Http\Controllers\Api\V1\Admin\DeliveryController;
-use App\Http\Controllers\Api\V1\Admin\DriverController;
-use App\Http\Controllers\Api\V1\Driver\DriverDashboardController;
-use App\Http\Controllers\Api\V1\Driver\DriverDeliveryController;
+use App\Http\Controllers\Api\V1\AuthController;
+#use App\Http\Controllers\Api\V1\DeliveryController;
+use App\Http\Controllers\Api\V1\DriverController;
+#use App\Http\Controllers\Api\V1\Driver\DriverDashboardController;
+#use App\Http\Controllers\Api\V1\Driver\DriverDeliveryController;
 
 Route::prefix('v1')->group(function () {
 
     // Auth
     Route::post('admin/login', [AdminAuthController::class, 'login']);
-    Route::post('driver/login', [DriverAuthController::class, 'sendOtp']);
-    Route::post('driver/verify-otp', [DriverAuthController::class, 'verifyOtp']);
+    Route::post('driver/login', [AuthController::class, 'sendOtp']);
+    Route::post('driver/verify-otp', [AuthController::class, 'verifyOtp']);
 
-    // Admin APIs
-    Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
-        Route::apiResource('deliveries', DeliveryController::class);
-        Route::apiResource('drivers', DriverController::class);
+
+     Route::middleware(['auth:sanctum'])->prefix('driver')->group(function () {
+        Route::get('driverlist', [DriverController::class, 'driverList']);
+        Route::get('undelivered_reasons', [DriverController::class, 'undeliveredReasons']);       
     });
 
+    // Admin APIs
+    /* Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
+        Route::apiResource('deliveries', DeliveryController::class);
+        Route::apiResource('drivers', DriverController::class);
+    }); */
+
     // Driver APIs
-    Route::middleware(['auth:sanctum'])->prefix('driver')->group(function () {
+    /* Route::middleware(['auth:sanctum'])->prefix('driver')->group(function () {
         Route::get('dashboard', [DriverDashboardController::class, 'index']);
         Route::get('deliveries', [DriverDeliveryController::class, 'index']);
         Route::post('delivery/{id}/start', [DriverDeliveryController::class, 'start']);
         Route::post('delivery/{id}/deliver', [DriverDeliveryController::class, 'deliver']);
         Route::post('delivery/{id}/undelivered', [DriverDeliveryController::class, 'undelivered']);
         Route::post('delivery/{id}/transfer', [DriverDeliveryController::class, 'transfer']);
-    });
+    }); */
 });

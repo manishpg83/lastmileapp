@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DriverLoginRequest;
@@ -135,11 +135,15 @@ class AuthController extends Controller
                 $tokenName .= " ({$deviceId})";
             }
 
+            //$driver->tokens()->delete();
+
+            //$token = $driver->createToken('driver-token')->plainTextToken;
+
             $token = $driver->createToken($tokenName, ['driver'])->plainTextToken;
 
             // Update last login
-            $driver->last_login_at = now();
-            $driver->save();
+            //$driver->last_login_at = now();
+            //$driver->save();
 
             //$driver = $request->user();
             // Prepare response
@@ -154,11 +158,8 @@ class AuthController extends Controller
                         'name' => $driver->name,
                         'email' => $driver->email,
                         'phone' => $driver->phone,
-                        'vehicle_number' => $driver->vehicle_number,
-                        'license_number' => $driver->license_number,
                         'profile_image' => $driver->profile_image_url,
-                        'status' => $driver->status,
-                        'assigned_deliveries' => $driver->assignedDeliveries()->count()
+                        'assigned_deliveries' => 0 //$driver->assignedDeliveries()->count()
                     ]
                 ]
             ];

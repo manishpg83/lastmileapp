@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\UndeliveredReason;
 use App\Models\DriverLocation;
 use App\Models\Delivery;
 use Illuminate\Http\Request;
@@ -10,6 +12,78 @@ use Illuminate\Support\Facades\Cache;
 
 class DriverController extends Controller
 {
+    /**
+     * Get Driver List
+     */
+    public function driverList(Request $request)
+    {
+        try {
+            if ($request->user()->role !== 'driver') {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+
+            $loggedInUserId = $request->user()->id;
+            $drivers = User::where('role', 'driver')
+            ->where('status', 'active')
+            ->where('id', '!=', $loggedInUserId)
+            ->get()
+            ->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    // 'email' => $user->email,
+                    //'phone' => $user->phone,
+                    //'vehicle_number' => $user->vehicle_number,
+                    //'license_number' => $user->license_number,
+                ];
+            });            
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'drivers' => $drivers
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to load driver listing.'
+            ], 500);
+        }
+    }
+
+    /**
+     * Get Undelivered Reasons List
+     */
+    public function undeliveredReasons(Request $request)
+    {
+        try {
+            if ($request->user()->role !== 'driver') {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+
+            $undeliveredReasons = UndeliveredReason::where('status', 'active')->get()
+            ->map(function ($user) {
+                return [
+                    'id' => $user->id,
+                    'name' => $user->title                   
+                ];
+            });            
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'undelivered_reasons' => $undeliveredReasons
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to load Undelivered Reasons.'
+            ], 500);
+        }
+    }
+    
     /**
      * Get driver dashboard data
      */
