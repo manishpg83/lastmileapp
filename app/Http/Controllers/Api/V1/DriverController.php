@@ -83,6 +83,87 @@ class DriverController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Get Deliveries List
+     */
+    public function deliveryList(Request $request)
+    {
+        try {
+            if ($request->user()->role !== 'driver') {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+            $loggedInUserId = $request->user()->id;
+            $deliveries = Delivery::select(
+                'customer_name',
+                'id',
+                'company_name',
+                'address',
+                'docket_number',
+                'phone',
+                'driver_id',
+                'status'
+            )
+            ->where('driver_id', $loggedInUserId)
+            ->whereDate('created_at', today()) // assigned_at
+            ->orderBy('customer_name')
+            ->get()
+            ->groupBy('customer_name');            
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'deliveries' => $deliveries
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to load deliveries.'
+            ], 500);
+        }
+    }
+
+    /**
+     * Get Update Deliveries
+     */
+    public function updateDelivery(Request $request)
+    {
+        try {
+            if ($request->user()->role !== 'driver') {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+            $loggedInUserId = $request->user()->id;
+            echo $request->type;
+
+           /*  $deliveries = Delivery::select(
+                'customer_name',
+                'id',
+                'company_name',
+                'address',
+                'docket_number',
+                'phone',
+                'assigned_driver_id',
+                'status'
+            )
+            ->where('driver_id', $loggedInUserId)
+            ->orderBy('customer_name')
+            ->get()
+            ->groupBy('customer_name');            
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'deliveries' => $deliveries
+                ]
+            ]);
+ */
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to load deliveries.'
+            ], 500);
+        }
+    }
     
     /**
      * Get driver dashboard data

@@ -71,12 +71,12 @@ class Delivery extends Model
     ];
 
     protected $appends = [
-        'pod_image_url',
+       /*  'pod_image_url',
         'signature_image_url',
         'status_color',
         'status_text',
         'duration_minutes',
-        'is_late',
+        'is_late', */
     ];
 
     // Relationships
@@ -270,7 +270,7 @@ class Delivery extends Model
         $this->status = $newStatus;
 
         // Update timestamps based on status
-        $this->updateTimestamps($newStatus);
+        $this->updateTimestamp($newStatus);
 
         $this->save();
 
@@ -280,7 +280,7 @@ class Delivery extends Model
         return $this;
     }
 
-    protected function updateTimestamps($status)
+    protected function updateTimestamp($status)
     {
         switch ($status) {
             case self::STATUS_ASSIGNED:

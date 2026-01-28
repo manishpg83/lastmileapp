@@ -26,7 +26,9 @@ Route::prefix('v1')->group(function () {
 
      Route::middleware(['auth:sanctum'])->prefix('driver')->group(function () {
         Route::get('driverlist', [DriverController::class, 'driverList']);
-        Route::get('undelivered_reasons', [DriverController::class, 'undeliveredReasons']);       
+        Route::get('undelivered_reasons', [DriverController::class, 'undeliveredReasons']);
+        Route::get('deliverylist', [DriverController::class, 'deliveryList']);
+        Route::post('updatedelivery', [DriverController::class, 'updateDelivery']);     
     });
 
     // Admin APIs
