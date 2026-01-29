@@ -124,47 +124,232 @@ class DriverController extends Controller
         }
     }
 
+    
+    
+    
+    /* public function assignToDriver($driverId)
+    {
+        $this->driver_id = $driverId;
+        $this->updateStatus(self::STATUS_ASSIGNED, auth()->id(), 'Assigned to driver');
+        
+        return $this;
+    } */
+
     /**
-     * Get Update Deliveries
+     * Start Deliveries
      */
-    public function updateDelivery(Request $request)
+    public function startDelivery(Request $request, Delivery $delivery)
     {
         try {
-            if ($request->user()->role !== 'driver') {
-                return response()->json(['message' => 'Unauthorized'], 403);
+            if ($delivery->driver_id !== $request->user()->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized'
+                ], 403);
             }
-            $loggedInUserId = $request->user()->id;
-            echo $request->type;
-
-           /*  $deliveries = Delivery::select(
-                'customer_name',
-                'id',
-                'company_name',
-                'address',
-                'docket_number',
-                'phone',
-                'assigned_driver_id',
-                'status'
-            )
-            ->where('driver_id', $loggedInUserId)
-            ->orderBy('customer_name')
-            ->get()
-            ->groupBy('customer_name');            
+            $status = Delivery::STATUS_IN_TRANSIT;
+            $delivery->updateStatus($status, $request->user()->id);
+            
+            // notifcation log 
+            $title = 'Delivery Started';
+            $message = $request->user()->name. ' has started delivery at '.now()->toDayDateTimeString();
+             $data=[ 
+                'type' => $status,
+                'notifiable_id' => $request->user()->id,
+                'delivery_id'   => null,
+                'driver_id'     => $request->user()->id ?? null,
+                'docket_number' => null,
+                'customer_name' => null,
+                'title'         => $title,
+                'message'       => $message,
+                'read_at'      => null,
+            ];
+            $this->notificationlog($data);
+       
+            // Start timer logic
+            // You can store start time in delivery_timers table
+            
             return response()->json([
                 'success' => true,
-                'data' => [
-                    'deliveries' => $deliveries
-                ]
+                'message' => 'Delivery started',
+                'delivery' => $delivery->fresh()
             ]);
- */
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to load deliveries.'
+                'message' => 'Failed to start devivery.'
             ], 500);
         }
     }
-    
+    /**
+     * undelivered
+     */
+    public function undelivered(Request $request, Delivery $delivery)
+    {
+        try {
+            $request->validate([
+                'status' => 'required|in:delivered,undelivered',
+                'notes' => 'nullable|string',
+                'undelivered_reason_id' => 'required_if:status,undelivered|exists:undelivered_reasons,id'
+            ]);
+
+            if ($delivery->driver_id !== $request->user()->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized'
+                ], 403);
+            }
+
+            $status = $request->status;
+            
+            $delivery->updateStatus($status, $request->user()->id, $request->notes);
+            
+            $delivery->status = $status;
+            $delivery->undelivered_reason_id = $request->undelivered_reason_id;
+            $delivery->save();
+
+            // notifcation log 
+            $title = 'Undeliveried';
+            $message = $request->user()->name. ' has started delivery at '.now()->toDayDateTimeString();
+             $data=[ 
+                'type' => $status,
+                'notifiable_type' => 'driver',
+                'notifiable_id' => $request->user()->id,
+                'delivery_id'   => null,
+                'driver_id'     => $request->user()->id ?? null,
+                'docket_number' => null,
+                'customer_name' => null,
+                'title'         => $title,
+                'message'       => $message,
+                'read_at'      => null,
+            ];
+            $this->notificationlog($data);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Status updated successfully',
+                'delivery' => $delivery->fresh()
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update status.'
+            ], 500);
+        }
+    }
+    /**
+     * Delivered
+     */
+    public function uploadPOD(Request $request, Delivery $delivery)
+    {
+        try{
+            $request->validate([
+                'pod_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+                'quality' => 'required|in:good,bad'
+            ]);
+
+            if ($delivery->driver_id !== $request->user()->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized'
+                ], 403);
+            }
+
+            // Delete old POD if exists
+            if ($delivery->pod_image) {
+                Storage::delete('public/pod/' . $delivery->pod_image);
+            }
+
+            $status = Delivery::STATUS_DELIVERED;
+            
+            $delivery->updateStatus($status, $request->user()->id, $request->notes);
+            
+            $delivery->status = $status;
+
+            // Upload new POD
+            $path = $request->file('pod_image')->store('pod', 'public');
+            $delivery->pod_image = basename($path);
+            $delivery->pod_quality = $request->quality;
+            $delivery->save();
+
+            // Dispatch job to sync with third-party if needed
+            if ($request->quality === 'good') {
+                // SyncWithThirdParty::dispatch($delivery);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'POD uploaded successfully',
+                'pod_url' => $delivery->pod_image_url
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to delivered.'
+            ], 500);
+        }
+    }
+
+    /**
+     * Pass to Another Driver
+     */
+    public function passToDriver(Request $request, Delivery $delivery)
+    {
+        try{
+            $request->validate([
+                'new_driver_id' => 'required|exists:users,id'
+            ]);
+
+            if ($delivery->driver_id !== $request->user()->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized'
+                ], 403);
+            }
+
+            $oldDriverId = $delivery->driver_id;
+            $delivery->driver_id = $request->new_driver_id;
+
+            $status = Delivery::STATUS_PASSED;
+            
+            $delivery->status = $status;
+            
+            $delivery->updateStatus($status, $request->user()->id, 
+                "Passed to driver ID: {$request->new_driver_id}");
+            
+            // Notify new driver
+            event(new DeliveryAssigned($delivery));
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Delivery passed to another driver',
+                'delivery' => $delivery->fresh()
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to passed delivery.'
+            ], 500);
+        }
+    }
+
+    /** 
+     * Notification log activity
+     */
+    protected function notificationlog($data)
+    {
+        Notification::create([
+            'type' => $data['type'],
+            'notifiable_id' => $data['user_id'],
+            'delivery_id'   => $data['delivery_id'] ?? null,
+            'driver_id'     => $data['driver_id'] ?? null,
+            'docket_number' => $data['docket_number'] ?? null,
+            'customer_name' => $data['customer_name'] ?? null,
+            'title'         => $data['title'],
+            'message'       => $data['message'],
+            'read_at'      => null,
+        ]);
+    }
     /**
      * Get driver dashboard data
      */

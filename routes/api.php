@@ -28,7 +28,13 @@ Route::prefix('v1')->group(function () {
         Route::get('driverlist', [DriverController::class, 'driverList']);
         Route::get('undelivered_reasons', [DriverController::class, 'undeliveredReasons']);
         Route::get('deliverylist', [DriverController::class, 'deliveryList']);
-        Route::post('updatedelivery', [DriverController::class, 'updateDelivery']);     
+        //Route::post('updatedelivery', [DriverController::class, 'updateDelivery']);   
+        
+        Route::post('/deliveries/{delivery}/start', [DriverController::class, 'startDelivery']);
+        Route::post('/driver/undelivered', [DriverController::class, 'undelivered']);
+        Route::post('/driver/delivered', [DriverController::class, 'uploadPOD']);
+        Route::post('/driver/pass-to-driver', [DriverController::class, 'passToDriver']);
+
     });
 
     // Admin APIs
