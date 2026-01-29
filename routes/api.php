@@ -30,10 +30,10 @@ Route::prefix('v1')->group(function () {
         Route::get('deliverylist', [DriverController::class, 'deliveryList']);
         //Route::post('updatedelivery', [DriverController::class, 'updateDelivery']);   
         
-        Route::post('/deliveries/{delivery}/start', [DriverController::class, 'startDelivery']);
-        Route::post('/driver/undelivered', [DriverController::class, 'undelivered']);
-        Route::post('/driver/delivered', [DriverController::class, 'uploadPOD']);
-        Route::post('/driver/pass-to-driver', [DriverController::class, 'passToDriver']);
+        Route::post('/deliveries/start', [DriverController::class, 'startDelivery']);
+        Route::post('/deliveries/undelivered', [DriverController::class, 'undelivered']);
+        Route::post('/deliveries/delivered', [DriverController::class, 'uploadPOD']);
+        Route::post('/deliveries/pass-to-driver', [DriverController::class, 'passToDriver']);
 
     });
 

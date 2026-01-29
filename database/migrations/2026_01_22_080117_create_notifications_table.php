@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('type');
             $table->morphs('notifiable');
+            $table->unsignedBigInteger('driver_id')->nullable();
             $table->unsignedBigInteger('delivery_id')->nullable();
             $table->string('docket_number')->nullable();
             $table->string('customer_name')->nullable();

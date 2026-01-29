@@ -11,6 +11,7 @@ class Notification extends Model
         'notifiable_type',
         'notifiable_id',
         'delivery_id',
+        'driver_id',
         'docket_number',
         'customer_name',
         'title',

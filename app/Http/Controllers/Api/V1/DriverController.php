@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\UndeliveredReason;
+use App\Models\Notification;
 use App\Models\DriverLocation;
 use App\Models\Delivery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Validation\ValidationException;
 
 class DriverController extends Controller
 {
@@ -105,7 +107,7 @@ class DriverController extends Controller
                 'status'
             )
             ->where('driver_id', $loggedInUserId)
-            ->whereDate('created_at', today()) // assigned_at
+            ->whereDate('assigned_at', today()) // assigned_at
             ->orderBy('customer_name')
             ->get()
             ->groupBy('customer_name');            
@@ -138,80 +140,19 @@ class DriverController extends Controller
     /**
      * Start Deliveries
      */
-    public function startDelivery(Request $request, Delivery $delivery)
+    public function startDelivery(Request $request)
     {
         try {
-            if ($delivery->driver_id !== $request->user()->id) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Unauthorized'
-                ], 403);
+            if ($request->user()->role !== 'driver') {
+                return response()->json(['message' => 'Unauthorized'], 403);
             }
             $status = Delivery::STATUS_IN_TRANSIT;
-            $delivery->updateStatus($status, $request->user()->id);
+            //$delivery->updateStatus($status, $request->user()->id);
             
             // notifcation log 
             $title = 'Delivery Started';
-            $message = $request->user()->name. ' has started delivery at '.now()->toDayDateTimeString();
-             $data=[ 
-                'type' => $status,
-                'notifiable_id' => $request->user()->id,
-                'delivery_id'   => null,
-                'driver_id'     => $request->user()->id ?? null,
-                'docket_number' => null,
-                'customer_name' => null,
-                'title'         => $title,
-                'message'       => $message,
-                'read_at'      => null,
-            ];
-            $this->notificationlog($data);
-       
-            // Start timer logic
-            // You can store start time in delivery_timers table
-            
-            return response()->json([
-                'success' => true,
-                'message' => 'Delivery started',
-                'delivery' => $delivery->fresh()
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to start devivery.'
-            ], 500);
-        }
-    }
-    /**
-     * undelivered
-     */
-    public function undelivered(Request $request, Delivery $delivery)
-    {
-        try {
-            $request->validate([
-                'status' => 'required|in:delivered,undelivered',
-                'notes' => 'nullable|string',
-                'undelivered_reason_id' => 'required_if:status,undelivered|exists:undelivered_reasons,id'
-            ]);
-
-            if ($delivery->driver_id !== $request->user()->id) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Unauthorized'
-                ], 403);
-            }
-
-            $status = $request->status;
-            
-            $delivery->updateStatus($status, $request->user()->id, $request->notes);
-            
-            $delivery->status = $status;
-            $delivery->undelivered_reason_id = $request->undelivered_reason_id;
-            $delivery->save();
-
-            // notifcation log 
-            $title = 'Undeliveried';
-            $message = $request->user()->name. ' has started delivery at '.now()->toDayDateTimeString();
-             $data=[ 
+            $message = '';//$request->user()->name. ' has started delivery at '.now()->toDayDateTimeString();
+            $data=[ 
                 'type' => $status,
                 'notifiable_type' => 'driver',
                 'notifiable_id' => $request->user()->id,
@@ -223,14 +164,87 @@ class DriverController extends Controller
                 'message'       => $message,
                 'read_at'      => null,
             ];
+           $this->notificationlog($data);
+                 
+            // Start timer logic
+            // You can store start time in delivery_timers table
+            
+            return response()->json([
+                'success' => true,
+                'message' => 'Delivery started',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to start devivery.'
+            ], 500);
+        }
+    }
+    /**
+     * undelivered
+     */
+    public function undelivered(Request $request)
+    {
+        try {
+           
+            try {
+                 $request->validate([
+                    'delivery_id' => 'required|integer|exists:deliveries,id',
+                    'notes' => 'nullable|string',
+                    'undelivered_reason_id' => 'required|integer|exists:undelivered_reasons,id'
+                ]);
+            } catch (ValidationException $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->errors(),
+                ], 422);
+            }
+            $deliveryId = $request->delivery_id;
+            $delivery = Delivery::findOrFail($deliveryId);
+            if ($delivery->driver_id !== $request->user()->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized'
+                ], 403);
+            }
+
+            $status = Delivery::STATUS_UNDELIVERED;
+            
+            $delivery->updateStatus($status, $request->user()->id, $request->notes);
+            
+            $delivery->status = $status;
+            $delivery->undelivered_reason_id = $request->undelivered_reason_id;
+            $delivery->save();
+
+            // notifcation log 
+            $title = 'Undeliveried';
+            $message = $request->user()->name. ' has '.$status.' due to '.$delivery->undeliveredReason->title;
+            $data=[ 
+                'type' => $status,     
+                'notifiable_type' => 'driver',           
+                'notifiable_id' => $request->user()->id,
+                'delivery_id'   => $deliveryId,
+                'driver_id'     => $request->user()->id ?? null,
+                'docket_number' => $delivery->docket_number,
+                'customer_name' => $delivery->customer_name,
+                'title'         => $title,
+                'message'       => $message,
+                'read_at'      => null,
+            ];
             $this->notificationlog($data);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Status updated successfully',
-                'delivery' => $delivery->fresh()
+               // 'delivery' => $delivery->fresh()
             ]);
         } catch (\Exception $e) {
+
+            \Log::error('Notification insert failed', [
+                'error' => $e->getMessage()
+            ]);
+
+            throw $e; // important for debugging    
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to update status.'
@@ -240,13 +254,23 @@ class DriverController extends Controller
     /**
      * Delivered
      */
-    public function uploadPOD(Request $request, Delivery $delivery)
+    public function uploadPOD(Request $request)
     {
         try{
-            $request->validate([
-                'pod_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
-                'quality' => 'required|in:good,bad'
-            ]);
+            try {
+                 $request->validate([
+                    'delivery_id' => 'required|integer|exists:deliveries,id',
+                    'pod_image' => 'required|image|mimes:jpeg,png,jpg|max:2048',
+                    'quality' => 'required|in:good,bad'
+                ]);
+            } catch (ValidationException $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->errors(),
+                ], 422);
+            }
+            $deliveryId = $request->delivery_id;
+            $delivery = Delivery::findOrFail($deliveryId);            
 
             if ($delivery->driver_id !== $request->user()->id) {
                 return response()->json([
@@ -277,6 +301,23 @@ class DriverController extends Controller
                 // SyncWithThirdParty::dispatch($delivery);
             }
 
+            // notifcation log 
+            $title = 'Delivered';
+            $message = $request->user()->name. ' has '.$status.' successfully with quality with '.$request->quality;
+            $data=[ 
+                'type' => $status,     
+                'notifiable_type' => 'driver',           
+                'notifiable_id' => $request->user()->id,
+                'delivery_id'   => $deliveryId,
+                'driver_id'     => $request->user()->id ?? null,
+                'docket_number' => $delivery->docket_number,
+                'customer_name' => $delivery->customer_name,
+                'title'         => $title,
+                'message'       => $message,
+                'read_at'      => null,
+            ];
+            $this->notificationlog($data);
+            
             return response()->json([
                 'success' => true,
                 'message' => 'POD uploaded successfully',
@@ -293,13 +334,24 @@ class DriverController extends Controller
     /**
      * Pass to Another Driver
      */
-    public function passToDriver(Request $request, Delivery $delivery)
+    public function passToDriver(Request $request)
     {
         try{
-            $request->validate([
-                'new_driver_id' => 'required|exists:users,id'
-            ]);
-
+            try {
+                 $request->validate([
+                    'new_driver_id' => 'required|exists:users,id',
+                    'delivery_id' => 'required|integer|exists:deliveries,id',
+                    'notes' => 'nullable|string'
+                ]);
+            } catch (ValidationException $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->errors(),
+                ], 422);
+            }
+            $deliveryId = $request->delivery_id;
+            $delivery = Delivery::findOrFail($deliveryId);
+            
             if ($delivery->driver_id !== $request->user()->id) {
                 return response()->json([
                     'success' => false,
@@ -318,7 +370,24 @@ class DriverController extends Controller
                 "Passed to driver ID: {$request->new_driver_id}");
             
             // Notify new driver
-            event(new DeliveryAssigned($delivery));
+            //event(new DeliveryAssigned($delivery));
+
+            // notifcation log 
+            $title = 'Passed to  another driver';
+            $message = $request->user()->name. ' has '.$status.' to driver '.$delivery->driver->name;
+            $data=[ 
+                'type' => $status,     
+                'notifiable_type' => 'driver',           
+                'notifiable_id' => $request->user()->id,
+                'delivery_id'   => $deliveryId,
+                'driver_id'     => $request->user()->id ?? null,
+                'docket_number' => $delivery->docket_number,
+                'customer_name' => $delivery->customer_name,
+                'title'         => $title,
+                'message'       => $message,
+                'read_at'      => null,
+            ];
+            $this->notificationlog($data);
 
             return response()->json([
                 'success' => true,
@@ -336,19 +405,29 @@ class DriverController extends Controller
     /** 
      * Notification log activity
      */
-    protected function notificationlog($data)
+    protected function notificationlog(array $data)
     {
-        Notification::create([
-            'type' => $data['type'],
-            'notifiable_id' => $data['user_id'],
-            'delivery_id'   => $data['delivery_id'] ?? null,
-            'driver_id'     => $data['driver_id'] ?? null,
-            'docket_number' => $data['docket_number'] ?? null,
-            'customer_name' => $data['customer_name'] ?? null,
-            'title'         => $data['title'],
-            'message'       => $data['message'],
-            'read_at'      => null,
-        ]);
+        try {
+            Notification::create([
+                'type'            => $data['type'],
+                'notifiable_type' => $data['notifiable_type'],
+                'notifiable_id'   => $data['notifiable_id'], // ✅ FIXED
+                'delivery_id'     => $data['delivery_id'] ?? null,
+                'driver_id'       => $data['driver_id'] ?? null,
+                'docket_number'   => $data['docket_number'] ?? null,
+                'customer_name'   => $data['customer_name'] ?? null,
+                'title'           => $data['title'],
+                'message'         => $data['message'],
+                'read_at'         => $data['read_at'],
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('Notification insert failed', [
+                'error' => $e->getMessage(),
+                'data'  => $data,
+            ]);
+
+            throw $e; // important for debugging
+        }
     }
     /**
      * Get driver dashboard data
