@@ -6,6 +6,8 @@ use App\Livewire\Admin\Security;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Route;
+use App\Livewire\Admin\User\UserList;
+use App\Livewire\Admin\User\UserForm;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', Login::class)->name('login');
@@ -16,6 +18,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', Dashboard::class)->name('dashboard');
     Route::get('/profile', Profile::class)->name('profile');
     Route::get('/security', Security::class)->name('security');
+
+    Route::get('/users', UserList::class)->name('users.index');
+    Route::get('/users/create', UserForm::class)->name('users.create');
+    Route::get('/users/{user}/edit', UserForm::class)->name('users.edit');
 
     Route::post('/logout', function () {
         Auth::logout();

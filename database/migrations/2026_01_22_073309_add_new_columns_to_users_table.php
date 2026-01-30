@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // Add new columns
-            $table->string('phone')->unique()->after('email');
+            $table->string('phone')->nullable()->unique()->after('email');
             $table->enum('role', ['super_admin', 'driver', 'manager'])->default('driver')->after('phone');
             $table->string('vehicle_number')->nullable()->after('role');
             $table->string('license_number')->nullable()->after('vehicle_number');

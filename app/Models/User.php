@@ -51,6 +51,8 @@ class User extends Authenticatable
         'profile_image_url',
         'role_name',
         'status_badge',
+        'initials',
+        'avatar_color',
     ];
 
     // Relationships
@@ -119,19 +121,58 @@ class User extends Authenticatable
     public function getProfileImageUrlAttribute()
     {
         if (!$this->profile_image) {
-            return asset('images/default-avatar.png');
+            return null; // Return null if no image
         }
-        
+
+        // If already a full URL (S3, CDN, etc.)
         if (filter_var($this->profile_image, FILTER_VALIDATE_URL)) {
             return $this->profile_image;
         }
-        
-        return asset('storage/profiles/' . $this->profile_image);
+
+        return asset('storage/' . $this->profile_image);
+    }
+
+    // Add this method to your User model
+
+    public function getInitialsAttribute()
+    {
+        $words = explode(' ', trim($this->name));
+
+        if (count($words) >= 2) {
+            return strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1));
+        }
+
+        return strtoupper(substr($this->name, 0, 2));
+    }
+
+    public function getAvatarColorAttribute()
+    {
+        // Generate a consistent color based on user name
+        $colors = [
+            '#FF6B6B',
+            '#4ECDC4',
+            '#45B7D1',
+            '#FFA07A',
+            '#98D8C8',
+            '#F7DC6F',
+            '#BB8FCE',
+            '#85C1E2',
+            '#F8B739',
+            '#52B788',
+            '#E63946',
+            '#457B9D',
+            '#E9C46A',
+            '#2A9D8F',
+            '#264653'
+        ];
+
+        $index = ord(strtolower($this->name[0])) % count($colors);
+        return $colors[$index];
     }
 
     public function getRoleNameAttribute()
     {
-        return match($this->role) {
+        return match ($this->role) {
             self::ROLE_SUPER_ADMIN => 'Super Admin',
             self::ROLE_DRIVER => 'Driver',
             self::ROLE_MANAGER => 'Manager',
@@ -204,11 +245,11 @@ class User extends Authenticatable
     {
         $total = $this->deliveries()->count();
         $delivered = $this->deliveries()->where('status', Delivery::STATUS_DELIVERED)->count();
-        
+
         if ($total === 0) {
             return 0;
         }
-        
+
         return round(($delivered / $total) * 100, 2);
     }
 }

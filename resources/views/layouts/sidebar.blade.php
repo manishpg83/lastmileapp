@@ -1,8 +1,7 @@
 <!-- Menu -->
 <aside id="layout-menu" class="layout-menu menu-vertical menu">
     <div class="app-brand demo ">
-        <a href="{{ route('dashboard') }}"
-            class="app-brand-link">
+        <a href="{{ route('dashboard') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
                 <span class="text-primary">
                     <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
@@ -61,35 +60,38 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
-        <li class="menu-item active">
-            <a href="{{ url('/dashboard') }}" class="menu-link">
+        <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <a href="{{ route('dashboard') }}" class="menu-link">
                 <i class="menu-icon icon-base bx bx-home-smile"></i>
                 <div>Dashboard</div>
             </a>
         </li>
 
         <!-- Users -->
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('users*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon icon-base bx bx-user"></i>
                 <div>Users</div>
             </a>
+
             <ul class="menu-sub">
-                <li class="menu-item">
-                    <a href="{{ url('/users') }}" class="menu-link">
+                <li class="menu-item {{ request()->routeIs('users.index') ? 'active' : '' }}">
+                    <a href="{{ route('users.index') }}" class="menu-link">
                         <div>List</div>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a href="{{ url('/users/create') }}" class="menu-link">
+
+                <li class="menu-item {{ request()->routeIs('users.create') ? 'active' : '' }}">
+                    <a href="{{ route('users.create') }}" class="menu-link">
                         <div>Add New</div>
                     </a>
                 </li>
             </ul>
         </li>
 
+
         <!-- Settings -->
-        <li class="menu-item">
+        <li class="menu-item {{ request()->is('settings') ? 'active' : '' }}">
             <a href="{{ url('/settings') }}" class="menu-link">
                 <i class="menu-icon icon-base bx bx-cog"></i>
                 <div>Settings</div>
