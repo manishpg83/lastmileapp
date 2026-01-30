@@ -320,8 +320,8 @@ class DriverController extends Controller
             
             return response()->json([
                 'success' => true,
-                'message' => 'POD uploaded successfully',
-                'pod_url' => $delivery->pod_image_url
+                'message' => 'Delivered successfully'
+               // 'pod_url' => $delivery->pod_image_url
             ]);
         } catch (\Exception $e) {
             return response()->json([
