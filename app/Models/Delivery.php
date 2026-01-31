@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Delivery extends Model
 {
@@ -13,15 +13,22 @@ class Delivery extends Model
 
     // Status Constants
     const STATUS_PENDING = 'pending';
+
     const STATUS_ASSIGNED = 'assigned';
+
     const STATUS_IN_TRANSIT = 'in_transit';
+
     const STATUS_DELIVERED = 'delivered';
+
     const STATUS_UNDELIVERED = 'undelivered';
+
     const STATUS_PASSED = 'passed';
+
     const STATUS_CANCELLED = 'cancelled';
 
     // POD Quality
     const POD_QUALITY_GOOD = 'good';
+
     const POD_QUALITY_BAD = 'bad';
 
     protected $fillable = [
@@ -29,6 +36,7 @@ class Delivery extends Model
         'customer_name',
         'company_name',
         'address',
+        'pincode',
         'phone',
         'email',
         'notes',
@@ -71,7 +79,7 @@ class Delivery extends Model
     ];
 
     protected $appends = [
-       /*  'pod_image_url',
+        /*  'pod_image_url',
         'signature_image_url',
         'status_color',
         'status_text',
@@ -145,24 +153,24 @@ class Delivery extends Model
     {
         return $query->whereBetween('created_at', [
             now()->startOfWeek(),
-            now()->endOfWeek()
+            now()->endOfWeek(),
         ]);
     }
 
     public function scopeThisMonth($query)
     {
         return $query->whereMonth('created_at', now()->month)
-                     ->whereYear('created_at', now()->year);
+            ->whereYear('created_at', now()->year);
     }
 
     public function scopeSearch($query, $search)
     {
-        return $query->where(function($q) use ($search) {
+        return $query->where(function ($q) use ($search) {
             $q->where('docket_number', 'like', "%{$search}%")
-              ->orWhere('customer_name', 'like', "%{$search}%")
-              ->orWhere('company_name', 'like', "%{$search}%")
-              ->orWhere('phone', 'like', "%{$search}%")
-              ->orWhere('address', 'like', "%{$search}%");
+                ->orWhere('customer_name', 'like', "%{$search}%")
+                ->orWhere('company_name', 'like', "%{$search}%")
+                ->orWhere('phone', 'like', "%{$search}%")
+                ->orWhere('address', 'like', "%{$search}%");
         });
     }
 
@@ -174,7 +182,7 @@ class Delivery extends Model
     public function scopeNeedsSync($query)
     {
         return $query->where('synced_to_third_party', false)
-                     ->whereIn('status', [self::STATUS_DELIVERED, self::STATUS_UNDELIVERED]);
+            ->whereIn('status', [self::STATUS_DELIVERED, self::STATUS_UNDELIVERED]);
     }
 
     // Attribute Accessors
@@ -182,15 +190,15 @@ class Delivery extends Model
     {
         return Attribute::make(
             get: function () {
-                if (!$this->pod_image) {
+                if (! $this->pod_image) {
                     return null;
                 }
-                
+
                 if (filter_var($this->pod_image, FILTER_VALIDATE_URL)) {
                     return $this->pod_image;
                 }
-                
-                return asset('storage/pod/' . $this->pod_image);
+
+                return asset('storage/pod/'.$this->pod_image);
             }
         );
     }
@@ -199,15 +207,15 @@ class Delivery extends Model
     {
         return Attribute::make(
             get: function () {
-                if (!$this->signature_image) {
+                if (! $this->signature_image) {
                     return null;
                 }
-                
+
                 if (filter_var($this->signature_image, FILTER_VALIDATE_URL)) {
                     return $this->signature_image;
                 }
-                
-                return asset('storage/signatures/' . $this->signature_image);
+
+                return asset('storage/signatures/'.$this->signature_image);
             }
         );
     }
@@ -237,16 +245,16 @@ class Delivery extends Model
         if ($this->started_at && $this->delivered_at) {
             return $this->started_at->diffInMinutes($this->delivered_at);
         }
-        
+
         return $this->actual_duration_minutes;
     }
 
     public function getIsLateAttribute()
     {
-        if (!$this->scheduled_at || !$this->delivered_at) {
+        if (! $this->scheduled_at || ! $this->delivered_at) {
             return false;
         }
-        
+
         return $this->delivered_at->greaterThan($this->scheduled_at);
     }
 
@@ -254,7 +262,7 @@ class Delivery extends Model
     public function updateStatus($newStatus, $changedBy = null, $note = null, $metadata = [])
     {
         $oldStatus = $this->status;
-        
+
         // Record history before updating
         DeliveryStatusHistory::create([
             'delivery_id' => $this->id,
@@ -312,7 +320,7 @@ class Delivery extends Model
     {
         $this->driver_id = $driverId;
         $this->updateStatus(self::STATUS_ASSIGNED, auth()->id(), 'Assigned to driver');
-        
+
         return $this;
     }
 
@@ -322,17 +330,17 @@ class Delivery extends Model
         if ($this->timer) {
             $this->timer->update(['started_at' => now()]);
         }
-        
+
         return $this->updateStatus(self::STATUS_IN_TRANSIT, $this->driver_id, 'Delivery started');
     }
 
     public function completeDelivery($podData = [])
     {
         // Update POD data if provided
-        if (!empty($podData)) {
+        if (! empty($podData)) {
             $this->update($podData);
         }
-        
+
         // Stop timer if exists
         if ($this->timer && $this->timer->is_active) {
             $this->timer->update([
@@ -341,7 +349,7 @@ class Delivery extends Model
                 'is_active' => false,
             ]);
         }
-        
+
         return $this->updateStatus(self::STATUS_DELIVERED, $this->driver_id, 'Delivery completed');
     }
 
@@ -349,13 +357,13 @@ class Delivery extends Model
     {
         $this->undelivered_reason_id = $reasonId;
         $this->save();
-        
+
         return $this->updateStatus(self::STATUS_UNDELIVERED, $this->driver_id, $note);
     }
 
     public function hasPOD()
     {
-        return !empty($this->pod_image);
+        return ! empty($this->pod_image);
     }
 
     public function getCustomerLocation()
@@ -366,7 +374,7 @@ class Delivery extends Model
                 'lng' => $this->longitude,
             ];
         }
-        
+
         return null;
     }
 
@@ -375,7 +383,7 @@ class Delivery extends Model
         if ($this->delivered_at) {
             return $this->delivered_at->format('h:i A');
         }
-        
+
         return null;
     }
 

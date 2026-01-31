@@ -1,305 +1,87 @@
 <div class="container-xxl flex-grow-1 container-p-y">
     <div class="row g-6">
-        <!-- Card Border Shadow -->
+        <!-- Dashboard Cards -->
         <div class="col-lg-3 col-sm-6">
-            <div class="card card-border-shadow-primary h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                        <div class="avatar me-4">
-                            <span class="avatar-initial rounded bg-label-primary"><i
-                                    class="icon-base bx bxs-truck icon-lg"></i></span>
-                        </div>
-                        <h4 class="mb-0">42</h4>
-                    </div>
-                    <p class="mb-2">On route vehicles</p>
-                    <p class="mb-0">
-                        <span class="text-heading fw-medium me-2">+18.2%</span>
-                        <span class="text-body-secondary">than last week</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-            <div class="card card-border-shadow-warning h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                        <div class="avatar me-4">
-                            <span class="avatar-initial rounded bg-label-warning"><i
-                                    class="icon-base bx bx-error icon-lg"></i></span>
-                        </div>
-                        <h4 class="mb-0">8</h4>
-                    </div>
-                    <p class="mb-2">Vehicles with errors</p>
-                    <p class="mb-0">
-                        <span class="text-heading fw-medium me-2">-8.7%</span>
-                        <span class="text-body-secondary">than last week</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-            <div class="card card-border-shadow-danger h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                        <div class="avatar me-4">
-                            <span class="avatar-initial rounded bg-label-danger"><i
-                                    class="icon-base bx bx-git-repo-forked icon-lg"></i></span>
-                        </div>
-                        <h4 class="mb-0">27</h4>
-                    </div>
-                    <p class="mb-2">Deviated from route</p>
-                    <p class="mb-0">
-                        <span class="text-heading fw-medium me-2">+4.3%</span>
-                        <span class="text-body-secondary">than last week</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-sm-6">
-            <div class="card card-border-shadow-info h-100">
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-2">
-                        <div class="avatar me-4">
-                            <span class="avatar-initial rounded bg-label-info"><i
-                                    class="icon-base bx bx-time-five icon-lg"></i></span>
-                        </div>
-                        <h4 class="mb-0">13</h4>
-                    </div>
-                    <p class="mb-2">Late vehicles</p>
-                    <p class="mb-0">
-                        <span class="text-heading fw-medium me-2">-2.5%</span>
-                        <span class="text-body-secondary">than last week</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <!--/ Card Border Shadow -->
-
-        <!-- Orders by Countries -->
-        <div class="col-xxl-6">
             <div class="card h-100">
-                <div class="card-header d-flex justify-content-between">
-                    <div class="card-title mb-0">
-                        <h5 class="mb-1">Orders by Countries</h5>
-                        <p class="card-subtitle">62 deliveries in progress</p>
-                    </div>
-                    <div class="dropdown">
-                        <button class="btn text-body-secondary p-0" type="button" id="ordersCountries"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="icon-base bx bx-dots-vertical-rounded icon-lg"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="ordersCountries">
-                            <a class="dropdown-item" href="javascript:void(0);">Select All</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Refresh</a>
-                            <a class="dropdown-item" href="javascript:void(0);">Share</a>
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded bg-label-primary px-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <!--Boxicons v3.0.8 https://boxicons.com | License  https://docs.boxicons.com/free-->
+                                    <path
+                                        d="M19.1 7.8c-.38-.5-.97-.8-1.6-.8H15V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2 0 1.65 1.35 3 3 3s3-1.35 3-3h4c0 1.65 1.35 3 3 3s3-1.35 3-3c1.1 0 2-.9 2-2v-3.67c0-.43-.14-.86-.4-1.2zM17.5 9l1.5 2h-4V9zM7 19a1.003 1.003 0 0 1-.87-1.5c.37-.63 1.36-.63 1.73 0 .09.15.13.32.13.49 0 .55-.45 1-1 1Zm2.23-3s-.05-.05-.08-.07c-.06-.06-.12-.11-.17-.16-.12-.11-.25-.21-.38-.29a3 3 0 0 0-.67-.32c-.07-.02-.14-.05-.21-.07Q7.375 15 7 15c-.375 0-.49.04-.72.09-.07.02-.14.05-.21.07-.16.05-.31.11-.45.19-.07.04-.15.08-.22.13-.13.09-.26.18-.38.29-.06.05-.12.1-.18.16-.02.03-.05.04-.08.07h-.77V6h9v10H9.22ZM17 19a1.003 1.003 0 0 1-.87-1.5c.37-.63 1.36-.63 1.73 0 .09.15.13.32.13.49 0 .55-.45 1-1 1Zm3-3h-.77s-.05-.05-.08-.07c-.06-.06-.12-.11-.17-.16-.12-.11-.25-.21-.38-.29a3 3 0 0 0-.67-.32c-.07-.02-.14-.05-.21-.07Q17.375 15 17 15c-.375 0-.47.04-.7.09-.06.01-.12.03-.18.05-.18.06-.36.13-.52.22l-.12.06c-.17.1-.33.21-.48.35v-2.76h5v3Z">
+                                    </path>
+                                </svg>
+                            </span>
                         </div>
-                    </div>
-                </div>
-                <div class="card-body p-0">
-                    <div class="nav-align-top">
-                        <ul class="nav nav-tabs nav-fill rounded-0 timeline-indicator-advanced" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
-                                    data-bs-target="#navs-justified-new" aria-controls="navs-justified-new"
-                                    aria-selected="true">New</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                                    data-bs-target="#navs-justified-link-preparing"
-                                    aria-controls="navs-justified-link-preparing" aria-selected="false"
-                                    tabindex="-1">Preparing</button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
-                                    data-bs-target="#navs-justified-link-shipping"
-                                    aria-controls="navs-justified-link-shipping" aria-selected="false"
-                                    tabindex="-1">Shipping</button>
-                            </li>
-                        </ul>
-                        <div class="tab-content border-0  mx-1">
-                            <div class="tab-pane fade active show" id="navs-justified-new" role="tabpanel">
-                                <ul class="timeline mb-0">
-                                    <li class="timeline-item ps-6 border-left-dashed">
-                                        <span
-                                            class="timeline-indicator-advanced timeline-indicator-success border-0 shadow-none">
-                                            <i class="icon-base bx bx-check-circle"></i>
-                                        </span>
-                                        <div class="timeline-event ps-1">
-                                            <div class="timeline-header">
-                                                <small class="text-success text-uppercase">sender</small>
-                                            </div>
-                                            <h6 class="my-50">Myrtle Ullrich</h6>
-                                            <p class="text-body mb-0">101 Boulder, California(CA), 95959</p>
-                                        </div>
-                                    </li>
-                                    <li class="timeline-item ps-6 border-transparent">
-                                        <span
-                                            class="timeline-indicator-advanced timeline-indicator-primary border-0 shadow-none">
-                                            <i class="icon-base bx bx-map"></i>
-                                        </span>
-                                        <div class="timeline-event ps-1">
-                                            <div class="timeline-header">
-                                                <small class="text-primary text-uppercase">Receiver</small>
-                                            </div>
-                                            <h6 class="my-50">Barry Schowalter</h6>
-                                            <p class="text-body mb-0">939 Orange, California(CA), 92118</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="border border-dashed my-4"></div>
-                                <ul class="timeline mb-0">
-                                    <li class="timeline-item ps-6 border-left-dashed">
-                                        <span
-                                            class="timeline-indicator-advanced timeline-indicator-success border-0 shadow-none">
-                                            <i class="icon-base bx bx-check-circle"></i>
-                                        </span>
-                                        <div class="timeline-event ps-1">
-                                            <div class="timeline-header">
-                                                <small class="text-success text-uppercase">sender</small>
-                                            </div>
-                                            <h6 class="my-50">Veronica Herman</h6>
-                                            <p class="text-body mb-0">162 Windsor, California(CA), 95492</p>
-                                        </div>
-                                    </li>
-                                    <li class="timeline-item ps-6 border-transparent">
-                                        <span
-                                            class="timeline-indicator-advanced timeline-indicator-primary border-0 shadow-none">
-                                            <i class="icon-base bx bx-map"></i>
-                                        </span>
-                                        <div class="timeline-event ps-1">
-                                            <div class="timeline-header">
-                                                <small class="text-primary text-uppercase">Receiver</small>
-                                            </div>
-                                            <h6 class="my-50">Helen Jacobs</h6>
-                                            <p class="text-body mb-0">487 Sunset, California(CA), 94043</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="tab-pane fade" id="navs-justified-link-preparing" role="tabpanel">
-                                <ul class="timeline mb-0">
-                                    <li class="timeline-item ps-6 border-left-dashed">
-                                        <span
-                                            class="timeline-indicator-advanced timeline-indicator-success border-0 shadow-none">
-                                            <i class="icon-base bx bx-check-circle"></i>
-                                        </span>
-                                        <div class="timeline-event ps-1">
-                                            <div class="timeline-header">
-                                                <small class="text-success text-uppercase">sender</small>
-                                            </div>
-                                            <h6 class="my-50">Barry Schowalter</h6>
-                                            <p class="text-body mb-0">939 Orange, California(CA), 92118</p>
-                                        </div>
-                                    </li>
-                                    <li class="timeline-item ps-6 border-transparent border-left-dashed">
-                                        <span
-                                            class="timeline-indicator-advanced timeline-indicator-primary border-0 shadow-none">
-                                            <i class="icon-base bx bx-map"></i>
-                                        </span>
-                                        <div class="timeline-event ps-1">
-                                            <div class="timeline-header">
-                                                <small class="text-primary text-uppercase">Receiver</small>
-                                            </div>
-                                            <h6 class="my-50">Myrtle Ullrich</h6>
-                                            <p class="text-body mb-0">101 Boulder, California(CA), 95959</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="border border-dashed my-4"></div>
-                                <ul class="timeline mb-0">
-                                    <li class="timeline-item ps-6 border-left-dashed">
-                                        <span
-                                            class="timeline-indicator-advanced timeline-indicator-success border-0 shadow-none">
-                                            <i class="icon-base bx bx-check-circle"></i>
-                                        </span>
-                                        <div class="timeline-event ps-1">
-                                            <div class="timeline-header">
-                                                <small class="text-success text-uppercase">sender</small>
-                                            </div>
-                                            <h6 class="my-50">Veronica Herman</h6>
-                                            <p class="text-body mb-0">162 Windsor, California(CA), 95492</p>
-                                        </div>
-                                    </li>
-                                    <li class="timeline-item ps-6 border-transparent">
-                                        <span
-                                            class="timeline-indicator-advanced timeline-indicator-primary border-0 shadow-none">
-                                            <i class="icon-base bx bx-map"></i>
-                                        </span>
-                                        <div class="timeline-event ps-1">
-                                            <div class="timeline-header">
-                                                <small class="text-primary text-uppercase">Receiver</small>
-                                            </div>
-                                            <h6 class="my-50">Helen Jacobs</h6>
-                                            <p class="text-body mb-0">487 Sunset, California(CA), 94043</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="tab-pane fade" id="navs-justified-link-shipping" role="tabpanel">
-                                <ul class="timeline mb-0">
-                                    <li class="timeline-item ps-6 border-left-dashed">
-                                        <span
-                                            class="timeline-indicator-advanced timeline-indicator-success border-0 shadow-none">
-                                            <i class="icon-base bx bx-check-circle"></i>
-                                        </span>
-                                        <div class="timeline-event ps-1">
-                                            <div class="timeline-header">
-                                                <small class="text-success text-uppercase">sender</small>
-                                            </div>
-                                            <h6 class="my-50">Veronica Herman</h6>
-                                            <p class="text-body mb-0">101 Boulder, California(CA), 95959</p>
-                                        </div>
-                                    </li>
-                                    <li class="timeline-item ps-6 border-transparent">
-                                        <span
-                                            class="timeline-indicator-advanced timeline-indicator-primary border-0 shadow-none">
-                                            <i class="icon-base bx bx-map"></i>
-                                        </span>
-                                        <div class="timeline-event ps-1">
-                                            <div class="timeline-header">
-                                                <small class="text-primary text-uppercase">Receiver</small>
-                                            </div>
-                                            <h6 class="my-50">Barry Schowalter</h6>
-                                            <p class="text-body mb-0">939 Orange, California(CA), 92118</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                                <div class="border border-dashed my-4"></div>
-                                <ul class="timeline mb-0">
-                                    <li class="timeline-item ps-6 border-left-dashed">
-                                        <span
-                                            class="timeline-indicator-advanced timeline-indicator-success border-0 shadow-none">
-                                            <i class="icon-base bx bx-check-circle"></i>
-                                        </span>
-                                        <div class="timeline-event ps-1">
-                                            <div class="timeline-header">
-                                                <small class="text-success text-uppercase">sender</small>
-                                            </div>
-                                            <h6 class="my-50">Myrtle Ullrich</h6>
-                                            <p class="text-body mb-0">162 Windsor, California(CA), 95492</p>
-                                        </div>
-                                    </li>
-                                    <li class="timeline-item ps-6 border-transparent">
-                                        <span
-                                            class="timeline-indicator-advanced timeline-indicator-primary border-0 shadow-none">
-                                            <i class="icon-base bx bx-map"></i>
-                                        </span>
-                                        <div class="timeline-event ps-1">
-                                            <div class="timeline-header">
-                                                <small class="text-primary text-uppercase">Receiver</small>
-                                            </div>
-                                            <h6 class="my-50">Helen Jacobs</h6>
-                                            <p class="text-body mb-0">487 Sunset, California(CA), 94043</p>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
+                        <div>
+                            <p class="mb-0 text-muted">Total Dockets</p>
+                            <h4 class="mb-0">{{ $totalDockets }}</h4>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--/ Orders by Countries -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded bg-label-success px-3">
+                                <i class="icon-base bx bx-check-circle icon-lg"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="mb-0 text-muted">Delivered</p>
+                            <h4 class="mb-0">{{ $delivered }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded bg-label-danger px-3">
+                                <i class="icon-base bx bx-x-circle icon-lg"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="mb-0 text-muted">Undelivered</p>
+                            <h4 class="mb-0">{{ $undelivered }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded bg-label-warning px-3">
+                                <i class="icon-base bx bx-time-five icon-lg"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="mb-0 text-muted">In Progress</p>
+                            <h4 class="mb-0">{{ $inProgress }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/ Dashboard Cards -->
+
+        <!-- Shipment Lifecycle Table -->
+        <div class="col-12">
+            <livewire:admin.shipment-table />
+        </div>
+        <!--/ Shipment Lifecycle Table -->
 
     </div>
 </div>

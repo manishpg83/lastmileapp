@@ -1,13 +1,14 @@
 <?php
 
+use App\Http\Controllers\UploadController;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Profile;
 use App\Livewire\Admin\Security;
+use App\Livewire\Admin\User\UserForm;
+use App\Livewire\Admin\User\UserList;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Admin\User\UserList;
-use App\Livewire\Admin\User\UserForm;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', Login::class)->name('login');
@@ -22,6 +23,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', UserList::class)->name('users.index');
     Route::get('/users/create', UserForm::class)->name('users.create');
     Route::get('/users/{user}/edit', UserForm::class)->name('users.edit');
+
+    Route::get('/uploads', [UploadController::class, 'index'])->name('uploads.index');
+    Route::post('/uploads', [UploadController::class, 'store'])->name('uploads.store');
+
+    Route::get('/reasons', \App\Livewire\Admin\Reasons\ReasonsList::class)->name('reasons.index');
+    Route::get('/notifications', \App\Livewire\Admin\Notifications\NotificationHub::class)->name('notifications.index');
+    Route::get('/settings', \App\Livewire\Admin\Settings\Settings::class)->name('settings.index');
 
     Route::post('/logout', function () {
         Auth::logout();

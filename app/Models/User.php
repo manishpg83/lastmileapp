@@ -31,6 +31,8 @@ class User extends Authenticatable
         'fcm_token',
         'status',
         'profile_image',
+        'language',
+        'preferences',
     ];
 
     protected $hidden = [
@@ -45,6 +47,7 @@ class User extends Authenticatable
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'deleted_at' => 'datetime',
+        'preferences' => 'array',
     ];
 
     protected $appends = [

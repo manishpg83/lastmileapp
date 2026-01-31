@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="layout-navbar-fixed layout-compact layout-menu-fixed" dir="ltr" data-skin="default"
-    data-assets-path="{{ asset('admin')}}" data-template="vertical-menu-template" data-bs-theme="light">
+    data-assets-path="{{ asset('admin') }}" data-template="vertical-menu-template" data-bs-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -23,6 +23,7 @@
 
     <!-- Icons -->
     <link rel="stylesheet" href="{{ asset('admin/css/iconify-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}">
 
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ asset('admin/css/core.css') }}">
@@ -31,6 +32,7 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{ asset('admin/css/perfect-scrollbar.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/css/apex-charts.css') }}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
     <!-- Helper JS -->
     <script src="{{ asset('admin/js/helpers.js') }}"></script>
@@ -68,7 +70,8 @@
                 <!-- Content wrapper -->
                 <div class="content-wrapper">
 
-                    {{ $slot }}
+                    {{ $slot ?? '' }}
+                    @yield('content')
 
                     <!-- Footer -->
                     @include('layouts.footer')
@@ -91,6 +94,7 @@
     <script src="{{ asset('admin/js/perfect-scrollbar.js') }}"></script>
     <script src="{{ asset('admin/js/menu.js') }}"></script>
     <script src="{{ asset('admin/js/main.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Page specific scripts -->
     @stack('scripts')

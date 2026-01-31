@@ -67,6 +67,14 @@
             </a>
         </li>
 
+        <!-- Upload Excel -->
+        <li class="menu-item {{ request()->routeIs('uploads.index') ? 'active' : '' }}">
+            <a href="{{ route('uploads.index') }}" class="menu-link">
+                <i class="menu-icon icon-base bx bx-upload"></i>
+                <div>Upload Excel</div>
+            </a>
+        </li>
+
         <!-- Users -->
         <li class="menu-item {{ request()->is('users*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -89,10 +97,32 @@
             </ul>
         </li>
 
+        <!-- Notifications -->
+        <li class="menu-item {{ request()->routeIs('notifications.index') ? 'active' : '' }}">
+            <a href="{{ route('notifications.index') }}" class="menu-link">
+                <i class="menu-icon icon-base bx bx-bell"></i> <!-- Changed to Bell icon for Notifications -->
+                <div data-i18n="Notifications">Notifications</div>
+                @php
+                    $unreadCount = \App\Models\Notification::unread()->count();
+                @endphp
+                @if ($unreadCount > 0)
+                    <div class="badge bg-danger rounded-pill ms-auto">{{ $unreadCount }}</div>
+                @endif
+            </a>
+        </li>
+
+        <!-- Reasons List -->
+        <li class="menu-item {{ request()->routeIs('reasons.index') ? 'active' : '' }}">
+            <a href="{{ route('reasons.index') }}" class="menu-link">
+                <i class="menu-icon icon-base bx bx-error-circle"></i>
+                <div data-i18n="Reasons List">Reasons List</div>
+            </a>
+        </li>
+
 
         <!-- Settings -->
-        <li class="menu-item {{ request()->is('settings') ? 'active' : '' }}">
-            <a href="{{ url('/settings') }}" class="menu-link">
+        <li class="menu-item {{ request()->routeIs('settings.index') ? 'active' : '' }}">
+            <a href="{{ route('settings.index') }}" class="menu-link">
                 <i class="menu-icon icon-base bx bx-cog"></i>
                 <div>Settings</div>
             </a>

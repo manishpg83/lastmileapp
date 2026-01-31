@@ -7,35 +7,102 @@
         </a>
     </div>
 
+    <!-- Page Title & Subtitle -->
+    <div class="navbar-nav align-items-center">
+        <div class="nav-item d-flex align-items-center">
+            <div class="d-flex flex-column">
+                <h5 class="fw-bold mb-0">
+                    @if (request()->routeIs('notifications.index'))
+                        Notifications
+                    @elseif(request()->routeIs('reasons.index'))
+                        Reasons
+                    @elseif(request()->routeIs('settings.index'))
+                        Settings
+                    @else
+                        Dashboard
+                    @endif
+                </h5>
+            </div>
+        </div>
+    </div>
+
     <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
         <ul class="navbar-nav flex-row align-items-center ms-md-auto">
 
-            <!-- Style Switcher -->
-            <li class="nav-item dropdown me-2 me-xl-0">
-                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);"
-                    data-bs-toggle="dropdown">
-                    <i class="bx-sun icon-base bx icon-md theme-icon-active"></i>
+            <!-- Notification Bell -->
+            <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
+                <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown"
+                    data-bs-auto-close="outside" aria-expanded="false">
+                    <i class="icon-base bx bx-bell icon-md"></i>
+                    @php
+                        $unreadCount = \App\Models\Notification::unread()->count();
+                        $recentNotifications = \App\Models\Notification::latest()->take(5)->get();
+                    @endphp
+                    @if ($unreadCount > 0)
+                        <span class="badge bg-danger rounded-pill badge-notifications">{{ $unreadCount }}</span>
+                    @endif
                 </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
-                        <button type="button" class="dropdown-item" data-bs-theme-value="light">
-                            <i class="icon-base bx bx-sun icon-md me-3"></i>Light
-                        </button>
+                <ul class="dropdown-menu dropdown-menu-end py-0">
+                    <li class="dropdown-menu-header border-bottom">
+                        <div class="dropdown-header d-flex align-items-center py-3">
+                            <h5 class="text-body mb-0 me-auto">Notification</h5>
+                            <a href="javascript:void(0)" class="dropdown-notifications-all text-body"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Mark all as read"><i
+                                    class="bx fs-4 bx-envelope-open"></i></a>
+                        </div>
                     </li>
-                    <li>
-                        <button type="button" class="dropdown-item" data-bs-theme-value="dark">
-                            <i class="icon-base bx bx-moon icon-md me-3"></i>Dark
-                        </button>
+                    <li class="dropdown-notifications-list scrollable-container">
+                        <ul class="list-group list-group-flush">
+                            @forelse($recentNotifications as $notification)
+                                <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                    <div class="d-flex">
+                                        <div class="flex-shrink-0 me-3">
+                                            <div class="avatar">
+                                                <span
+                                                    class="avatar-initial rounded-circle bg-label-{{ $notification->border_color }}">
+                                                    <i class="bx {{ $notification->icon }}"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">{{ $notification->message }}</h6>
+                                            <p class="mb-0">{{ $notification->created_at->diffForHumans() }}</p>
+                                            <small
+                                                class="text-muted text-uppercase text-{{ $notification->border_color }}">{{ $notification->level }}</small>
+                                        </div>
+                                        <div class="flex-shrink-0 dropdown-notifications-actions">
+                                            <a href="javascript:void(0)" class="dropdown-notifications-read"><span
+                                                    class="badge badge-dot"></span></a>
+                                            <a href="javascript:void(0)" class="dropdown-notifications-archive"><span
+                                                    class="bx bx-x"></span></a>
+                                        </div>
+                                    </div>
+                                </li>
+                            @empty
+                                <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                                    <div class="d-flex justify-content-center align-items-center p-3">
+                                        <span class="text-muted">No recently found</span>
+                                    </div>
+                                </li>
+                            @endforelse
+                        </ul>
+                    </li>
+                    <li class="dropdown-menu-footer border-top">
+                        <a href="{{ route('notifications.index') }}"
+                            class="dropdown-item d-flex justify-content-center p-3">
+                            View all notifications
+                        </a>
                     </li>
                 </ul>
             </li>
 
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);"
-                    data-bs-toggle="dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                        <img src="{{ asset('admin/img/avatars/1.png') }}" alt="" class="rounded-circle">
+                        <span class="avatar-initial rounded-circle bg-label-warning text-warning fw-bold">
+                            {{ substr(Auth::user()->name ?? 'Admin', 0, 2) }}
+                        </span>
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -44,8 +111,10 @@
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
                                     <div class="avatar avatar-online">
-                                        <img src="{{ asset('admin/img/avatars/1.png') }}" alt=""
-                                            class="rounded-circle">
+                                        <span
+                                            class="avatar-initial rounded-circle bg-label-warning text-warning fw-bold">
+                                            {{ substr(Auth::user()->name ?? 'Admin', 0, 2) }}
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
@@ -59,11 +128,6 @@
                         <div class="dropdown-divider my-1"></div>
                     </li>
                     <li>
-                        <a class="dropdown-item" href="{{ url('/profile') }}">
-                            <i class="icon-base bx bx-user icon-md me-3"></i>My Profile
-                        </a>
-                    </li>
-                    <li>
                         <a class="dropdown-item" href="{{ url('/settings') }}">
                             <i class="icon-base bx bx-cog icon-md me-3"></i>Settings
                         </a>
@@ -73,11 +137,23 @@
                     </li>
                     <li>
                         <a class="dropdown-item" href="{{ route('logout') }}"
-                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            onclick="event.preventDefault(); 
+                            Swal.fire({
+                                title: 'Are you sure?',
+                                text: 'You will be logged out of your session.',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, Log Out!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    document.getElementById('logout-form').submit();
+                                }
+                            });">
                             <i class="icon-base bx bx-power-off icon-md me-3"></i>Log Out
                         </a>
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                            class="d-none">
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                             @csrf
                         </form>
                     </li>
