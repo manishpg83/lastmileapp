@@ -43,8 +43,9 @@
             <!-- Notifications List -->
             <div class="list-group">
                 @forelse($notifications as $notification)
-                    <div
-                        class="list-group-item list-group-item-action d-flex align-items-center mb-3 rounded border border-start-4 border-start-{{ $notification->border_color }} shadow-sm p-3">
+                    <div wire:click="markAsRead({{ $notification->id }})"
+                        class="list-group-item list-group-item-action d-flex align-items-center mb-3 rounded border border-start-4 border-start-{{ $notification->border_color }} shadow-sm p-3 {{ $notification->isUnread() ? 'bg-label-primary shadow-none border-opacity-50' : '' }}"
+                        style="cursor: pointer;">
 
                         <!-- Icon -->
                         <div class="flex-shrink-0 me-3">
@@ -58,13 +59,18 @@
                         <!-- Content -->
                         <div class="flex-grow-1">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <h6 class="mb-0 text-uppercase text-{{ $notification->border_color }} fw-bold"
-                                    style="font-size: 0.8rem; letter-spacing: 0.5px;">
-                                    {{ $notification->level }}
-                                </h6>
+                                <div class="d-flex align-items-center gap-2">
+                                    <h6 class="mb-0 text-uppercase text-{{ $notification->border_color }} fw-bold"
+                                        style="font-size: 0.8rem; letter-spacing: 0.5px;">
+                                        {{ $notification->level }}
+                                    </h6>
+                                    @if ($notification->isUnread())
+                                        <span class="badge badge-dot bg-primary"></span>
+                                    @endif
+                                </div>
                                 <small class="text-muted">{{ $notification->time_ago }}</small>
                             </div>
-                            <p class="mb-0 text-body">
+                            <p class="mb-0 {{ $notification->isUnread() ? 'fw-bold text-heading' : 'text-body' }}">
                                 {{ $notification->message }}
                             </p>
                         </div>

@@ -33,6 +33,15 @@ class NotificationHub extends Component
         $this->resetPage();
     }
 
+    public function markAsRead($id)
+    {
+        $notification = Notification::find($id);
+        if ($notification && $notification->isUnread()) {
+            $notification->markAsRead();
+            $this->dispatch('notifications-updated');
+        }
+    }
+
     public function markAllAsRead()
     {
         Notification::unread()->update(['read_at' => now()]);
