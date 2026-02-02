@@ -151,7 +151,7 @@ class DriverController extends Controller
             
             // notifcation log 
             $title = 'Delivery Started';
-            $message = '';//$request->user()->name. ' has started delivery at '.now()->toDayDateTimeString();
+            $message = $request->user()->name. ' has started delivery at '.now()->toDayDateTimeString();
             $data=[ 
                 'type' => $status,
                 'notifiable_type' => 'driver',
