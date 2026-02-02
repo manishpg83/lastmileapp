@@ -78,10 +78,21 @@
                         <option value="">Select a Driver</option>
                         @foreach ($drivers as $driver)
                             <option value="{{ $driver->id }}">{{ $driver->name }}
-                                ({{ $driver->vehicle_number ?? 'No Vehicle' }})</option>
+                                ({{ $driver->vehicle_number ?? 'No Vehicle' }})
+                            </option>
                         @endforeach
                     </select>
                     @error('driver_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- Assign Date --}}
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Assign Date</label>
+                    <input type="date" class="form-control @error('assigned_at') is-invalid @enderror"
+                        wire:model="assigned_at">
+                    @error('assigned_at')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
