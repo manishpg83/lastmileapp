@@ -120,6 +120,14 @@
         </li>
 
 
+        <!-- Deliveries -->
+        <li class="menu-item {{ request()->is('deliveries*') ? 'active' : '' }}">
+            <a href="{{ route('deliveries.index') }}" class="menu-link">
+                <i class="menu-icon icon-base bx bx-package"></i>
+                <div data-i18n="Deliveries">Deliveries</div>
+            </a>
+        </li>
+
         <!-- Settings -->
         <li class="menu-item {{ request()->routeIs('settings.index') ? 'active' : '' }}">
             <a href="{{ route('settings.index') }}" class="menu-link">

@@ -31,6 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/notifications', \App\Livewire\Admin\Notifications\NotificationHub::class)->name('notifications.index');
     Route::get('/settings', \App\Livewire\Admin\Settings\Settings::class)->name('settings.index');
 
+    Route::get('/deliveries', \App\Livewire\Admin\Delivery\DeliveryList::class)->name('deliveries.index');
+    Route::get('/deliveries/create', \App\Livewire\Admin\Delivery\DeliveryForm::class)->name('deliveries.create');
+    Route::get('/deliveries/{delivery}/edit', \App\Livewire\Admin\Delivery\DeliveryForm::class)->name('deliveries.edit');
+
     Route::post('/logout', function () {
         Auth::logout();
         request()->session()->invalidate();
