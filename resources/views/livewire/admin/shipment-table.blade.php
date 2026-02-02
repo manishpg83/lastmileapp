@@ -108,7 +108,7 @@
                                 </div>
                             @endif
                         </td>
-                        <td><span class="text-muted">{{ $shipment->updated_at->format('h:i A') }}</span></td>
+                        <td><span class="text-muted">{{ $shipment->updated_at?->format('h:i A') ?? '-' }}</span></td>
                     </tr>
                 @endforeach
             </tbody>
