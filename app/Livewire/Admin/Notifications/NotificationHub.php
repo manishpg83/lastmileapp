@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Notifications;
 
 use App\Models\Notification;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Layout;
@@ -14,6 +15,12 @@ class NotificationHub extends Component
 
     public $filter = 'all'; // all, error, warning, success, info
     public $search = '';
+
+    #[On('notifications-updated')]
+    public function refreshNotifications()
+    {
+        // Simply refreshing the component
+    }
 
     protected $queryString = [
         'filter' => ['except' => 'all'],

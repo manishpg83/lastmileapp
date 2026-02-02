@@ -100,7 +100,7 @@
         <!-- Notifications -->
         <li class="menu-item {{ request()->routeIs('notifications.index') ? 'active' : '' }}">
             <a href="{{ route('notifications.index') }}" class="menu-link">
-                <i class="menu-icon icon-base bx bx-bell"></i> <!-- Changed to Bell icon for Notifications -->
+                <i class="menu-icon icon-base bx bx-bell"></i>
                 <div data-i18n="Notifications">Notifications</div>
                 @php
                     $unreadCount = \App\Models\Notification::unread()->count();
