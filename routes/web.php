@@ -39,7 +39,6 @@ Route::middleware('auth')->group(function () {
         return redirect('/login');
     })->name('logout');
 });
+use App\Http\Controllers\Controller;
 
-Route::get('/', function () {
-    return auth()->check() ? redirect()->route('dashboard') : redirect()->route('login');
-});
+Route::get('/', [Controller::class, 'index'])->name('index');
