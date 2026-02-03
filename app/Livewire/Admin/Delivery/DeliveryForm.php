@@ -32,7 +32,7 @@ class DeliveryForm extends Component
             $this->delivery = $delivery;
             $this->isEdit = true;
             $this->fill($this->delivery->toArray());
-            $this->assigned_at = $this->delivery->assigned_at?->format('Y-m-d');
+            $this->assigned_at = $this->delivery->assigned_at?->format('Y-m-d\TH:i');
         } else {
             $this->status = Delivery::STATUS_PENDING;
         }
@@ -51,7 +51,7 @@ class DeliveryForm extends Component
             'notes' => 'nullable|string',
             'driver_id' => 'nullable|exists:users,id',
             'status' => 'required|string',
-            'assigned_at' => 'nullable|date',
+            'assigned_at' => 'nullable',
         ];
     }
 

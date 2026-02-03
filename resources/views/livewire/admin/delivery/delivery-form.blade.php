@@ -87,10 +87,10 @@
                     @enderror
                 </div>
 
-                {{-- Assign Date --}}
+                {{-- Assign Date & Time --}}
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Assign Date</label>
-                    <input type="date" class="form-control @error('assigned_at') is-invalid @enderror"
+                    <label class="form-label fw-semibold">Assign Date & Time</label>
+                    <input type="datetime-local" class="form-control @error('assigned_at') is-invalid @enderror"
                         wire:model="assigned_at">
                     @error('assigned_at')
                         <div class="invalid-feedback">{{ $message }}</div>

@@ -127,11 +127,6 @@
                                 <li class="nav-item me-2">
                                     <a href="{{ route('login') }}" class="btn btn-label-primary">Log in</a>
                                 </li>
-                                @if (Route::has('register'))
-                                    <li class="nav-item">
-                                        <a href="{{ route('register') }}" class="btn btn-primary">Register</a>
-                                    </li>
-                                @endif
                             @endauth
                         @endif
                     </ul>

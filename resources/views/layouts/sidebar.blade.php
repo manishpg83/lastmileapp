@@ -75,6 +75,14 @@
             </a>
         </li>
 
+        <!-- Deliveries -->
+        <li class="menu-item {{ request()->is('deliveries*') ? 'active' : '' }}">
+            <a href="{{ route('deliveries.index') }}" class="menu-link">
+                <i class="menu-icon icon-base bx bx-package"></i>
+                <div>Deliveries</div>
+            </a>
+        </li>
+
         <!-- Users -->
         <li class="menu-item {{ request()->is('users*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -120,13 +128,6 @@
         </li>
 
 
-        <!-- Deliveries -->
-        <li class="menu-item {{ request()->is('deliveries*') ? 'active' : '' }}">
-            <a href="{{ route('deliveries.index') }}" class="menu-link">
-                <i class="menu-icon icon-base bx bx-package"></i>
-                <div data-i18n="Deliveries">Deliveries</div>
-            </a>
-        </li>
 
         <!-- Settings -->
         <li class="menu-item {{ request()->routeIs('settings.index') ? 'active' : '' }}">

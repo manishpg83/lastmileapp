@@ -6,8 +6,8 @@
         <!-- Email -->
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" wire:model="email" class="form-control @error('email') is-invalid @enderror" id="email"
-                placeholder="Enter your email" autofocus>
+            <input type="email" wire:model="email" class="form-control @error('email') is-invalid @enderror"
+                id="email" placeholder="Enter your email" autofocus>
             @error('email')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -17,9 +17,6 @@
         <div class="mb-3 form-password-toggle">
             <div class="d-flex justify-content-between">
                 <label class="form-label" for="password">Password</label>
-                <a href="#">
-                    <small>Forgot Password?</small>
-                </a>
             </div>
             <div class="input-group input-group-merge">
                 <input type="password" wire:model="password" id="password"
@@ -57,10 +54,4 @@
         </div>
     </form>
 
-    <p class="text-center">
-        <span>New on our platform?</span>
-        <a href="{{ route('register') }}" wire:navigate>
-            <span>Create an account</span>
-        </a>
-    </p>
 </div>

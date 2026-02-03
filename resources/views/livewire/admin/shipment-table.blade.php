@@ -1,33 +1,34 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
         <div>
-            <h5 class="mb-0">Shipment Lifecycle</h5>
-            <small class="text-muted">Displaying {{ $shipments->firstItem() }} to {{ $shipments->lastItem() }} of
-                {{ $shipments->total() }} Records</small>
+            <h5 class="mb-0">Today's Active Shipments</h5>
+            <small class="text-muted">Displaying {{ $shipments->total() }} assigned shipments for today</small>
         </div>
-        <button wire:click="export" wire:loading.attr="disabled" class="btn btn-label-secondary btn-sm">
-            <span wire:loading.remove>Export XLS</span>
-            <span wire:loading>Exporting...</span>
-        </button>
+        <div class="d-flex gap-2">
+            <button wire:click="export" wire:loading.attr="disabled" class="btn btn-label-secondary btn-sm">
+                <span wire:loading.remove>Export XLS</span>
+                <span wire:loading>Exporting...</span>
+            </button>
+        </div>
     </div>
     <div class="table-responsive text-nowrap">
         <table class="table table-hover">
             <thead>
-                <tr>
-                    <th>CUSTOMER</th>
+                <tr class="text-uppercase small fw-bold">
+                    <th class="ps-4">CUSTOMER</th>
                     <th>DOCKET #</th>
                     <th>PINCODE</th>
-                    <th>ASSIGN DRIVER</th>
+                    <th>DRIVER</th>
                     <th>DELIVERY STATUS</th>
                     <th>GATI STATUS</th>
                     <th>POD</th>
-                    <th>UPDATED</th>
+                    <th class="pe-4">UPDATED</th>
                 </tr>
             </thead>
             <tbody class="table-border-bottom-0">
                 @foreach ($shipments as $shipment)
                     <tr>
-                        <td>
+                        <td class="ps-4">
                             <div class="d-flex flex-column">
                                 <span class="fw-medium text-heading">{{ $shipment->customer_name }}</span>
                                 <small class="text-warning">{{ $shipment->phone }}</small>
@@ -43,11 +44,11 @@
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="avatar avatar-xs me-2">
-                                    <span class="avatar-initial rounded-circle bg-label-secondary">
-                                        {{ $shipment->driver ? substr($shipment->driver->name, 0, 1) : '-' }}
+                                    <span class="avatar-initial rounded-circle bg-label-primary">
+                                        {{ substr($shipment->driver->name, 0, 1) }}
                                     </span>
                                 </div>
-                                <span>{{ $shipment->driver ? $shipment->driver->name : 'Unassigned' }}</span>
+                                <span class="fw-medium">{{ $shipment->driver->name }}</span>
                             </div>
                         </td>
                         <td>
@@ -108,7 +109,8 @@
                                 </div>
                             @endif
                         </td>
-                        <td><span class="text-muted">{{ $shipment->updated_at?->format('h:i A') ?? '-' }}</span></td>
+                        <td class="pe-4"><span
+                                class="text-muted">{{ $shipment->updated_at?->format('h:i A') ?? '-' }}</span></td>
                     </tr>
                 @endforeach
             </tbody>
