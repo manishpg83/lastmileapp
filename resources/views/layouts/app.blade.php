@@ -99,6 +99,33 @@
     <!-- Page specific scripts -->
     @stack('scripts')
 
+    <style>
+        .swal2-toast-custom {
+            margin-top: 70px !important;
+            padding: 0.75rem 1rem !important;
+            border-radius: 8px !important;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .swal2-toast-icon-custom {
+            margin: 0 10px 0 0 !important;
+            font-size: 0.8rem !important;
+            width: 25px !important;
+            height: 25px !important;
+        }
+
+        .swal2-toast-title-custom {
+            font-size: 0.9rem !important;
+            font-weight: 600 !important;
+            color: #333 !important;
+        }
+
+        .swal2-toast-html-custom {
+            font-size: 0.85rem !important;
+            color: #666 !important;
+        }
+    </style>
+
     <script>
         document.addEventListener('livewire:initialized', () => {
             Livewire.on('new-notification', (event) => {
@@ -109,6 +136,13 @@
                     showConfirmButton: false,
                     timer: 5000,
                     timerProgressBar: true,
+                    customClass: {
+                        container: 'swal2-toast-custom',
+                        popup: 'swal2-toast-popup-custom',
+                        title: 'swal2-toast-title-custom',
+                        icon: 'swal2-toast-icon-custom',
+                        htmlContainer: 'swal2-toast-html-custom'
+                    },
                     didOpen: (toast) => {
                         toast.addEventListener('mouseenter', Swal.stopTimer)
                         toast.addEventListener('mouseleave', Swal.resumeTimer)
@@ -124,7 +158,7 @@
                     icon: icon,
                     title: data.docket_number ? `Docket: ${data.docket_number}` :
                         'New Notification',
-                    text: data.message
+                    html: `<div style="text-align: left;">${data.message}</div>`
                 });
             });
         });
