@@ -14,6 +14,20 @@ use Illuminate\Validation\ValidationException;
 
 class DriverController extends Controller
 {
+    public function index()
+    {
+        if ($request->user()->role !== 'driver') {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+        $deliveries = Delivery::where('driver_id', $request->user()->id)->get();
+        $deliveriescount = $deliveries->count();
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'deliveries_count' => $deliveriescount
+            ]
+        ]);
+    }
     /**
      * Get Driver List
      */
@@ -96,7 +110,7 @@ class DriverController extends Controller
                 return response()->json(['message' => 'Unauthorized'], 403);
             }
             $loggedInUserId = $request->user()->id;
-            $deliveries = Delivery::select(
+            $query = Delivery::select(
                 'customer_name',
                 'id',
                 'company_name',
@@ -108,13 +122,17 @@ class DriverController extends Controller
             )
             ->where('driver_id', $loggedInUserId)
             ->whereDate('assigned_at', today()) // assigned_at
-            ->orderBy('customer_name')
-            ->get()
-            ->groupBy('customer_name');            
+            ->orderBy('customer_name');
+
+            $deliveriesRaw = $query->get();
+            $deliveryCount = $deliveriesRaw->count();
+            $deliveries = $deliveriesRaw->groupBy('customer_name');
+
             return response()->json([
                 'success' => true,
                 'data' => [
-                    'deliveries' => $deliveries
+                    'deliveries' => $deliveries,
+                    'delivery_count' => $deliveryCount
                 ]
             ]);
 
