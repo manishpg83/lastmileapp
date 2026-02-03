@@ -67,7 +67,7 @@ class NotificationHub extends Component
             });
         }
 
-        $notifications = $query->paginate(2);
+        $notifications = $query->paginate(10);
         $unreadCount = Notification::unread()->count();
 
         return view('livewire.admin.notifications.notification-hub', [
