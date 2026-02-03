@@ -100,29 +100,44 @@
     @stack('scripts')
 
     <style>
-        .swal2-toast-custom {
+        /* Container should be transparent and non-intrusive */
+        .swal2-container.swal2-top-end.swal2-backdrop-show {
+            background: rgba(0, 0, 0, 0) !important;
+        }
+
+        /* Apply styling ONLY to the card (popup) */
+        .swal2-toast-popup-custom {
             margin-top: 70px !important;
+            margin-right: 20px !important;
             padding: 0.75rem 1rem !important;
             border-radius: 8px !important;
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+            background: #fff !important;
+            border: 1px solid rgba(0, 0, 0, 0.05) !important;
         }
 
         .swal2-toast-icon-custom {
-            margin: 0 10px 0 0 !important;
-            font-size: 0.8rem !important;
-            width: 25px !important;
-            height: 25px !important;
+            margin: 0 12px 0 0 !important;
+            padding: 0 !important;
+            width: 24px !important;
+            height: 24px !important;
+            font-size: 0.75rem !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
         }
 
         .swal2-toast-title-custom {
             font-size: 0.9rem !important;
             font-weight: 600 !important;
             color: #333 !important;
+            margin-bottom: 2px !important;
         }
 
         .swal2-toast-html-custom {
-            font-size: 0.85rem !important;
+            font-size: 0.8rem !important;
             color: #666 !important;
+            line-height: 1.4 !important;
         }
     </style>
 
@@ -137,7 +152,6 @@
                     timer: 5000,
                     timerProgressBar: true,
                     customClass: {
-                        container: 'swal2-toast-custom',
                         popup: 'swal2-toast-popup-custom',
                         title: 'swal2-toast-title-custom',
                         icon: 'swal2-toast-icon-custom',
