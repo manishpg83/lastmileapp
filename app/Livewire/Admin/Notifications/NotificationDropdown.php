@@ -10,10 +10,12 @@ class NotificationDropdown extends Component
 {
     public $unreadCount = 0;
     public $recentNotifications = [];
+    public $lastKnownId = 0;
 
     public function mount()
     {
         $this->loadNotifications();
+        $this->lastKnownId = Notification::latest()->first()?->id ?? 0;
     }
 
     #[On('notifications-updated')]
@@ -21,6 +23,26 @@ class NotificationDropdown extends Component
     {
         $this->unreadCount = Notification::unread()->count();
         $this->recentNotifications = Notification::latest()->take(5)->get();
+    }
+
+    public function checkForNewNotifications()
+    {
+        $newNotifications = Notification::where('id', '>', $this->lastKnownId)
+            ->latest()
+            ->get();
+
+        if ($newNotifications->count() > 0) {
+            foreach ($newNotifications as $notification) {
+                $this->dispatch('new-notification', [
+                    'message' => $notification->message,
+                    'level' => $notification->level,
+                    'docket_number' => $notification->docket_number
+                ]);
+            }
+            
+            $this->lastKnownId = $newNotifications->first()->id;
+            $this->loadNotifications();
+        }
     }
 
     public function markAsRead($id)

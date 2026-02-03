@@ -99,6 +99,37 @@
     <!-- Page specific scripts -->
     @stack('scripts')
 
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            Livewire.on('new-notification', (event) => {
+                const data = event[0];
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 5000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                });
+
+                let icon = 'info';
+                if (data.level === 'success') icon = 'success';
+                if (data.level === 'error') icon = 'error';
+                if (data.level === 'warning') icon = 'warning';
+
+                Toast.fire({
+                    icon: icon,
+                    title: data.docket_number ? `Docket: ${data.docket_number}` :
+                        'New Notification',
+                    text: data.message
+                });
+            });
+        });
+    </script>
+
 </body>
 
 </html>

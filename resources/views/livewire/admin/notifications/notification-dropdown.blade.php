@@ -1,4 +1,5 @@
-<li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1">
+<li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-1"
+    wire:poll.15s="checkForNewNotifications">
     <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown"
         data-bs-auto-close="outside" aria-expanded="false">
         <i class="icon-base bx bx-bell icon-md"></i>
