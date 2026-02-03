@@ -12,6 +12,8 @@ use Livewire\Attributes\Layout;
 class NotificationHub extends Component
 {
     use WithPagination;
+    
+    protected $paginationTheme = 'bootstrap';
 
     public $filter = 'all'; // all, error, warning, success, info
     public $search = '';
@@ -65,7 +67,7 @@ class NotificationHub extends Component
             });
         }
 
-        $notifications = $query->paginate(10);
+        $notifications = $query->paginate(2);
         $unreadCount = Notification::unread()->count();
 
         return view('livewire.admin.notifications.notification-hub', [
