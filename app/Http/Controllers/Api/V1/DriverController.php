@@ -14,17 +14,20 @@ use Illuminate\Validation\ValidationException;
 
 class DriverController extends Controller
 {
-    public function index()
+    public function dashboard(Request $request)
     {
         if ($request->user()->role !== 'driver') {
-                return response()->json(['message' => 'Unauthorized'], 403);
-            }
-        $deliveries = Delivery::where('driver_id', $request->user()->id)->get();
-        $deliveriescount = $deliveries->count();
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
+        $deliveriesCount = Delivery::where('driver_id', $request->user()->id)
+            ->whereDate('assigned_at', today())
+            ->count();
+
         return response()->json([
             'success' => true,
             'data' => [
-                'deliveries_count' => $deliveriescount
+                'deliveries_count' => $deliveriesCount
             ]
         ]);
     }
