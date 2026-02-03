@@ -474,6 +474,9 @@ class DriverController extends Controller
                     ->where('status', Delivery::STATUS_DELIVERED)
                     ->whereDate('delivered_at', today())
                     ->count(),
+                'assigned_today' => $driver->deliveries()
+                    ->where('assigned_at', today())
+                    ->count(),
                 'pending' => $driver->assignedDeliveries()
                     ->whereIn('status', [Delivery::STATUS_ASSIGNED, Delivery::STATUS_IN_TRANSIT])
                     ->count(),
