@@ -36,7 +36,7 @@
                 <div class="input-group" style="max-width: 350px;">
                     <span class="input-group-text bg-light border-end-0"><i class="bx bx-search text-muted"></i></span>
                     <input type="text" wire:model.live.debounce.300ms="search"
-                        class="form-control border-start-0 ps-0" placeholder="Search by docket number or message...">
+                        class="form-control border-start-0 ps-2" placeholder="Search by docket number or message...">
                 </div>
             </div>
 
@@ -71,6 +71,10 @@
                                 <small class="text-muted">{{ $notification->time_ago }}</small>
                             </div>
                             <p class="mb-0 {{ $notification->isUnread() ? 'fw-bold text-heading' : 'text-body' }}">
+                                @if ($notification->docket_number)
+                                    <span
+                                        class="badge bg-label-secondary me-1">{{ $notification->docket_number }}</span>
+                                @endif
                                 {{ $notification->message }}
                             </p>
                         </div>

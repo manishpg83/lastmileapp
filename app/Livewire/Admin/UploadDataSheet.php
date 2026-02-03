@@ -5,6 +5,7 @@ namespace App\Livewire\Admin;
 use App\Imports\DeliveriesImport;
 use App\Models\BulkUploadLog;
 use Illuminate\Support\Facades\Log;
+use App\Models\Notification;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -89,6 +90,16 @@ class UploadDataSheet extends Component
 
             $this->message = implode(' ', $parts) ?: 'No data rows found.';
             $this->messageType = $success > 0 ? 'success' : ($failures > 0 ? 'danger' : 'warning');
+
+            // Log System Notification
+            Notification::create([
+                'type' => 'bulk_import',
+                'level' => $this->messageType === 'danger' ? Notification::LEVEL_ERROR : ($this->messageType === 'warning' ? Notification::LEVEL_WARNING : Notification::LEVEL_SUCCESS),
+                'notifiable_type' => \App\Models\User::class,
+                'notifiable_id' => auth()->id(),
+                'title' => 'Bulk Import Completed',
+                'message' => 'File: "' . $this->file->getClientOriginalName() . '" - ' . $this->message,
+            ]);
 
             $this->reset('file');
         } catch (\Throwable $e) {
