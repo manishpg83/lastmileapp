@@ -41,7 +41,7 @@ class UserForm extends Component
         $data = $this->validate([
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email,' . optional($this->user)->id,
-            'phone' => 'nullable',
+            'phone' => 'required|numeric|unique:users,phone,' . optional($this->user)->id,
             'role' => 'required',
             'status' => 'required',
             'vehicle_number' => 'nullable',
