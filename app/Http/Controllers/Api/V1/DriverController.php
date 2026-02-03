@@ -14,7 +14,7 @@ use Illuminate\Validation\ValidationException;
 
 class DriverController extends Controller
 {
-    public function dashboard(Request $request)
+    public function todayCount(Request $request)
     {
         if ($request->user()->role !== 'driver') {
             return response()->json(['message' => 'Unauthorized'], 403);
