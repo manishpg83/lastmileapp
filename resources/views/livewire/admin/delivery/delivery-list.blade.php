@@ -55,16 +55,18 @@
 
             {{-- Header Row --}}
             <div class="d-none d-md-flex px-4 py-3 border-bottom fw-semibold text-muted fs-6 uppercase g-0">
-                <div class="col-md-3 d-flex align-items-center">
+                <div class="col-md-2 d-flex align-items-center">
                     <div class="form-check me-3">
                         <input class="form-check-input" type="checkbox" wire:model.live="selectAll">
                     </div>
-                    DELIVERY DETAILS
+                    DETAILS
                 </div>
-                <div class="col-md-3">ASSIGN DRIVER</div>
                 <div class="col-md-2">DOCKET / PHONE</div>
+                <div class="col-md-2">GATI STATUS</div>
+                <div class="col-md-1 text-center">POD</div>
                 <div class="col-md-2">STATUS</div>
-                <div class="col-md-2 text-end">ACTIONS</div>
+                <div class="col-md-2">ASSIGN DRIVER</div>
+                <div class="col-md-1 text-end">ACTIONS</div>
             </div>
 
             {{-- Rows --}}
@@ -72,30 +74,65 @@
                 <div class="row align-items-center px-4 py-3 border-bottom g-0">
 
                     {{-- Customer Details --}}
-                    <div class="col-md-3 d-flex align-items-center gap-2">
+                    <div class="col-md-2 d-flex align-items-center gap-1">
                         <div class="form-check me-2">
                             <input class="form-check-input" type="checkbox" wire:model.live="selectedDeliveries"
                                 value="{{ $delivery->id }}">
                         </div>
-                        <div class="avatar avatar-md me-2">
-                            <span class="avatar-initial rounded-circle bg-label-secondary">
-                                <i class="bx bx-package fs-4"></i>
-                            </span>
-                        </div>
                         <div class="truncate">
-                            <strong class="fs-6 d-block text-heading text-truncate"
-                                style="max-width: 150px;">{{ $delivery->customer_name }}</strong>
-                            <small class="text-muted d-block text-truncate"
-                                style="max-width: 150px;">{{ $delivery->company_name ?: 'No Company' }}</small>
+                            <strong class="extra-small d-block text-heading text-truncate"
+                                style="max-width: 100px;">{{ $delivery->customer_name }}</strong>
+                            <small class="text-muted d-block text-truncate extra-small"
+                                style="max-width: 100px;">{{ $delivery->company_name ?: 'No Company' }}</small>
                         </div>
                     </div>
 
+                    {{-- Docket / Phone --}}
+                    <div class="col-md-2">
+                        <div class="d-flex flex-column">
+                            <span class="text-dark fw-bold extra-small">{{ $delivery->docket_number }}</span>
+                            <small class="text-muted extra-small"><i
+                                    class="bx bx-phone-call me-1"></i>{{ $delivery->phone }}</small>
+                        </div>
+                    </div>
+
+                    {{-- Gati Status --}}
+                    <div class="col-md-2">
+                        @if ($delivery->status === 'delivered')
+                            <span class="badge bg-label-success extra-small px-2 py-1">Done</span>
+                        @else
+                            <span class="badge bg-label-secondary extra-small px-2 py-1">In Progress</span>
+                        @endif
+                    </div>
+
+                    {{-- POD --}}
+                    <div class="col-md-1 text-center">
+                        @if ($delivery->pod_image)
+                            <a href="{{ $delivery->pod_image_url }}" target="_blank"
+                                class="btn btn-sm btn-icon btn-label-info">
+                                <i class="bx bx-image-alt fs-5"></i>
+                            </a>
+                        @else
+                            <span class="text-muted opacity-50"><i class="bx bx-minus"></i></span>
+                        @endif
+                    </div>
+
+                    {{-- Status --}}
+                    <div class="col-md-2">
+                        <span class="d-flex align-items-center gap-1">
+                            <span class="badge badge-dot bg-{{ $delivery->status_color }}"></span>
+                            <span class="fw-bold text-uppercase extra-small text-{{ $delivery->status_color }}">
+                                {{ $delivery->status }}
+                            </span>
+                        </span>
+                    </div>
+
                     {{-- Driver Assignment --}}
-                    <div class="col-md-3 pe-3">
-                        <select class="form-select form-select-sm"
+                    <div class="col-md-2">
+                        <select class="form-select form-select-sm extra-small" style="max-width: 130px;"
                             wire:change="assignSingleDriver({{ $delivery->id }}, $event.target.value)"
                             wire:loading.attr="disabled">
-                            <option value="">Select Driver</option>
+                            <option value="">Select</option>
                             @foreach ($drivers as $driver)
                                 <option value="{{ $driver->id }}"
                                     {{ $delivery->driver_id == $driver->id ? 'selected' : '' }}>
@@ -105,37 +142,19 @@
                         </select>
                     </div>
 
-                    {{-- Docket / Phone --}}
-                    <div class="col-md-2">
-                        <div>
-                            <span class="text-dark d-block fw-bold small">{{ $delivery->docket_number }}</span>
-                            <small class="text-muted small"><i
-                                    class="bx bx-phone-call me-1"></i>{{ $delivery->phone }}</small>
-                        </div>
-                    </div>
-
-                    {{-- Status --}}
-                    <div class="col-md-2">
-                        <span class="d-flex align-items-center gap-1">
-                            <span class="badge badge-dot bg-{{ $delivery->status_color }}"></span>
-                            <span class="fw-semibold text-uppercase extra-small text-{{ $delivery->status_color }}">
-                                {{ str_replace('_', ' ', $delivery->status) }}
-                            </span>
-                        </span>
-                    </div>
-
                     {{-- Actions --}}
-                    <div class="col-md-2 text-end">
-                        <a href="{{ route('deliveries.edit', $delivery) }}"
-                            class="btn btn-sm btn-icon btn-label-primary me-1" title="Edit Delivery">
-                            <i class="bx bx-edit-alt"></i>
-                        </a>
+                    <div class="col-md-1 text-end">
+                        <div class="d-flex justify-content-end gap-1">
+                            <a href="{{ route('deliveries.edit', $delivery) }}"
+                                class="btn btn-sm btn-icon btn-label-primary" title="Edit">
+                                <i class="bx bx-edit-alt"></i>
+                            </a>
 
-                        <button wire:click="delete({{ $delivery->id }})"
-                            wire:confirm="Are you sure you want to delete this delivery?"
-                            class="btn btn-sm btn-icon btn-label-danger" title="Delete Delivery">
-                            <i class="bx bx-trash"></i>
-                        </button>
+                            <button wire:click="delete({{ $delivery->id }})" wire:confirm="Are you sure?"
+                                class="btn btn-sm btn-icon btn-label-danger" title="Delete">
+                                <i class="bx bx-trash"></i>
+                            </button>
+                        </div>
                     </div>
 
                 </div>
