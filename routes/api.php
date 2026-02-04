@@ -24,19 +24,20 @@ Route::prefix('v1')->group(function () {
     Route::post('driver/verify-otp', [AuthController::class, 'verifyOtp']);
 
 
-     Route::middleware(['auth:sanctum'])->prefix('driver')->group(function () {
+    Route::middleware(['auth:sanctum'])->prefix('driver')->group(function () {
+        Route::post('logout', [AuthController::class, 'logout']);
+
         Route::get('dashboard', [DriverController::class, 'dashboard']);
         Route::get('today-count', [DriverController::class, 'todayCount']);
         Route::get('driverlist', [DriverController::class, 'driverList']);
         Route::get('undelivered_reasons', [DriverController::class, 'undeliveredReasons']);
         Route::get('deliverylist', [DriverController::class, 'deliveryList']);
         //Route::post('updatedelivery', [DriverController::class, 'updateDelivery']);   
-        
+
         Route::post('/deliveries/start', [DriverController::class, 'startDelivery']);
         Route::post('/deliveries/undelivered', [DriverController::class, 'undelivered']);
         Route::post('/deliveries/delivered', [DriverController::class, 'uploadPOD']);
         Route::post('/deliveries/pass-to-driver', [DriverController::class, 'passToDriver']);
-
     });
 
     // Admin APIs

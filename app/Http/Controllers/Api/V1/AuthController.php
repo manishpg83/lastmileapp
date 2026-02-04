@@ -113,7 +113,7 @@ class AuthController extends Controller
             if ($driver->tokens()->count() > 0) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'This account is already logged in on another device. Please logout from the other device first.'
+                    'message' => 'This account is already logged in on another device. Please logout from the current device before logging in here.'
                 ], 403);
             }
 
@@ -213,8 +213,9 @@ class AuthController extends Controller
             // Clear FCM token
             $driver->clearFcmToken();
             
-            // Revoke current token
-            $request->user()->currentAccessToken()->delete();
+            // Revoke ALL tokens for this user to ensure they are fully logged out everywhere
+            // and can log in again without being blocked by "already logged in"
+            $driver->tokens()->delete();
 
             return response()->json([
                 'success' => true,
