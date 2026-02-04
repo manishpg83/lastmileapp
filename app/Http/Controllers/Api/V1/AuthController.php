@@ -31,9 +31,9 @@ class AuthController extends Controller
             $phone = $request->input('phone');
             $deviceId = $request->input('device_id');
             $deviceName = $request->input('device_name');
-            
+
             $ip = $request->ip();
-            
+
             $result = $this->otpService->sendOtp($phone);
 
             if (!$result['success']) {
@@ -59,7 +59,6 @@ class AuthController extends Controller
                     'otp' => $result['otp'] ?? null, // Only in development
                 ]
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -81,7 +80,7 @@ class AuthController extends Controller
             $deviceName = $request->input('device_name');
 
             // Verify OTP
-           /*  $verified = $this->otpService->verifyOtp($phone, $otp, 'login');
+            /*  $verified = $this->otpService->verifyOtp($phone, $otp, 'login');
 
             if (!$verified) {
                 return response()->json([
@@ -152,7 +151,6 @@ class AuthController extends Controller
             ];
 
             return response()->json($response);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -192,7 +190,6 @@ class AuthController extends Controller
                     'otp' => $result['otp'] ?? null, // Only in development
                 ]
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -208,24 +205,19 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         try {
-            $driver = $request->user();
-            
-            // Clear FCM token
-            $driver->clearFcmToken();
-            
-            // Revoke ALL tokens for this user to ensure they are fully logged out everywhere
-            // and can log in again without being blocked by "already logged in"
-            $driver->tokens()->delete();
+            $user = $request->user();
+
+            // Delete ONLY current token
+            $user->currentAccessToken()->delete();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Logged out successfully.'
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Logout failed. Please try again.'
+                'message' => 'Logout failed.'
             ], 500);
         }
     }
@@ -247,7 +239,6 @@ class AuthController extends Controller
                 'success' => true,
                 'message' => 'FCM token updated successfully.'
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -289,7 +280,6 @@ class AuthController extends Controller
                 'success' => true,
                 'data' => $profile
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -328,7 +318,6 @@ class AuthController extends Controller
                     'profile_image' => $driver->profile_image_url
                 ]
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
@@ -369,7 +358,6 @@ class AuthController extends Controller
                 'success' => true,
                 'message' => 'Password changed successfully. Please login again.'
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
