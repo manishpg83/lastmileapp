@@ -11,9 +11,9 @@
         <div class="card-body">
             <div class="row mb-4">
                 <div class="col-md-12">
-                    <form wire:submit.prevent="addReason" class="d-flex gap-2">
+                    <form wire:submit.prevent="addReason" class="d-flex flex-column flex-sm-row gap-2">
                         <input type="text" wire:model="newReason" class="form-control"
-                            placeholder="Type a new failure reason (e.g., Blocked Access)..." required>
+                            placeholder="Type a new failure reason..." required>
                         <button type="submit" class="btn btn-dark text-nowrap">
                             <i class="bx bx-plus me-1"></i> Add Reason
                         </button>

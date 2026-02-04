@@ -5,21 +5,23 @@
 
     <div class="card">
         <div class="card-header border-bottom">
-            <div class="d-flex justify-content-between align-items-center">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                 <div>
                     <h5 class="mb-0">Notification Hub</h5>
                     <small class="text-muted">You have {{ $unreadCount }} unread system alerts</small>
                 </div>
-                <button wire:click="markAllAsRead" class="btn btn-outline-secondary btn-sm">
+                <button wire:click="markAllAsRead"
+                    class="btn btn-outline-secondary btn-sm text-nowrap align-self-start align-self-md-center">
                     <i class="bx bx-check-double me-1"></i> Mark all as read
                 </button>
             </div>
         </div>
 
         <div class="card-body mt-4">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
+            <div
+                class="d-flex flex-column flex-md-row justify-content-between align-items-stretch align-items-md-center mb-4 gap-3">
                 <!-- Filters -->
-                <div class="btn-group" role="group" aria-label="Notification filters">
+                <div class="btn-group overflow-auto pb-1" role="group" aria-label="Notification filters">
                     <button type="button" class="btn btn-outline-secondary {{ $filter === 'all' ? 'active' : '' }}"
                         wire:click="setFilter('all')">All</button>
                     <button type="button" class="btn btn-outline-danger {{ $filter === 'error' ? 'active' : '' }}"
@@ -33,10 +35,10 @@
                 </div>
 
                 <!-- Search -->
-                <div class="input-group" style="max-width: 350px;">
+                <div class="input-group">
                     <span class="input-group-text bg-light border-end-0"><i class="bx bx-search text-muted"></i></span>
                     <input type="text" wire:model.live.debounce.300ms="search"
-                        class="form-control border-start-0 ps-2" placeholder="Search by docket number or message...">
+                        class="form-control border-start-0 ps-2" placeholder="Search notifications...">
                 </div>
             </div>
 

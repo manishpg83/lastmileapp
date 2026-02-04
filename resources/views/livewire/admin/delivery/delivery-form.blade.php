@@ -1,8 +1,9 @@
 <div class="container-xxl container-p-y">
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center py-3">
+        <div class="card-header d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 py-3">
             <h5 class="mb-0 fw-bold">{{ $isEdit ? 'Edit Delivery' : 'Add Delivery' }}</h5>
-            <a href="{{ route('deliveries.index') }}" class="btn btn-sm btn-outline-secondary">
+            <a href="{{ route('deliveries.index') }}"
+                class="btn btn-sm btn-outline-secondary text-nowrap align-self-start align-self-sm-center">
                 <i class="bx bx-arrow-back me-1"></i> Back
             </a>
         </div>
@@ -143,14 +144,16 @@
 
                 {{-- Action Buttons --}}
                 <div class="col-12 mt-4 pt-3 border-top">
-                    <button wire:click="save" type="button" class="btn btn-primary me-2">
-                        <i class="bx bx-save me-1"></i>
-                        {{ $isEdit ? 'Update Delivery' : 'Create Delivery' }}
-                    </button>
-                    <a href="{{ route('deliveries.index') }}" class="btn btn-outline-secondary">
-                        <i class="bx bx-x me-1"></i>
-                        Cancel
-                    </a>
+                    <div class="d-flex flex-column flex-sm-row gap-2">
+                        <button wire:click="save" type="button" class="btn btn-primary">
+                            <i class="bx bx-save me-1"></i>
+                            {{ $isEdit ? 'Update Delivery' : 'Create Delivery' }}
+                        </button>
+                        <a href="{{ route('deliveries.index') }}" class="btn btn-outline-secondary">
+                            <i class="bx bx-x me-1"></i>
+                            Cancel
+                        </a>
+                    </div>
                 </div>
             </form>
         </div>

@@ -109,21 +109,12 @@ class AuthController extends Controller
                 ], 403);
             }
 
-            // Check device limit (optional)
-            $maxDevices = config('app.max_driver_devices', 3);
-            if ($driver->tokens()->count() >= $maxDevices) {
-                // Revoke oldest token
-                $oldestToken = $driver->tokens()->oldest()->first();
-                if ($oldestToken) {
-                    $oldestToken->delete();
-                }
-            }
-
-            // Delete existing tokens for this device (optional)
-            if ($deviceId) {
-                $driver->tokens()
-                    ->where('name', 'like', "%{$deviceId}%")
-                    ->delete();
+            // Prevent multiple concurrent logins for the same account
+            if ($driver->tokens()->count() > 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This account is already logged in on another device. Please logout from the other device first.'
+                ], 403);
             }
 
             // Create token with device info
@@ -134,10 +125,6 @@ class AuthController extends Controller
             if ($deviceId) {
                 $tokenName .= " ({$deviceId})";
             }
-
-            //$driver->tokens()->delete();
-
-            //$token = $driver->createToken('driver-token')->plainTextToken;
 
             $token = $driver->createToken($tokenName, ['driver'])->plainTextToken;
 

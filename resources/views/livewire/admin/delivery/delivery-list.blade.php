@@ -10,28 +10,30 @@
     @endif
 
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center py-3">
+        <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 py-3">
             <div>
                 <h4 class="mb-0 fw-bold">Deliveries</h4>
                 <small class="text-muted">Manage all shipments and assignments</small>
             </div>
 
-            <div class="d-flex gap-2 align-items-center">
+            <div class="d-flex flex-column flex-sm-row gap-2 align-items-stretch align-items-sm-center">
                 @if (count($selectedDeliveries) > 0)
-                    <div class="d-flex align-items-center gap-2 border-end pe-2 me-2">
-                        <select wire:model="bulkDriverId" class="form-select form-select-sm" style="width: 200px;">
+                    <div class="d-flex align-items-center gap-2 border-sm-end pe-sm-2 me-sm-2">
+                        <select wire:model="bulkDriverId" class="form-select form-select-sm" style="min-width: 150px;">
                             <option value="">Select Driver</option>
                             @foreach ($drivers as $driver)
                                 <option value="{{ $driver->id }}">{{ $driver->name }}</option>
                             @endforeach
                         </select>
                         <button wire:click="assignDriver" class="btn btn-primary btn-sm">Assign</button>
-                        <small class="text-muted ms-2">{{ count($selectedDeliveries) }} Selected</small>
+                    </div>
+                    <div class="text-center text-sm-start">
+                        <small class="text-muted">{{ count($selectedDeliveries) }} Selected</small>
                     </div>
                 @endif
 
                 {{-- Search Box --}}
-                <div class="input-group" style="width: 300px;">
+                <div class="input-group">
                     <span class="input-group-text">
                         <i class="bx bx-search"></i>
                     </span>
@@ -45,7 +47,7 @@
                 </div>
 
                 {{-- Add Button --}}
-                <a href="{{ route('deliveries.create') }}" class="btn btn-primary">
+                <a href="{{ route('deliveries.create') }}" class="btn btn-primary text-nowrap">
                     <i class="bx bx-plus me-1"></i> Add Delivery
                 </a>
             </div>
@@ -74,7 +76,7 @@
                 <div class="row align-items-center px-4 py-3 border-bottom g-0">
 
                     {{-- Customer Details --}}
-                    <div class="col-md-2 d-flex align-items-center gap-1">
+                    <div class="col-md-2 col-6 d-flex align-items-center gap-1">
                         <div class="form-check me-2">
                             <input class="form-check-input" type="checkbox" wire:model.live="selectedDeliveries"
                                 value="{{ $delivery->id }}">
@@ -88,7 +90,8 @@
                     </div>
 
                     {{-- Docket / Phone --}}
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-6">
+                        <label class="d-md-none text-muted extra-small fw-bold d-block">DOCKET/PHONE</label>
                         <div class="d-flex flex-column">
                             <span class="text-dark fw-bold extra-small">{{ $delivery->docket_number }}</span>
                             <small class="text-muted extra-small"><i
@@ -97,7 +100,8 @@
                     </div>
 
                     {{-- Gati Status --}}
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-4 mt-3 mt-md-0">
+                        <label class="d-md-none text-muted extra-small fw-bold d-block">GATI STATUS</label>
                         @if ($delivery->status === 'delivered')
                             <span class="badge bg-label-success extra-small px-2 py-1">Done</span>
                         @else
@@ -106,7 +110,8 @@
                     </div>
 
                     {{-- POD --}}
-                    <div class="col-md-1 text-center">
+                    <div class="col-md-1 col-4 mt-3 mt-md-0 text-md-center">
+                        <label class="d-md-none text-muted extra-small fw-bold d-block">POD</label>
                         @if ($delivery->pod_image)
                             <a href="{{ $delivery->pod_image_url }}" target="_blank"
                                 class="btn btn-sm btn-icon btn-label-info">
@@ -118,7 +123,8 @@
                     </div>
 
                     {{-- Status --}}
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-4 mt-3 mt-md-0">
+                        <label class="d-md-none text-muted extra-small fw-bold d-block">STATUS</label>
                         <span class="d-flex align-items-center gap-1">
                             <span class="badge badge-dot bg-{{ $delivery->status_color }}"></span>
                             <span class="fw-bold text-uppercase extra-small text-{{ $delivery->status_color }}">
@@ -128,7 +134,8 @@
                     </div>
 
                     {{-- Driver Assignment --}}
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-6 mt-3 mt-md-0">
+                        <label class="d-md-none text-muted extra-small fw-bold d-block">ASSIGN DRIVER</label>
                         <select class="form-select form-select-sm extra-small" style="max-width: 130px;"
                             wire:change="assignSingleDriver({{ $delivery->id }}, $event.target.value)"
                             wire:loading.attr="disabled">
@@ -143,7 +150,8 @@
                     </div>
 
                     {{-- Actions --}}
-                    <div class="col-md-1 text-end">
+                    <div class="col-md-1 col-6 text-end mt-3 mt-md-0">
+                        <label class="d-md-none text-muted extra-small fw-bold d-block">ACTIONS</label>
                         <div class="d-flex justify-content-end gap-1">
                             <a href="{{ route('deliveries.edit', $delivery) }}"
                                 class="btn btn-sm btn-icon btn-label-primary" title="Edit">
