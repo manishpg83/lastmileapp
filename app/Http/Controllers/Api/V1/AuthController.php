@@ -204,23 +204,16 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        try {
-            $user = $request->user();
+        $request->user()
+            ->currentAccessToken()
+            ->delete();
 
-            // Delete ONLY current token
-            $user->currentAccessToken()->delete();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Logged out successfully.'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Logout failed.'
-            ], 500);
-        }
+        return response()->json([
+            'success' => true,
+            'message' => 'Logged out successfully.'
+        ]);
     }
+
 
     /**
      * Update FCM token for push notifications
