@@ -208,18 +208,21 @@ class AuthController extends Controller
             $user = $request->user();
             
             if ($user) {
-                // Delete the current access token
-                $user->currentAccessToken()->delete();
+                // Delete ALL access tokens for this user to ensure they can login again without "already logged in" error
+                $user->tokens()->delete();
+                
+                // Also clear FCM token on logout to ensure no stale notifications
+                $user->clearFcmToken();
                 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Logged out successfully.'
+                    'message' => 'Logged out successfully. All sessions have been cleared.'
                 ]);
             }
 
             return response()->json([
                 'success' => false,
-                'message' => 'User not authenticated or already logged out.'
+                'message' => 'User not authenticated.'
             ], 401);
 
         } catch (\Exception $e) {
