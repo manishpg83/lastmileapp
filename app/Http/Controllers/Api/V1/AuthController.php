@@ -108,10 +108,12 @@ class AuthController extends Controller
                 ], 403);
             }
 
-            // Automatically revoke existing tokens for this driver to allow login on a new device
-            // This prevents the "already logged in" blockage while maintaining security (only one active device)
+            // Prevent multiple concurrent logins for the same account
             if ($driver->tokens()->count() > 0) {
-                $driver->tokens()->delete();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This account is already logged in on another device. Please logout from the current device before logging in here.'
+                ], 403);
             }
 
             // Create token with device info
@@ -204,18 +206,26 @@ class AuthController extends Controller
     {
         try {
             $user = $request->user();
-            if ($user && $user->currentAccessToken()) {
+            
+            if ($user) {
+                // Delete the current access token
                 $user->currentAccessToken()->delete();
+                
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Logged out successfully.'
+                ]);
             }
 
             return response()->json([
-                'success' => true,
-                'message' => 'Logged out successfully.'
-            ]);
+                'success' => false,
+                'message' => 'User not authenticated or already logged out.'
+            ], 401);
+
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Logout failed.',
+                'message' => 'Logout failed. Please try again.',
                 'error' => config('app.debug') ? $e->getMessage() : null
             ], 500);
         }
