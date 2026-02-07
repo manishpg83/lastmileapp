@@ -171,7 +171,10 @@ class Delivery extends Model
                 ->orWhere('customer_name', 'like', "%{$search}%")
                 ->orWhere('company_name', 'like', "%{$search}%")
                 ->orWhere('phone', 'like', "%{$search}%")
-                ->orWhere('address', 'like', "%{$search}%");
+                ->orWhere('address', 'like', "%{$search}%")
+                ->orWhereHas('driver', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%");
+                });
         });
     }
 
