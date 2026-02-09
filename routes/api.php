@@ -20,9 +20,10 @@ Route::prefix('v1')->group(function () {
 
     // Auth
     Route::post('admin/login', [AdminAuthController::class, 'login']);
-    Route::post('driver/login', [AuthController::class, 'sendOtp']);
-    Route::post('driver/verify-otp', [AuthController::class, 'verifyOtp']);
+    //Route::post('driver/login', [AuthController::class, 'sendOtp']);
+    //Route::post('driver/verify-otp', [AuthController::class, 'verifyOtp']);
 
+    Route::post('driver/login', [AuthController::class, 'login']);
 
     Route::middleware(['auth:sanctum'])->prefix('driver')->group(function () {
         Route::post('logout', [AuthController::class, 'logout']);

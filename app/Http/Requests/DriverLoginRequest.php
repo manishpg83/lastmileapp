@@ -15,6 +15,7 @@ class DriverLoginRequest extends FormRequest
     {
         return [
             'phone' => 'required|string|regex:/^\+?[1-9]\d{1,14}$/',
+            'password' => 'required|string', // For OTP-based login, you might want to change this to 'nullable|string'
             'device_id' => 'nullable|string|max:255',
             'device_name' => 'nullable|string|max:255',
         ];

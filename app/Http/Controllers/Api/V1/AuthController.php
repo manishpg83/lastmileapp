@@ -200,6 +200,96 @@ class AuthController extends Controller
     }
 
     /**
+     * driver login
+     */
+    public function login(DriverLoginRequest $request)
+    {
+        try {
+            $phone = $request->input('phone');
+            $deviceId = $request->input('device_id');
+            $deviceName = $request->input('device_name');
+
+            $ip = $request->ip();
+
+
+            // Check if user exists and is a driver
+            $driver = User::where('phone', $phone)
+                ->where('role', 'driver')
+                ->first();
+
+            if (!$driver) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Driver not found with this phone number.'
+                ], 404);               
+            }
+            if ($driver->status !== 'active') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Your account is inactive. Please contact administrator.'
+                ], 403);
+            }           
+            if (! Hash::check($request->password, $driver->password)) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid password'
+                ], 401);
+            }
+
+            // Prevent multiple concurrent logins for the same account
+            if ($driver->tokens()->count() > 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'This account is already logged in on another device. Please logout from the current device before logging in here.'
+                ], 403);
+            }
+
+            // Create token with device info
+            $tokenName = "Driver App";
+            if ($deviceName) {
+                $tokenName .= " - {$deviceName}";
+            }
+            if ($deviceId) {
+                $tokenName .= " ({$deviceId})";
+            }
+
+            $token = $driver->createToken($tokenName, ['driver'])->plainTextToken;
+
+            // Update last login
+            //$driver->last_login_at = now();
+            //$driver->save();
+
+            //$driver = $request->user();
+            // Prepare response
+            $response = [
+                'success' => true,
+                'message' => 'Login successful.',
+                'data' => [
+                    'token' => $token,
+                    'token_type' => 'Bearer',
+                    'driver' => [
+                        'id' => $driver->id,
+                        'name' => $driver->name,
+                        'email' => $driver->email,
+                        'phone' => $driver->phone,
+                        'profile_image' => $driver->profile_image_url,
+                        'assigned_deliveries' => 0 //$driver->assignedDeliveries()->count()
+                    ]
+                ]
+            ];
+
+            return response()->json($response);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Login failed. Please try again.',
+                'error' => config('app.debug') ? $e->getMessage() : null
+            ], 500);
+        }
+        
+    }
+
+    /**
      * Logout driver
      */
     public function logout(Request $request)
