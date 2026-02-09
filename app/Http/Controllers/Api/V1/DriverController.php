@@ -423,6 +423,62 @@ class DriverController extends Controller
         }
     }
 
+    /**
+     * Change Delivery Status (Driver Control)
+     */
+    public function changeStatus(Request $request)
+    {
+        try {
+            $request->validate([
+                'delivery_id' => 'required|integer|exists:deliveries,id',
+                'status' => 'required|string|in:in_transit,passed,pending,assigned', // Add allowed statuses
+                'notes' => 'nullable|string',
+            ]);
+
+            $delivery = Delivery::findOrFail($request->delivery_id);
+
+            if ($delivery->driver_id !== $request->user()->id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized'
+                ], 403);
+            }
+
+            $status = $request->status;
+            $delivery->updateStatus($status, $request->user()->id, $request->notes ?? 'Status updated by driver');
+
+            // Notification log (reusing existing logic or simplified)
+            $title = 'Status Updated';
+            $message = $request->user()->name . ' changed status to ' . $status;
+            $data = [
+                'type' => $status,
+                'notifiable_type' => 'driver',
+                'notifiable_id' => $request->user()->id,
+                'delivery_id'   => $delivery->id,
+                'driver_id'     => $request->user()->id,
+                'docket_number' => $delivery->docket_number,
+                'customer_name' => $delivery->customer_name,
+                'title'         => $title,
+                'message'       => $message,
+                'read_at'      => null,
+            ];
+            $this->notificationlog($data);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Status updated successfully',
+                'delivery' => $delivery->fresh()
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to update status.',
+                // 'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     /** 
      * Notification log activity
      */
@@ -458,13 +514,17 @@ class DriverController extends Controller
         try {
             $driver = $request->user();
 
-            // Get today's deliveries
-            $todayDeliveries = $driver->deliveries()
-                ->whereDate('created_at', today())
+            // Get today's deliveries (assigned or updated today, or currently active)
+            $todayDeliveries = $driver->assignedDeliveries()
+                ->where(function($query) {
+                    $query->whereDate('assigned_at', today())
+                          ->orWhereDate('updated_at', today())
+                          ->orWhereIn('status', [Delivery::STATUS_ASSIGNED, Delivery::STATUS_IN_TRANSIT]);
+                })
                 ->with('undeliveredReason')
                 ->orderBy('status')
                 ->orderBy('scheduled_at')
-                ->take(10)
+                ->take(20) // Increased limit
                 ->get();
 
             // Get stats

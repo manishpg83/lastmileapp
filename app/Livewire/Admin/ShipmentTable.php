@@ -14,11 +14,13 @@ class ShipmentTable extends Component
 {
     use WithPagination;
 
-    public $dateFilter;
+    public $dateFilter = 'today';
 
-    public function mount($dateFilter = 'today')
+    #[On('dateFilterUpdated')]
+    public function updateDateFilter($filter)
     {
-        $this->dateFilter = $dateFilter;
+        $this->dateFilter = $filter;
+        $this->resetPage();
     }
 
     public function render()
@@ -27,13 +29,13 @@ class ShipmentTable extends Component
             ->whereNotNull('driver_id');
 
         if ($this->dateFilter === 'today') {
-            $query->whereDate('updated_at', today());
+            $query->whereDate('assigned_at', today());
         } elseif ($this->dateFilter === 'yesterday') {
-            $query->whereDate('updated_at', today()->subDay());
+            $query->whereDate('assigned_at', today()->subDay());
         } elseif ($this->dateFilter === 'this_week') {
-            $query->whereBetween('updated_at', [now()->startOfWeek(), now()->endOfWeek()]);
+            $query->whereBetween('assigned_at', [now()->startOfWeek(), now()->endOfWeek()]);
         } elseif ($this->dateFilter === 'this_month') {
-            $query->whereMonth('updated_at', now()->month)->whereYear('updated_at', now()->year);
+            $query->whereMonth('assigned_at', now()->month)->whereYear('assigned_at', now()->year);
         }
 
         $shipments = $query->latest()

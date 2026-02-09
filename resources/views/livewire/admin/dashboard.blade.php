@@ -1,7 +1,8 @@
 <div class="container-xxl flex-grow-1 container-p-y">
-    <div class="row g-6">
-        <div class="col-12 d-flex justify-content-end mb-3">
-            <select wire:model.live="dateFilter" class="form-select w-auto">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="fw-bold py-3 mb-0">Dashboard</h4>
+        <div class="col-md-3">
+            <select wire:model.live="dateFilter" class="form-select">
                 <option value="today">Today</option>
                 <option value="yesterday">Yesterday</option>
                 <option value="this_week">This Week</option>
@@ -9,7 +10,9 @@
                 <option value="all">All Time</option>
             </select>
         </div>
+    </div>
 
+    <div class="row g-6">
         <!-- Dashboard Cards -->
         <div class="col-lg-3 col-sm-6">
             <div class="card h-100">

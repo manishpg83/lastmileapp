@@ -17,20 +17,7 @@
             </div>
 
             <div class="d-flex flex-column flex-sm-row gap-2 align-items-stretch align-items-sm-center">
-                @if (count($selectedDeliveries) > 0)
-                    <div class="d-flex align-items-center gap-2 border-sm-end pe-sm-2 me-sm-2">
-                        <select wire:model="bulkDriverId" class="form-select form-select-sm" style="min-width: 150px;">
-                            <option value="">Select Driver</option>
-                            @foreach ($drivers as $driver)
-                                <option value="{{ $driver->id }}">{{ $driver->name }}</option>
-                            @endforeach
-                        </select>
-                        <button wire:click="assignDriver" class="btn btn-primary btn-sm">Assign</button>
-                    </div>
-                    <div class="text-center text-sm-start">
-                        <small class="text-muted">{{ count($selectedDeliveries) }} Selected</small>
-                    </div>
-                @endif
+
 
 
 
@@ -55,6 +42,59 @@
             </div>
         </div>
 
+        @if (count($selectedDeliveries) > 0)
+            <div class="card-body border-top bg-white py-2">
+
+
+                <div class="d-flex flex-row align-items-center gap-3 overflow-auto">
+                    {{-- Assign Driver --}}
+                    <div class="input-group input-group-sm">
+                        <select wire:model="bulkDriverId" class="form-select" style="max-width: 150px;">
+                            <option value="">Select Driver</option>
+                            @foreach ($drivers as $driver)
+                                <option value="{{ $driver->id }}">{{ $driver->name }}</option>
+                            @endforeach
+                        </select>
+                        <button wire:click="assignDriver" class="btn btn-primary">Assign</button>
+                    </div>
+
+                    <div class="vr mx-1"></div>
+
+                    {{-- Update Status --}}
+                    <div class="input-group input-group-sm">
+                        <select wire:model="bulkStatus" class="form-select" style="max-width: 130px;">
+                            <option value="">Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="assigned">Assigned</option>
+                            <option value="in_transit">In Transit</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="undelivered">Undelivered</option>
+                            <option value="passed">Passed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <button wire:click="bulkUpdateStatus" class="btn btn-info">Update</button>
+                    </div>
+
+                    {{-- Delete & Clear --}}
+                    <div class="d-flex align-items-center gap-2 ms-auto">
+                        <button wire:click="bulkDelete"
+                            wire:confirm="Are you sure you want to delete selected deliveries?"
+                            class="btn btn-danger btn-sm text-nowrap me-2">
+                            <i class="bx bx-trash"></i>
+                        </button>
+
+                        <div class="vr me-2"></div>
+
+                        <span class="badge bg-primary text-nowrap">{{ count($selectedDeliveries) }} Selected</span>
+                        <button wire:click="$set('selectedDeliveries', [])"
+                            class="btn btn-sm btn-outline-secondary bg-white text-secondary border-0 text-nowrap"
+                            title="Clear Selection">
+                            <i class="bx bx-x"></i> Clear
+                        </button>
+                    </div>
+                </div>
+        @endif
+
         <div class="card-body p-0">
 
             {{-- Header Row --}}
@@ -75,7 +115,8 @@
 
             {{-- Rows --}}
             @forelse($deliveries as $delivery)
-                <div class="row align-items-center px-4 py-3 border-bottom g-0">
+                <div class="row align-items-center px-4 py-3 border-bottom g-0 bg-white"
+                    style="background-color: white;">
 
                     {{-- Customer Details --}}
                     <div class="col-md-2 col-6 d-flex align-items-center gap-1">

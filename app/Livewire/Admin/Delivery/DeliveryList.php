@@ -18,6 +18,7 @@ class DeliveryList extends Component
     public $selectedDeliveries = [];
     public $selectAll = false;
     public $bulkDriverId = '';
+    public $bulkStatus = '';
 
     protected $queryString = ['search'];
 
@@ -77,6 +78,51 @@ class DeliveryList extends Component
             session()->flash('messageType', 'success');
         }
     }
+    public function bulkDelete()
+    {
+        if (empty($this->selectedDeliveries)) {
+            session()->flash('message', 'Please select at least one delivery');
+            session()->flash('messageType', 'warning');
+            return;
+        }
+
+        Delivery::whereIn('id', $this->selectedDeliveries)->delete();
+
+        $this->selectedDeliveries = [];
+        $this->selectAll = false;
+
+        session()->flash('message', 'Selected deliveries deleted successfully');
+        session()->flash('messageType', 'success');
+    }
+
+    public function bulkUpdateStatus()
+    {
+        if (empty($this->selectedDeliveries)) {
+            session()->flash('message', 'Please select at least one delivery');
+            session()->flash('messageType', 'warning');
+            return;
+        }
+
+        if (!$this->bulkStatus) {
+            session()->flash('message', 'Please select a status');
+            session()->flash('messageType', 'warning');
+            return;
+        }
+
+        $deliveries = Delivery::whereIn('id', $this->selectedDeliveries)->get();
+
+        foreach ($deliveries as $delivery) {
+            $delivery->updateStatus($this->bulkStatus, auth()->id(), 'Bulk status update');
+        }
+
+        $this->selectedDeliveries = [];
+        $this->selectAll = false;
+        $this->bulkStatus = '';
+
+        session()->flash('message', 'Status updated successfully for selected deliveries');
+        session()->flash('messageType', 'success');
+    }
+
     public function delete($id)
     {
         $delivery = Delivery::findOrFail($id);

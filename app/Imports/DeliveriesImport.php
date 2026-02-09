@@ -38,6 +38,7 @@ class DeliveriesImport implements ToCollection, WithHeadingRow
             $address = $this->getRowValue($row, ['delivery_address', 'delivery address', 'address']);
             $phone = $this->getRowValue($row, ['phone_number', 'phone number', 'phone']);
             $pincode = $this->getRowValue($row, ['pincode', 'pin_code', 'pin code']);
+            $weight = $this->getRowValue($row, ['weight', 'weight (kg)', 'weight_kg', 'kg']);
 
             if ($index < 2) {
                 Log::channel('single')->info("DeliveriesImport: row {$rowNumber} extracted", [
@@ -46,6 +47,7 @@ class DeliveriesImport implements ToCollection, WithHeadingRow
                     'address' => $address,
                     'phone' => $phone,
                     'pincode' => $pincode,
+                    'weight' => $weight,
                 ]);
             }
 
@@ -95,6 +97,7 @@ class DeliveriesImport implements ToCollection, WithHeadingRow
                     'address' => (string) $address,
                     'pincode' => $pincode !== null ? (string) $pincode : null,
                     'phone' => (string) $phone,
+                    'weight' => $weight ? (float) filter_var($weight, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : null,
                     'status' => Delivery::STATUS_PENDING,
                 ]);
                 $this->successCount++;

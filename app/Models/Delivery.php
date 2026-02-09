@@ -58,6 +58,7 @@ class Delivery extends Model
         'estimated_duration_minutes',
         'actual_duration_minutes',
         'distance_km',
+        'weight',
         'synced_to_third_party',
         'last_sync_at',
         'sync_error',
