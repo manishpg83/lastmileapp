@@ -106,7 +106,7 @@
                 </div>
 
                 <!-- Notifications -->
-                <div class="card mb-4">
+                <div class="card mb-4 d-none">
                     <h5 class="card-header">Notification Preferences</h5>
                     <div class="card-body">
                         <span class="d-block mb-3">Choose how you want to be notified about shipment updates.</span>
