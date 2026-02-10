@@ -82,7 +82,6 @@ class DeliveryForm extends Component
                 Delivery::STATUS_ASSIGNED => 'Assigned',
                 Delivery::STATUS_DELIVERED => 'Delivered',
                 Delivery::STATUS_UNDELIVERED => 'Undelivered',
-                Delivery::STATUS_PASSED => 'Passed',
             ],
         ])->title($this->isEdit ? 'Edit Delivery' : 'Add Delivery');
     }

@@ -80,7 +80,6 @@
                             <option value="assigned">Assigned</option>
                             <option value="delivered">Delivered</option>
                             <option value="undelivered">Undelivered</option>
-                            <option value="passed">Passed</option>
                         </select>
                         <button wire:click="bulkUpdateStatus" class="btn btn-info">Update</button>
                     </div>
