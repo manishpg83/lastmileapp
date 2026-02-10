@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\UndeliveredReason;
 use App\Models\Notification;
 use App\Models\DriverLocation;
+use App\Models\DeliveryStatusHistory;
 use App\Models\Delivery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -147,9 +148,55 @@ class DriverController extends Controller
         }
     }
 
-    
-    
-    
+    public function passedDeliveryList(Request $request)
+    {
+        try {
+            if ($request->user()->role !== 'driver') {
+                return response()->json(['message' => 'Unauthorized'], 403);
+            }
+            $loggedInUserId = $request->user()->id;
+
+            // Fetch deliveries passed by this driver TODAY
+            $passedDeliveryIds = DeliveryStatusHistory::where('changed_by', $loggedInUserId)
+                ->where('new_status', Delivery::STATUS_PASSED)
+                ->whereDate('created_at', today()) // Can add date filter if needed
+                ->pluck('delivery_id');
+
+            $passedDeliveries = Delivery::select(
+                'customer_name',
+                'id',
+                'company_name',
+                'address',
+                'docket_number',
+                'phone',
+                'driver_id', // Note: This will be the NEW driver ID
+                'status'
+            )
+                ->whereIn('id', $passedDeliveryIds)
+                ->get()
+                ->map(function ($d) {
+                    // Force status to 'passed' for the view
+                    $d->status = Delivery::STATUS_PASSED;
+
+                    return $d;
+                });
+
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'deliveries' => $passedDeliveries,
+                    'count' => $passedDeliveries->count(),
+                ],
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to load passed deliveries.',
+            ], 500);
+        }
+    }
+
     /* public function assignToDriver($driverId)
     {
         $this->driver_id = $driverId;
@@ -912,6 +959,66 @@ class DriverController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to update settings.'
+            ], 500);
+        }
+    }
+    /**
+     * Log Delivery Action
+     */
+    public function logDeliveryAction(Request $request)
+    {
+        try {
+            $request->validate([
+                'action' => 'required|string|in:start,end',
+                'image' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            ]);
+
+            $driver = $request->user();
+            $action = $request->action;
+
+            // Store the image
+            $path = $request->file('image')->store('driver_logs', 'public');
+            $imageName = basename($path);
+
+            // Create log record
+            $log = \App\Models\DriverLog::create([
+                'driver_id' => $driver->id,
+                'action' => $action,
+                'image' => $imageName,
+            ]);
+
+            // Trigger notification
+            $title = $action === 'start' ? 'Delivery Started' : 'Delivery Ended';
+            $type = $action === 'start' ? 'in_transit' : 'completed';
+            
+            $data = [
+                'type' => $type,
+                'notifiable_type' => 'driver',
+                'notifiable_id' => $driver->id,
+                'driver_id' => $driver->id,
+                'title' => $title,
+                'message' => "{$title} by {$driver->name} at " . now()->format('Y-m-d H:i:s'),
+                'read_at' => null,
+            ];
+            $this->notificationlog($data);
+
+            return response()->json([
+                'success' => true,
+                'message' => "Delivery {$action} logged successfully",
+                'data' => [
+                    'driver_id' => $log->driver_id,
+                    'action' => $log->action,
+                    'image' => $log->image,
+                    'created_at' => $log->created_at,
+                    'id' => $log->id,
+                ]
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to log delivery action.',
+                'error' => config('app.debug') ? $e->getMessage() : null
             ], 500);
         }
     }

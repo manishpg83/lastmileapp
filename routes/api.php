@@ -39,6 +39,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/deliveries/undelivered', [DriverController::class, 'undelivered']);
         Route::post('/deliveries/delivered', [DriverController::class, 'uploadPOD']);
         Route::post('/deliveries/pass-to-driver', [DriverController::class, 'passToDriver']);
+        Route::post('/deliveries/log', [DriverController::class, 'logDeliveryAction']);
+        Route::get('deliverylist/passed', [DriverController::class, 'passedDeliveryList']);
     });
 
     // Admin APIs

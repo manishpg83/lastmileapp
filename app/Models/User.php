@@ -94,6 +94,11 @@ class User extends Authenticatable
             ->latest();
     }
 
+    public function driverLogs()
+    {
+        return $this->hasMany(DriverLog::class, 'driver_id');
+    }
+
     public function bulkUploads()
     {
         return $this->hasMany(BulkUploadLog::class, 'uploaded_by');
