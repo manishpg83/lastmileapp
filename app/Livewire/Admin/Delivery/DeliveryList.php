@@ -19,10 +19,18 @@ class DeliveryList extends Component
     public $selectAll = false;
     public $bulkDriverId = '';
     public $bulkStatus = '';
+    public $bulkGatiStatus = '';
 
-    protected $queryString = ['search'];
+    public $dateRange = '';
+    
+    protected $queryString = ['search', 'dateRange'];
 
     public function updatingSearch()
+    {
+        $this->resetPage();
+    }
+
+    public function updatedDateRange()
     {
         $this->resetPage();
     }
@@ -30,7 +38,23 @@ class DeliveryList extends Component
     public function updatedSelectAll($value)
     {
         if ($value) {
-            $this->selectedDeliveries = Delivery::latest()->take(20)->pluck('id')->map(fn($id) => (string) $id)->toArray();
+            // Get IDs from the current query to match what the user sees
+            $query = Delivery::query();
+            if ($this->search) $query->search($this->search);
+            if ($this->dateRange) {
+                $dates = explode(' to ', $this->dateRange);
+                if (count($dates) === 2) {
+                    $query->whereBetween('assigned_at', [$dates[0] . ' 00:00:00', $dates[1] . ' 23:59:59']);
+                } else {
+                    $query->whereDate('assigned_at', $dates[0]);
+                }
+            }
+            
+            $this->selectedDeliveries = $query->latest()
+                ->paginate(10) // Match pagination size
+                ->pluck('id')
+                ->map(fn($id) => (string) $id)
+                ->toArray();
         } else {
             $this->selectedDeliveries = [];
         }
@@ -123,6 +147,31 @@ class DeliveryList extends Component
         session()->flash('messageType', 'success');
     }
 
+    public function bulkUpdateGatiStatus()
+    {
+        if (empty($this->selectedDeliveries)) {
+            session()->flash('message', 'Please select at least one delivery');
+            session()->flash('messageType', 'warning');
+            return;
+        }
+
+        if ($this->bulkGatiStatus === '') {
+            session()->flash('message', 'Please select a Gati status');
+            session()->flash('messageType', 'warning');
+            return;
+        }
+
+        Delivery::whereIn('id', $this->selectedDeliveries)
+            ->update(['synced_to_third_party' => (bool) $this->bulkGatiStatus]);
+
+        $this->selectedDeliveries = [];
+        $this->selectAll = false;
+        $this->bulkGatiStatus = '';
+
+        session()->flash('message', 'Gati status updated successfully for selected deliveries');
+        session()->flash('messageType', 'success');
+    }
+
     public function delete($id)
     {
         $delivery = Delivery::findOrFail($id);
@@ -132,12 +181,34 @@ class DeliveryList extends Component
         session()->flash('messageType', 'success');
     }
 
+    public function toggleGatiStatus($id)
+    {
+        $delivery = Delivery::findOrFail($id);
+        $delivery->synced_to_third_party = !$delivery->synced_to_third_party;
+        $delivery->save();
+
+        session()->flash('message', 'Gati status updated successfully');
+        session()->flash('messageType', 'success');
+    }
+
     public function render()
     {
         $query = Delivery::query()->with('driver');
 
         if ($this->search) {
             $query->search($this->search);
+        }
+
+        if ($this->dateRange) {
+            $dates = explode(' to ', $this->dateRange);
+            if (count($dates) === 2) {
+                $query->whereBetween('assigned_at', [
+                    $dates[0] . ' 00:00:00',
+                    $dates[1] . ' 23:59:59'
+                ]);
+            } else {
+                $query->whereDate('assigned_at', $dates[0]);
+            }
         }
 
         $drivers = \App\Models\User::drivers()->active()->get();

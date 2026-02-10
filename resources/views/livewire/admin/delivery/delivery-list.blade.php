@@ -21,6 +21,13 @@
 
 
 
+                {{-- Date Range Filter --}}
+                <div class="input-group" style="max-width: 250px;" wire:ignore>
+                    <span class="input-group-text"><i class="bx bx-calendar"></i></span>
+                    <input type="text" id="dateRangePicker" class="form-control" placeholder="Select Date Range"
+                        wire:model.live="dateRange">
+                </div>
+
                 {{-- Search Box --}}
                 <div class="input-group">
                     <span class="input-group-text">
@@ -35,10 +42,15 @@
                     @endif
                 </div>
 
-                {{-- Add Button --}}
-                <a href="{{ route('deliveries.create') }}" class="btn btn-primary text-nowrap">
-                    <i class="bx bx-plus me-1"></i> Add Delivery
-                </a>
+                {{-- Excel Upload & Add Button --}}
+                <div class="d-flex gap-2">
+                    <a href="{{ route('uploads.index') }}" class="btn btn-label-success text-nowrap">
+                        <i class="bx bx-upload me-1"></i> Upload Excel
+                    </a>
+                    <a href="{{ route('deliveries.create') }}" class="btn btn-primary text-nowrap">
+                        <i class="bx bx-plus me-1"></i> Add Delivery
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -46,7 +58,7 @@
             <div class="card-body border-top bg-white py-2">
 
 
-                <div class="d-flex flex-row align-items-center gap-3 overflow-auto">
+                <div class="d-flex flex-row align-items-center gap-3 overflow-auto mb-2 mt-2">
                     {{-- Assign Driver --}}
                     <div class="input-group input-group-sm">
                         <select wire:model="bulkDriverId" class="form-select" style="max-width: 150px;">
@@ -64,15 +76,25 @@
                     <div class="input-group input-group-sm">
                         <select wire:model="bulkStatus" class="form-select" style="max-width: 130px;">
                             <option value="">Status</option>
-                            <option value="pending">Pending</option>
+                            <option value="pending">Not Assigned</option>
                             <option value="assigned">Assigned</option>
-                            <option value="in_transit">In Transit</option>
                             <option value="delivered">Delivered</option>
                             <option value="undelivered">Undelivered</option>
                             <option value="passed">Passed</option>
-                            <option value="cancelled">Cancelled</option>
                         </select>
                         <button wire:click="bulkUpdateStatus" class="btn btn-info">Update</button>
+                    </div>
+
+                    <div class="vr mx-1"></div>
+
+                    {{-- Update Gati Status --}}
+                    <div class="input-group input-group-sm">
+                        <select wire:model="bulkGatiStatus" class="form-select" style="max-width: 130px;">
+                            <option value="">Gati Status</option>
+                            <option value="1">Mark Done</option>
+                            <option value="0">Mark In Progress</option>
+                        </select>
+                        <button wire:click="bulkUpdateGatiStatus" class="btn btn-warning">Update</button>
                     </div>
 
                     {{-- Delete & Clear --}}
@@ -95,141 +117,165 @@
                 </div>
         @endif
 
-        <div class="card-body p-0">
+        <div class="table-responsive text-nowrap">
+            <table class="table table-hover align-middle mb-0 bg-white" style="min-width: 1200px;">
+                <thead class="bg-white border-bottom">
+                    <tr class="text-muted extra-small text-uppercase fw-semibold">
+                        <th style="width: 50px;" class="ps-4">
+                            <input class="form-check-input" type="checkbox" wire:model.live="selectAll">
+                        </th>
+                        <th style="width: 200px;">DETAILS</th>
+                        <th style="width: 200px;">DATE</th>
+                        <th style="width: 200px;">DOCKET / PHONE</th>
+                        <th style="width: 150px;">GATI STATUS</th>
+                        <th style="width: 100px;" class="text-center">POD</th>
+                        <th style="width: 150px;">STATUS</th>
+                        <th style="width: 200px;">ASSIGN DRIVER</th>
+                        <th style="width: 100px;" class="text-end pe-4">ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-            {{-- Header Row --}}
-            <div class="d-none d-md-flex px-4 py-3 border-bottom fw-semibold text-muted fs-6 uppercase g-0">
-                <div class="col-md-2 d-flex align-items-center">
-                    <div class="form-check me-3">
-                        <input class="form-check-input" type="checkbox" wire:model.live="selectAll">
-                    </div>
-                    DETAILS
-                </div>
-                <div class="col-md-2">DOCKET / PHONE</div>
-                <div class="col-md-2">GATI STATUS</div>
-                <div class="col-md-1 text-center">POD</div>
-                <div class="col-md-2">STATUS</div>
-                <div class="col-md-2">ASSIGN DRIVER</div>
-                <div class="col-md-1 text-end">ACTIONS</div>
-            </div>
+                    {{-- Rows --}}
+                    @forelse($deliveries as $delivery)
+                        <tr>
+                            <td class="ps-4">
+                                <div class="form-check me-2">
+                                    <input class="form-check-input" type="checkbox"
+                                        wire:model.live="selectedDeliveries" value="{{ $delivery->id }}">
+                                </div>
+                            </td>
+                            <td>
+                                <div class="truncate">
+                                    <strong class="extra-small d-block text-heading text-truncate"
+                                        style="max-width: 150px;">{{ $delivery->customer_name }}</strong>
+                                    <small class="text-muted d-block text-truncate extra-small"
+                                        style="max-width: 150px;">{{ $delivery->company_name ?: 'No Company' }}</small>
+                                </div>
+                            </td>
 
-            {{-- Rows --}}
-            @forelse($deliveries as $delivery)
-                <div class="row align-items-center px-4 py-3 border-bottom g-0 bg-white"
-                    style="background-color: white;">
+                            {{-- Date --}}
+                            <td>
+                                <span class="text-dark extra-small">
+                                    {{ $delivery->assigned_at ? $delivery->assigned_at->format('d M Y') : 'N/A' }}
+                                </span>
+                            </td>
 
-                    {{-- Customer Details --}}
-                    <div class="col-md-2 col-6 d-flex align-items-center gap-1">
-                        <div class="form-check me-2">
-                            <input class="form-check-input" type="checkbox" wire:model.live="selectedDeliveries"
-                                value="{{ $delivery->id }}">
-                        </div>
-                        <div class="truncate">
-                            <strong class="extra-small d-block text-heading text-truncate"
-                                style="max-width: 100px;">{{ $delivery->customer_name }}</strong>
-                            <small class="text-muted d-block text-truncate extra-small"
-                                style="max-width: 100px;">{{ $delivery->company_name ?: 'No Company' }}</small>
-                        </div>
-                    </div>
+                            {{-- Docket / Phone --}}
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <span class="text-dark fw-bold extra-small">{{ $delivery->docket_number }}</span>
+                                    <small class="text-muted extra-small"><i
+                                            class="bx bx-phone-call me-1"></i>{{ $delivery->phone }}</small>
+                                </div>
+                            </td>
 
-                    {{-- Docket / Phone --}}
-                    <div class="col-md-2 col-6">
-                        <label class="d-md-none text-muted extra-small fw-bold d-block">DOCKET/PHONE</label>
-                        <div class="d-flex flex-column">
-                            <span class="text-dark fw-bold extra-small">{{ $delivery->docket_number }}</span>
-                            <small class="text-muted extra-small"><i
-                                    class="bx bx-phone-call me-1"></i>{{ $delivery->phone }}</small>
-                        </div>
-                    </div>
+                            {{-- Gati Status --}}
+                            <td>
+                                <div class="form-check form-switch d-flex align-items-center gap-2">
+                                    <input class="form-check-input" type="checkbox" role="switch"
+                                        id="gatiSwitch{{ $delivery->id }}"
+                                        {{ $delivery->synced_to_third_party ? 'checked' : '' }}
+                                        wire:click="toggleGatiStatus({{ $delivery->id }})">
+                                    <label class="form-check-label extra-small" for="gatiSwitch{{ $delivery->id }}">
+                                        {!! $delivery->synced_to_third_party
+                                            ? '<span class="text-success fw-bold">Done</span>'
+                                            : '<span class="text-warning fw-bold">In Progress</span>' !!}
+                                    </label>
+                                </div>
+                            </td>
 
-                    {{-- Gati Status --}}
-                    <div class="col-md-2 col-4 mt-3 mt-md-0">
-                        <label class="d-md-none text-muted extra-small fw-bold d-block">GATI STATUS</label>
-                        @if ($delivery->status === 'delivered')
-                            <span class="badge bg-label-success extra-small px-2 py-1">Done</span>
-                        @else
-                            <span class="badge bg-label-secondary extra-small px-2 py-1">In Progress</span>
-                        @endif
-                    </div>
+                            {{-- POD --}}
+                            <td class="text-center">
+                                @if ($delivery->pod_image)
+                                    <a href="{{ $delivery->pod_image_url }}" target="_blank"
+                                        class="btn btn-sm btn-icon btn-label-info">
+                                        <i class="bx bx-image-alt fs-5"></i>
+                                    </a>
+                                @else
+                                    <span class="text-muted opacity-50"><i class="bx bx-minus"></i></span>
+                                @endif
+                            </td>
 
-                    {{-- POD --}}
-                    <div class="col-md-1 col-4 mt-3 mt-md-0 text-md-center">
-                        <label class="d-md-none text-muted extra-small fw-bold d-block">POD</label>
-                        @if ($delivery->pod_image)
-                            <a href="{{ $delivery->pod_image_url }}" target="_blank"
-                                class="btn btn-sm btn-icon btn-label-info">
-                                <i class="bx bx-image-alt fs-5"></i>
-                            </a>
-                        @else
-                            <span class="text-muted opacity-50"><i class="bx bx-minus"></i></span>
-                        @endif
-                    </div>
+                            {{-- Status --}}
+                            <td>
+                                <span class="d-flex align-items-center gap-1">
+                                    <span class="badge badge-dot bg-{{ $delivery->status_color }}"></span>
+                                    <span
+                                        class="fw-bold text-uppercase extra-small text-{{ $delivery->status_color }}">
+                                        {{ $delivery->status_text }}
+                                    </span>
+                                </span>
+                            </td>
 
-                    {{-- Status --}}
-                    <div class="col-md-2 col-4 mt-3 mt-md-0">
-                        <label class="d-md-none text-muted extra-small fw-bold d-block">STATUS</label>
-                        <span class="d-flex align-items-center gap-1">
-                            <span class="badge badge-dot bg-{{ $delivery->status_color }}"></span>
-                            <span class="fw-bold text-uppercase extra-small text-{{ $delivery->status_color }}">
-                                {{ $delivery->status }}
-                            </span>
-                        </span>
-                    </div>
+                            {{-- Driver Assignment --}}
+                            <td>
+                                <select class="form-select form-select-sm extra-small" style="max-width: 130px;"
+                                    wire:change="assignSingleDriver({{ $delivery->id }}, $event.target.value)"
+                                    wire:loading.attr="disabled">
+                                    <option value="">Select</option>
+                                    @foreach ($drivers as $driver)
+                                        <option value="{{ $driver->id }}"
+                                            {{ $delivery->driver_id == $driver->id ? 'selected' : '' }}>
+                                            {{ $driver->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </td>
 
-                    {{-- Driver Assignment --}}
-                    <div class="col-md-2 col-6 mt-3 mt-md-0">
-                        <label class="d-md-none text-muted extra-small fw-bold d-block">ASSIGN DRIVER</label>
-                        <select class="form-select form-select-sm extra-small" style="max-width: 130px;"
-                            wire:change="assignSingleDriver({{ $delivery->id }}, $event.target.value)"
-                            wire:loading.attr="disabled">
-                            <option value="">Select</option>
-                            @foreach ($drivers as $driver)
-                                <option value="{{ $driver->id }}"
-                                    {{ $delivery->driver_id == $driver->id ? 'selected' : '' }}>
-                                    {{ $driver->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                            {{-- Actions --}}
+                            <td class="text-end pe-4">
+                                <div class="d-flex justify-content-end gap-1">
+                                    <a href="{{ route('deliveries.edit', $delivery) }}"
+                                        class="btn btn-sm btn-icon btn-label-primary" title="Edit">
+                                        <i class="bx bx-edit-alt"></i>
+                                    </a>
 
-                    {{-- Actions --}}
-                    <div class="col-md-1 col-6 text-end mt-3 mt-md-0">
-                        <label class="d-md-none text-muted extra-small fw-bold d-block">ACTIONS</label>
-                        <div class="d-flex justify-content-end gap-1">
-                            <a href="{{ route('deliveries.edit', $delivery) }}"
-                                class="btn btn-sm btn-icon btn-label-primary" title="Edit">
-                                <i class="bx bx-edit-alt"></i>
-                            </a>
-
-                            <button wire:click="delete({{ $delivery->id }})" wire:confirm="Are you sure?"
-                                class="btn btn-sm btn-icon btn-label-danger" title="Delete">
-                                <i class="bx bx-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                </div>
-            @empty
-                <div class="p-5 text-center">
-                    <i class="bx bx-package display-3 text-muted opacity-50"></i>
-                    <p class="text-muted mt-3 mb-0 fs-6">
-                        @if ($search)
-                            No deliveries found matching "{{ $search }}"
-                        @else
-                            No deliveries found
-                        @endif
-                    </p>
-                </div>
-            @endforelse
-
+                                    <button wire:click="delete({{ $delivery->id }})" wire:confirm="Are you sure?"
+                                        class="btn btn-sm btn-icon btn-label-danger" title="Delete">
+                                        <i class="bx bx-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="9" class="p-5 text-center">
+                                <i class="bx bx-package display-3 text-muted opacity-50"></i>
+                                <p class="text-muted mt-3 mb-0 fs-6">
+                                    @if ($search)
+                                        No deliveries found matching "{{ $search }}"
+                                    @else
+                                        No deliveries found
+                                    @endif
+                                </p>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
 
         {{-- Pagination --}}
         @if ($deliveries->hasPages())
-            <div class="card-footer">
+            <div class="card-footer bg-white border-top py-3">
                 {{ $deliveries->links() }}
             </div>
         @endif
     </div>
 
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            flatpickr("#dateRangePicker", {
+                mode: "range",
+                dateFormat: "Y-m-d",
+                onChange: function(selectedDates, dateStr, instance) {
+                    @this.set('dateRange', dateStr);
+                }
+            });
+        });
+    </script>
+@endpush

@@ -88,17 +88,20 @@ class UploadDataSheet extends Component
                 $parts[] = "{$failures} row(s) failed.";
             }
 
-            $this->message = implode(' ', $parts) ?: 'No data rows found.';
-            $this->messageType = $success > 0 ? 'success' : ($failures > 0 ? 'danger' : 'warning');
+            $msg = implode(' ', $parts) ?: 'No data rows found.';
+            $type = $success > 0 ? 'success' : ($failures > 0 ? 'danger' : 'warning');
+
+            $this->message = $msg;
+            $this->messageType = $type;
 
             // Log System Notification
             Notification::create([
                 'type' => 'bulk_import',
-                'level' => $this->messageType === 'danger' ? Notification::LEVEL_ERROR : ($this->messageType === 'warning' ? Notification::LEVEL_WARNING : Notification::LEVEL_SUCCESS),
+                'level' => $type === 'danger' ? Notification::LEVEL_ERROR : ($type === 'warning' ? Notification::LEVEL_WARNING : Notification::LEVEL_SUCCESS),
                 'notifiable_type' => \App\Models\User::class,
                 'notifiable_id' => auth()->id(),
                 'title' => 'Bulk Import Completed',
-                'message' => 'File: "' . $this->file->getClientOriginalName() . '" - ' . $this->message,
+                'message' => 'File: "' . $this->file->getClientOriginalName() . '" - ' . $msg,
             ]);
 
             $this->reset('file');

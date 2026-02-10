@@ -28,6 +28,7 @@ class ReasonsList extends Component
         ]);
 
         $this->newReason = '';
+        session()->flash('success', 'Reason added successfully.');
         $this->dispatch('reason-added');
     }
 
@@ -36,6 +37,7 @@ class ReasonsList extends Component
         $reason = UndeliveredReason::find($id);
         if ($reason) {
             $reason->delete();
+            session()->flash('success', 'Reason deleted successfully.');
         }
     }
 

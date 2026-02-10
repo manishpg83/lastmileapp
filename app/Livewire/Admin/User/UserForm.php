@@ -40,7 +40,7 @@ class UserForm extends Component
     {
         $data = $this->validate([
             'name' => 'required|string',
-            'email' => 'required|email|unique:users,email,' . optional($this->user)->id,
+            'email' => 'nullable|email|unique:users,email,' . optional($this->user)->id,
             'phone' => 'required|numeric|unique:users,phone,' . optional($this->user)->id,
             'role' => 'required',
             'status' => 'required',
@@ -70,12 +70,13 @@ class UserForm extends Component
         // Update or create user
         if ($this->user) {
             $this->user->update($data);
+            session()->flash('success', 'User updated successfully');
         } else {
             User::create($data);
+            session()->flash('success', 'User created successfully');
         }
 
-        return redirect()->route('users.index')
-            ->with('success', 'User saved successfully');
+        return redirect()->route('users.index');
     }
 
     public function render()

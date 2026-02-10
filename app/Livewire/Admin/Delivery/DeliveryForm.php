@@ -60,15 +60,15 @@ class DeliveryForm extends Component
         $data = $this->validate();
 
         if ($this->isEdit) {
+            $data['created_at'] = now(); // Update timestamp on edit as requested
             $this->delivery->update($data);
-            $message = 'Delivery updated successfully';
+            session()->flash('message', 'Delivery updated successfully');
+            session()->flash('messageType', 'success');
         } else {
             Delivery::create($data);
-            $message = 'Delivery created successfully';
+            session()->flash('message', 'Delivery created successfully');
+            session()->flash('messageType', 'success');
         }
-
-        session()->flash('message', $message);
-        session()->flash('messageType', 'success');
 
         return redirect()->route('deliveries.index');
     }
@@ -80,11 +80,9 @@ class DeliveryForm extends Component
             'statuses' => [
                 Delivery::STATUS_PENDING => 'Pending',
                 Delivery::STATUS_ASSIGNED => 'Assigned',
-                Delivery::STATUS_IN_TRANSIT => 'In Transit',
                 Delivery::STATUS_DELIVERED => 'Delivered',
                 Delivery::STATUS_UNDELIVERED => 'Undelivered',
                 Delivery::STATUS_PASSED => 'Passed',
-                Delivery::STATUS_CANCELLED => 'Cancelled',
             ],
         ])->title($this->isEdit ? 'Edit Delivery' : 'Add Delivery');
     }

@@ -33,6 +33,7 @@
     <link rel="stylesheet" href="{{ asset('admin/css/perfect-scrollbar.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/css/apex-charts.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
     <!-- Helper JS -->
     <script src="{{ asset('admin/js/helpers.js') }}"></script>
@@ -95,6 +96,7 @@
     <script src="{{ asset('admin/js/menu.js') }}"></script>
     <script src="{{ asset('admin/js/main.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <!-- Page specific scripts -->
     @stack('scripts')

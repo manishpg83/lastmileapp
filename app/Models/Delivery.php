@@ -131,11 +131,6 @@ class Delivery extends Model
         return $query->where('status', self::STATUS_ASSIGNED);
     }
 
-    public function scopeInTransit($query)
-    {
-        return $query->where('status', self::STATUS_IN_TRANSIT);
-    }
-
     public function scopeDelivered($query)
     {
         return $query->where('status', self::STATUS_DELIVERED);
@@ -230,11 +225,9 @@ class Delivery extends Model
         $colors = [
             self::STATUS_PENDING => 'warning',
             self::STATUS_ASSIGNED => 'info',
-            self::STATUS_IN_TRANSIT => 'primary',
             self::STATUS_DELIVERED => 'success',
             self::STATUS_UNDELIVERED => 'danger',
             self::STATUS_PASSED => 'secondary',
-            self::STATUS_CANCELLED => 'dark',
         ];
 
         return $colors[$this->status] ?? 'secondary';
@@ -242,6 +235,9 @@ class Delivery extends Model
 
     public function getStatusTextAttribute()
     {
+        if ($this->status === self::STATUS_PENDING) {
+            return 'Not Assigned';
+        }
         return ucfirst(str_replace('_', ' ', $this->status));
     }
 
@@ -299,18 +295,12 @@ class Delivery extends Model
             case self::STATUS_ASSIGNED:
                 $this->assigned_at = now();
                 break;
-            case self::STATUS_IN_TRANSIT:
-                $this->started_at = now();
-                break;
             case self::STATUS_DELIVERED:
                 $this->delivered_at = now();
                 // Calculate actual duration
                 if ($this->started_at) {
                     $this->actual_duration_minutes = $this->started_at->diffInMinutes(now());
                 }
-                break;
-            case self::STATUS_CANCELLED:
-                $this->cancelled_at = now();
                 break;
         }
     }

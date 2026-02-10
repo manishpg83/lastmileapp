@@ -67,7 +67,7 @@ class User extends Authenticatable
     public function assignedDeliveries()
     {
         return $this->hasMany(Delivery::class, 'driver_id')
-            ->whereNotIn('status', ['delivered', 'cancelled']);
+            ->whereNotIn('status', ['delivered']);
     }
 
     public function deliveredToday()

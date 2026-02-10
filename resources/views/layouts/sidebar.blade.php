@@ -67,14 +67,6 @@
             </a>
         </li>
 
-        <!-- Upload Excel -->
-        <li class="menu-item {{ request()->routeIs('uploads.index') ? 'active' : '' }}">
-            <a href="{{ route('uploads.index') }}" class="menu-link">
-                <i class="menu-icon icon-base bx bx-upload"></i>
-                <div>Upload Excel</div>
-            </a>
-        </li>
-
         <!-- Deliveries -->
         <li class="menu-item {{ request()->is('deliveries*') ? 'active' : '' }}">
             <a href="{{ route('deliveries.index') }}" class="menu-link">
@@ -84,25 +76,11 @@
         </li>
 
         <!-- Users -->
-        <li class="menu-item {{ request()->is('users*') ? 'active open' : '' }}">
-            <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <li class="menu-item {{ request()->is('users*') ? 'active' : '' }}">
+            <a href="{{ route('users.index') }}" class="menu-link">
                 <i class="menu-icon icon-base bx bx-user"></i>
                 <div>Users</div>
             </a>
-
-            <ul class="menu-sub">
-                <li class="menu-item {{ request()->routeIs('users.index') ? 'active' : '' }}">
-                    <a href="{{ route('users.index') }}" class="menu-link">
-                        <div>List</div>
-                    </a>
-                </li>
-
-                <li class="menu-item {{ request()->routeIs('users.create') ? 'active' : '' }}">
-                    <a href="{{ route('users.create') }}" class="menu-link">
-                        <div>Add New</div>
-                    </a>
-                </li>
-            </ul>
         </li>
 
         <!-- Notifications -->

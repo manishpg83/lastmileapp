@@ -12,7 +12,7 @@ use Livewire\Attributes\Layout;
 class Dashboard extends Component
 {
     public $dateFilter = 'today';
-
+    protected $paginationTheme = 'bootstrap';
     public function updatedDateFilter()
     {
         $this->dispatch('dateFilterUpdated', $this->dateFilter);
@@ -36,8 +36,8 @@ class Dashboard extends Component
         $delivered = (clone $query)->where('status', 'delivered')->count();
         $undelivered = (clone $query)->where('status', 'undelivered')->count();
         
-        // In Progress = Assigned, In Transit, or Pending (everything not final)
-        $inProgress = (clone $query)->whereNotIn('status', ['delivered', 'undelivered', 'cancelled'])->count();
+        // In Progress = Assigned or Pending (everything not final)
+        $inProgress = (clone $query)->whereNotIn('status', ['delivered', 'undelivered'])->count();
 
         return view('livewire.admin.dashboard', [
             'totalDockets' => $totalDockets,

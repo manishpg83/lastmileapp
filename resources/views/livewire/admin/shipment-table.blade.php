@@ -61,20 +61,12 @@
                                     <span class="badge bg-label-danger">UNDELIVERED</span>
                                 @break
 
-                                @case('in_transit')
-                                    <span class="badge bg-label-primary">IN TRANSIT</span>
-                                @break
-
                                 @case('pending')
                                     <span class="badge bg-label-warning">PENDING</span>
                                 @break
 
                                 @case('assigned')
                                     <span class="badge bg-label-info">ASSIGNED</span>
-                                @break
-
-                                @case('cancelled')
-                                    <span class="badge bg-label-secondary">CANCELLED</span>
                                 @break
 
                                 @case('passed')

@@ -13,29 +13,26 @@
                 {{-- Profile Image --}}
                 <div class="col-md-12 text-center mb-3">
                     <div class="mb-3">
-                        @if($profile_image)
+                        @if ($profile_image)
                             <img src="{{ $profile_image->temporaryUrl() }}"
-                                 class="rounded-circle border border-3 border-light shadow-sm"
-                                 width="120"
-                                 height="120"
-                                 style="object-fit: cover;">
+                                class="rounded-circle border border-3 border-light shadow-sm" width="120"
+                                height="120" style="object-fit: cover;">
                         @elseif($existing_image)
-                            <img src="{{ asset('storage/'.$existing_image) }}"
-                                 class="rounded-circle border border-3 border-light shadow-sm"
-                                 width="120"
-                                 height="120"
-                                 style="object-fit: cover;">
+                            <img src="{{ asset('storage/' . $existing_image) }}"
+                                class="rounded-circle border border-3 border-light shadow-sm" width="120"
+                                height="120" style="object-fit: cover;">
                         @else
                             @php
                                 $displayName = $name ?? ($user ? $user->name : 'NA');
                                 $words = explode(' ', trim($displayName));
-                                $initials = count($words) >= 2 
-                                    ? strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1))
-                                    : strtoupper(substr($displayName, 0, 2));
+                                $initials =
+                                    count($words) >= 2
+                                        ? strtoupper(substr($words[0], 0, 1) . substr($words[1], 0, 1))
+                                        : strtoupper(substr($displayName, 0, 2));
                                 $bgColor = $user ? $user->avatar_color : '#6c757d';
                             @endphp
                             <div class="rounded-circle border border-3 border-light shadow-sm d-inline-flex align-items-center justify-content-center fw-bold text-white fs-2"
-                                 style="width: 120px; height: 120px; background-color: {{ $bgColor }};">
+                                style="width: 120px; height: 120px; background-color: {{ $bgColor }};">
                                 {{ $initials }}
                             </div>
                         @endif
@@ -45,39 +42,58 @@
                     </label>
                     <input type="file" wire:model="profile_image" class="d-none" id="profile_image" accept="image/*">
                     <p class="text-muted small mb-0">JPG, GIF or PNG. 1MB Max.</p>
-                    @error('profile_image') <span class="text-danger small d-block mt-1">{{ $message }}</span> @enderror
+                    @error('profile_image')
+                        <span class="text-danger small d-block mt-1">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 {{-- Name --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-control @error('name') is-invalid @enderror" wire:model="name" placeholder="Enter driver name">
-                    @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <input type="text" class="form-control @error('name') is-invalid @enderror" wire:model="name"
+                        placeholder="Enter driver name">
+                    @error('name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 {{-- Email --}}
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
-                    <input type="email" class="form-control @error('email') is-invalid @enderror" wire:model="email" placeholder="Enter email address">
-                    @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <label class="form-label fw-semibold">Email</label>
+                    <input type="email" class="form-control @error('email') is-invalid @enderror" wire:model="email"
+                        placeholder="Enter email address (optional)">
+                    @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 {{-- Phone --}}
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Phone</label>
-                    <input type="text" class="form-control @error('phone') is-invalid @enderror" wire:model="phone" placeholder="Enter phone number">
-                    @error('phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <label class="form-label fw-semibold">Phone <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control @error('phone') is-invalid @enderror" wire:model="phone"
+                        placeholder="Enter phone number">
+                    @error('phone')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 {{-- Password --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">
-                        Password 
-                        @if(!$user) <span class="text-danger">*</span> @endif
-                        @if($user) <span class="text-muted small">(Leave blank to keep current)</span> @endif
+                        Password
+                        @if (!$user)
+                            <span class="text-danger">*</span>
+                        @endif
+                        @if ($user)
+                            <span class="text-muted small">(Leave blank to keep current)</span>
+                        @endif
                     </label>
-                    <input type="password" class="form-control @error('password') is-invalid @enderror" wire:model="password" placeholder="{{ $user ? 'Enter new password or leave blank' : 'Enter password' }}">
-                    @error('password') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <input type="password" class="form-control @error('password') is-invalid @enderror"
+                        wire:model="password"
+                        placeholder="{{ $user ? 'Enter new password or leave blank' : 'Enter password' }}">
+                    @error('password')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 {{-- Role --}}
@@ -88,7 +104,9 @@
                         <option value="manager">Manager</option>
                         <option value="driver">Driver</option>
                     </select>
-                    @error('role') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    @error('role')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 {{-- Status --}}
@@ -99,21 +117,29 @@
                         <option value="inactive">Inactive</option>
                         <option value="suspended">Suspended</option>
                     </select>
-                    @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    @error('status')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 {{-- Vehicle Number --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Vehicle Number</label>
-                    <input type="text" class="form-control @error('vehicle_number') is-invalid @enderror" wire:model="vehicle_number" placeholder="Enter vehicle number">
-                    @error('vehicle_number') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <input type="text" class="form-control @error('vehicle_number') is-invalid @enderror"
+                        wire:model="vehicle_number" placeholder="Enter vehicle number">
+                    @error('vehicle_number')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 {{-- License Number --}}
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">License Number</label>
-                    <input type="text" class="form-control @error('license_number') is-invalid @enderror" wire:model="license_number" placeholder="Enter license number">
-                    @error('license_number') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                    <input type="text" class="form-control @error('license_number') is-invalid @enderror"
+                        wire:model="license_number" placeholder="Enter license number">
+                    @error('license_number')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 {{-- Action Buttons --}}
