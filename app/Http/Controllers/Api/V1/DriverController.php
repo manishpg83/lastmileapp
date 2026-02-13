@@ -23,7 +23,9 @@ class DriverController extends Controller
 
         $deliveriesCount = Delivery::where('driver_id', $request->user()->id)
             ->whereDate('assigned_at', today())
+            ->whereIn('status', ['assigned', 'passed'])
             ->count();
+
 
         return response()->json([
             'success' => true,
