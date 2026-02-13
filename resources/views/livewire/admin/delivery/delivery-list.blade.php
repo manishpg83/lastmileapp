@@ -210,7 +210,7 @@
                                 <span class="d-flex align-items-center gap-1">
                                     <span class="badge badge-dot bg-{{ $delivery->status_color }}"></span>
                                     <span
-                                        class="text-uppercase extra-small text-{{ $delivery->status_color }}">
+                                        class="extra-small text-{{ $delivery->status_color }}">
                                         {{ $delivery->status_text }}
                                     </span>
                                 </span>
