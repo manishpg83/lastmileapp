@@ -24,19 +24,17 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
-
-                {{-- Status --}}
+                {{-- Package Details --}}
                 <div class="col-md-6">
-                    <label class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
-                    <select class="form-select @error('status') is-invalid @enderror" wire:model="status">
-                        @foreach ($statuses as $value => $label)
-                            <option value="{{ $value }}">{{ $label }}</option>
-                        @endforeach
-                    </select>
-                    @error('status')
+                    <label class="form-label fw-semibold">Package Details</label>
+                    <input type="text" class="form-control @error('package') is-invalid @enderror"
+                        wire:model="package" placeholder="Enter package details">
+                    @error('package')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+
+                
 
                 <div class="col-12 mt-4 bg-label-primary p-3 rounded mb-2">
                     <h6 class="mb-0 text-primary fw-bold"><i class="bx bx-user me-1"></i> Customer & Assignment</h6>
@@ -68,6 +66,19 @@
                     <input type="text" class="form-control @error('company_name') is-invalid @enderror"
                         wire:model="company_name" placeholder="Enter company name">
                     @error('company_name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                {{-- Status --}}
+                <div class="col-md-6">
+                    <label class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
+                    <select class="form-select @error('status') is-invalid @enderror" wire:model="status">
+                        @foreach ($statuses as $value => $label)
+                            <option value="{{ $value }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    @error('status')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>

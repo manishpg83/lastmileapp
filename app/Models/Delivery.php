@@ -39,6 +39,7 @@ class Delivery extends Model
         'address',
         'pincode',
         'phone',
+        'package',
         'email',
         'notes',
         'driver_id',

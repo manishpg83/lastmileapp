@@ -34,11 +34,12 @@ class DeliveriesImport implements ToCollection, WithHeadingRow
             $rowNumber = $index + 2;
 
             $customerName = $this->getRowValue($row, ['customer_name', 'customer name']);
+            $companyName = $this->getRowValue($row, ['company_name', 'company name']);
             $docketNumber = $this->getRowValue($row, ['docket_number', 'docket number']);
             $address = $this->getRowValue($row, ['delivery_address', 'delivery address', 'address']);
             $phone = $this->getRowValue($row, ['phone_number', 'phone number', 'phone']);
             $pincode = $this->getRowValue($row, ['pincode', 'pin_code', 'pin code']);
-            $weight = $this->getRowValue($row, ['weight', 'weight (kg)', 'weight_kg', 'kg']);
+            $package = $this->getRowValue($row, ['package', 'pkg', 'Pkg', 'Package']);
 
             if ($index < 2) {
                 Log::channel('single')->info("DeliveriesImport: row {$rowNumber} extracted", [
@@ -47,7 +48,7 @@ class DeliveriesImport implements ToCollection, WithHeadingRow
                     'address' => $address,
                     'phone' => $phone,
                     'pincode' => $pincode,
-                    'weight' => $weight,
+                    'package' => $package,
                 ]);
             }
 
@@ -61,6 +62,9 @@ class DeliveriesImport implements ToCollection, WithHeadingRow
             if (blank($customerName)) {
                 $missing[] = 'Customer Name';
             }
+            if (blank($companyName)) {
+                $missing[] = 'Company Name';
+            }
             if (blank($docketNumber)) {
                 $missing[] = 'Docket Number';
             }
@@ -72,6 +76,9 @@ class DeliveriesImport implements ToCollection, WithHeadingRow
             }
             if (blank($pincode)) {
                 $missing[] = 'Pincode';
+            }
+            if (blank($package)) {
+                $missing[] = 'Package';
             }
 
             if (! empty($missing)) {
@@ -97,7 +104,8 @@ class DeliveriesImport implements ToCollection, WithHeadingRow
                     'address' => (string) $address,
                     'pincode' => $pincode !== null ? (string) $pincode : null,
                     'phone' => (string) $phone,
-                    'weight' => $weight ? (float) filter_var($weight, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : null,
+                    'package' => $package,
+                    //'weight' => $weight ? (float) filter_var($weight, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION) : null,
                     'status' => Delivery::STATUS_PENDING,
                 ]);
                 $this->successCount++;

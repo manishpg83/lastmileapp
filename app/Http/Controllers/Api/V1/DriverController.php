@@ -129,8 +129,12 @@ class DriverController extends Controller
             ->orderBy('customer_name');
 
             $deliveriesRaw = $query->get();
-            $deliveryCount = $deliveriesRaw->count();
             $deliveries = $deliveriesRaw->groupBy('customer_name');
+
+            $deliveryCount = Delivery::where('driver_id', $loggedInUserId)
+            ->whereDate('assigned_at', today())
+            ->whereIn('status', ['assigned', 'passed'])
+            ->count();
 
             return response()->json([
                 'success' => true,

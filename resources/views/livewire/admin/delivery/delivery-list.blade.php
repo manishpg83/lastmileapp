@@ -22,10 +22,13 @@
 
 
                 {{-- Date Range Filter --}}
-                <div class="input-group" style="max-width: 250px;" wire:ignore>
+                <div class="input-group" style="max-width: 300px;" wire:ignore>
                     <span class="input-group-text"><i class="bx bx-calendar"></i></span>
-                    <input type="text" id="dateRangePicker" class="form-control" placeholder="Select Date Range"
-                        wire:model.live="dateRange">
+                    <input type="text" id="dateRangePicker" class="form-control"
+                        placeholder="Select Date Range">
+                    <button type="button" class="btn btn-outline-secondary" id="resetDate">
+                        Reset
+                    </button>
                 </div>
 
                 {{-- Search Box --}}
@@ -120,12 +123,13 @@
             <table class="table table-hover align-middle mb-0 bg-white" style="min-width: 1200px;">
                 <thead class="bg-white border-bottom">
                     <tr class="text-muted extra-small text-uppercase fw-semibold">
-                        <th style="width: 50px;" class="ps-4">
+                        <th style="width: 30px;" class="ps-4">
                             <input class="form-check-input" type="checkbox" wire:model.live="selectAll">
                         </th>
                         <th style="width: 200px;">DETAILS</th>
-                        <th style="width: 200px;">DATE</th>
+                        <th style="width: 150px;">DATE</th>
                         <th style="width: 200px;">DOCKET / PHONE</th>
+                        <th style="width: 40px;">Pkg</th>
                         <th style="width: 150px;">GATI STATUS</th>
                         <th style="width: 100px;" class="text-center">POD</th>
                         <th style="width: 150px;">STATUS</th>
@@ -133,7 +137,7 @@
                         <th style="width: 100px;" class="text-end pe-4">ACTIONS</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="font-size: 0.875rem;">
 
                     {{-- Rows --}}
                     @forelse($deliveries as $delivery)
@@ -163,12 +167,17 @@
                             {{-- Docket / Phone --}}
                             <td>
                                 <div class="d-flex flex-column">
-                                    <span class="text-dark fw-bold extra-small">{{ $delivery->docket_number }}</span>
+                                    <span class="text-dark extra-small">{{ $delivery->docket_number }}</span>
                                     <small class="text-muted extra-small"><i
                                             class="bx bx-phone-call me-1"></i>{{ $delivery->phone }}</small>
                                 </div>
                             </td>
-
+                             {{-- Package --}}
+                            <td>
+                                <span class="text-dark extra-small">
+                                    {{ $delivery->package }}
+                                </span>
+                            </td>
                             {{-- Gati Status --}}
                             <td>
                                 <div class="form-check form-switch d-flex align-items-center gap-2">
@@ -178,8 +187,8 @@
                                         wire:click="toggleGatiStatus({{ $delivery->id }})">
                                     <label class="form-check-label extra-small" for="gatiSwitch{{ $delivery->id }}">
                                         {!! $delivery->synced_to_third_party
-                                            ? '<span class="text-success fw-bold">Done</span>'
-                                            : '<span class="text-warning fw-bold">In Progress</span>' !!}
+                                            ? '<span class="text-success">Done</span>'
+                                            : '<span class="text-warning">In Progress</span>' !!}
                                     </label>
                                 </div>
                             </td>
@@ -201,7 +210,7 @@
                                 <span class="d-flex align-items-center gap-1">
                                     <span class="badge badge-dot bg-{{ $delivery->status_color }}"></span>
                                     <span
-                                        class="fw-bold text-uppercase extra-small text-{{ $delivery->status_color }}">
+                                        class="text-uppercase extra-small text-{{ $delivery->status_color }}">
                                         {{ $delivery->status_text }}
                                     </span>
                                 </span>
@@ -268,12 +277,18 @@
 @push('scripts')
     <script>
         document.addEventListener('livewire:initialized', () => {
-            flatpickr("#dateRangePicker", {
+            const resetBtn = document.getElementById('resetDate');
+            const picker = flatpickr("#dateRangePicker", {
                 mode: "range",
                 dateFormat: "Y-m-d",
                 onChange: function(selectedDates, dateStr, instance) {
                     @this.set('dateRange', dateStr);
                 }
+            });
+
+             resetBtn.addEventListener('click', function () {
+                picker.clear(); // Clear UI
+                @this.set('dateRange', null);   // Reset Livewire property
             });
         });
     </script>

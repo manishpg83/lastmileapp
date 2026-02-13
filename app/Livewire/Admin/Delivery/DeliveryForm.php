@@ -20,6 +20,7 @@ class DeliveryForm extends Component
     public $address;
     public $pincode;
     public $phone;
+    public $package;
     public $email;
     public $notes;
     public $driver_id;
@@ -52,6 +53,7 @@ class DeliveryForm extends Component
             'driver_id' => 'nullable|exists:users,id',
             'status' => 'required|string',
             'assigned_at' => 'nullable',
+            'package' => 'nullable',
         ];
     }
 
@@ -61,6 +63,12 @@ class DeliveryForm extends Component
 
         if ($this->isEdit) {
             $data['created_at'] = now(); // Update timestamp on edit as requested
+            if ($data['status'] === Delivery::STATUS_ASSIGNED && $this->delivery->status !== Delivery::STATUS_ASSIGNED) {
+                $data['assigned_at'] = now();
+            } elseif ($data['status'] !== Delivery::STATUS_ASSIGNED) {
+                $data['driver_id'] = null;
+                $data['assigned_at'] = null;
+            }
             $this->delivery->update($data);
             session()->flash('message', 'Delivery updated successfully');
             session()->flash('messageType', 'success');

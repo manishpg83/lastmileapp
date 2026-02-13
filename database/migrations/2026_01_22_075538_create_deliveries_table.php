@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('company_name');
             $table->text('address');
             $table->string('phone');
+            $table->string('package')->nullable()->default('1');;
             $table->string('email')->nullable();
             $table->text('notes')->nullable();
             // Foreign keys

@@ -35,6 +35,11 @@ class DeliveryList extends Component
         $this->resetPage();
     }
 
+    public function resetDateRange()
+    {
+        $this->dateRange = '';
+    }
+
     public function updatedSelectAll($value)
     {
         if ($value) {

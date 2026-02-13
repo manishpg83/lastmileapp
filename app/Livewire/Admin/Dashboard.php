@@ -44,7 +44,7 @@ class Dashboard extends Component
             'delivered' => $delivered,
             'undelivered' => $undelivered,
             'inProgress' => $inProgress,
-            'dateFilter' => $this->dateFilter,
+            //'dateFilter' => $this->dateFilter,
         ]);
     }
 }

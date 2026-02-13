@@ -24,7 +24,7 @@
             <div class="row g-3 mb-4 align-items-center">
                 <div class="col-12 col-lg-7">
                     <div class="nav-align-top">
-                        <ul class="nav nav-pills flex-nowrap overflow-auto pb-2 gap-2 no-scrollbar" role="tablist"
+                        {{--<ul class="nav nav-pills flex-nowrap overflow-auto pb-2 gap-2 no-scrollbar" role="tablist"
                             style="scrollbar-width: none;">
                             <li class="nav-item">
                                 <button type="button"
@@ -51,7 +51,7 @@
                                     class="btn btn-sm btn-filter {{ $filter === 'info' ? 'active btn-info' : 'btn-label-info' }} text-nowrap"
                                     wire:click="setFilter('info')">Info</button>
                             </li>
-                        </ul>
+                        </ul>--}}
                     </div>
                 </div>
                 <div class="col-12 col-lg-5">
@@ -85,7 +85,7 @@
                             <!-- Content -->
                             <div class="flex-grow-1">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <div class="d-flex align-items-center gap-2">
+                                    {{--<div class="d-flex align-items-center gap-2">
                                         <span
                                             class="badge bg-label-{{ $notification->border_color }} text-uppercase fw-bold label-badge"
                                             style="font-size: 0.65rem; letter-spacing: 0.5px;">
@@ -94,7 +94,7 @@
                                         @if ($notification->isUnread())
                                             <span class="badge badge-dot bg-primary pulse-animation"></span>
                                         @endif
-                                    </div>
+                                    </div>--}}
                                     <small class="text-muted fw-medium">{{ $notification->time_ago }}</small>
                                 </div>
                                 <h6 class="mb-1 {{ $notification->isUnread() ? 'fw-bold text-dark' : 'text-body' }}">

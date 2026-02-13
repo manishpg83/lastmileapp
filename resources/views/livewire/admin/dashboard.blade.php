@@ -92,7 +92,7 @@
 
         <!-- Shipment Lifecycle Table -->
         <div class="col-12">
-            <livewire:admin.shipment-table :dateFilter="$dateFilter" />
+            {{-- <livewire:admin.shipment-table :dateFilter="$dateFilter" /> --}}
         </div>
         <!--/ Shipment Lifecycle Table -->
 

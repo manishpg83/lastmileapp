@@ -22,8 +22,10 @@ class DeliveriesExport implements FromCollection, WithHeadings, WithMapping
         return [
             'Docket Number',
             'Customer Name',
+            'Company Name',
             'Phone',
             'Pincode',
+            'Package',
             'Driver',
             'Status',
             'Gati Status',
@@ -36,8 +38,10 @@ class DeliveriesExport implements FromCollection, WithHeadings, WithMapping
         return [
             $delivery->docket_number,
             $delivery->customer_name,
+            $delivery->company_name,
             $delivery->phone,
             $delivery->pincode,
+            $delivery->package,
             $delivery->driver ? $delivery->driver->name : 'Unassigned',
             ucfirst(str_replace('_', ' ', $delivery->status)),
             $delivery->status === 'delivered' ? 'Done' : 'In Progress',

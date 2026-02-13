@@ -39,11 +39,15 @@
                         <ul class="list-unstyled mb-0">
                             <li class="d-flex align-items-center mb-2">
                                 <i class="bx bx-check-circle text-success me-2"></i>
-                                Customer Name
+                                Docket Number
                             </li>
                             <li class="d-flex align-items-center mb-2">
                                 <i class="bx bx-check-circle text-success me-2"></i>
-                                Docket Number
+                                Customer Name
+                            </li>
+                             <li class="d-flex align-items-center mb-2">
+                                <i class="bx bx-check-circle text-success me-2"></i>
+                                Company Name
                             </li>
                             <li class="d-flex align-items-center mb-2">
                                 <i class="bx bx-check-circle text-success me-2"></i>
@@ -57,9 +61,13 @@
                                 <i class="bx bx-check-circle text-success me-2"></i>
                                 Pincode
                             </li>
+                            <li class="d-flex align-items-center mb-2">
+                                <i class="bx bx-check-circle text-success me-2"></i>
+                                Pkg
+                            </li>
                         </ul>
                         <p class="small text-body-secondary mt-2">
-                            <a href="{{ asset('demo-deliveries.csv') }}" download class="text-primary">Download sample CSV</a>
+                            <a href="{{ asset('demo-deliveries.xlsx') }}" download class="text-primary">Download sample Excel</a>
                         </p>
                     </div>
                     <div class="col-md-6">
