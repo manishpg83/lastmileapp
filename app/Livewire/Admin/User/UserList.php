@@ -7,6 +7,7 @@ use App\Models\User;
 use Livewire\Attributes\Layout;
 use Livewire\WithPagination;
 
+
 #[Layout('layouts.app')]
 class UserList extends Component
 {
