@@ -164,7 +164,7 @@ class DriverController extends Controller
             $loggedInUserId = $request->user()->id;
 
             // Fetch deliveries passed by this driver TODAY
-            $passedDeliveryIds = DeliveryStatusHistory::where('changed_by', $loggedInUserId)
+            /* $passedDeliveryIds = DeliveryStatusHistory::where('changed_by', $loggedInUserId)
                 ->where('new_status', Delivery::STATUS_PASSED)
                 ->whereDate('created_at', today()) // Can add date filter if needed
                 ->pluck('delivery_id');
@@ -186,7 +186,24 @@ class DriverController extends Controller
                     $d->status = Delivery::STATUS_PASSED;
 
                     return $d;
-                });
+                }); */
+                $passedDeliveries = Delivery::select(
+                    'deliveries.customer_name',
+                    'deliveries.id',
+                    'deliveries.company_name',
+                    'deliveries.address',
+                    'deliveries.docket_number',
+                    'deliveries.phone',
+                    'deliveries.driver_id',
+                    'deliveries.status'
+                )
+                ->join('delivery_status_history as dsh', 'dsh.delivery_id', '=', 'deliveries.id')
+                ->where('dsh.changed_by', $loggedInUserId)
+                ->where('dsh.new_status', Delivery::STATUS_PASSED)
+                ->whereDate('dsh.created_at', today())
+                ->where('deliveries.status', Delivery::STATUS_PASSED)
+                ->distinct()
+                ->get();
 
             return response()->json([
                 'success' => true,
