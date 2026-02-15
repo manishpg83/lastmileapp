@@ -133,7 +133,7 @@ class DriverController extends Controller
             ->orderBy('customer_name')
             ->get();
             
-            $deliveries = $deliveriesRaw
+            /* $deliveries = $deliveriesRaw
             ->map(function ($delivery) {
                 if ($delivery->status === Delivery::STATUS_PASSED) {
                     $delivery->passed_driver_name = optional($delivery->driver)->name;
@@ -143,17 +143,11 @@ class DriverController extends Controller
 
                 return $delivery;
             })
-            ->groupBy('customer_name');
+            ->groupBy('customer_name'); */
 
-             /* $deliveries = $query->groupBy('customer_name')->map(function ($group) {
+             $deliveries = $deliveriesRaw->groupBy('customer_name')->map(function ($group) {
                 return [
                     'customer_name' => $group->first()->customer_name,
-                    'company_name' => $group->first()->company_name,
-                    'address' => $group->first()->address,
-                    'docket_number' => $group->first()->docket_number,
-                    'phone' => $group->first()->phone,
-                    'driver_id' => $group->first()->driver_id,
-                    'status' => $group->first()->status,
                     'deliveries' => $group->map(function ($item) {
                         return [
                             'id' => $item->id,
@@ -163,11 +157,12 @@ class DriverController extends Controller
                             'docket_number' => $item->docket_number,
                             'phone' => $item->phone,
                             'driver_id' => $item->driver_id,
+                            'driver_name' => optional($item->driver)->name,
                             'status' => $item->status,
                         ];
                     }),
                 ];
-            })->values(); */
+            })->values();
 
            /*  ->where('driver_id', $loggedInUserId)
             ->whereDate('assigned_at', today()) // assigned_at
