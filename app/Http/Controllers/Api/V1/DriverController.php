@@ -125,9 +125,9 @@ class DriverController extends Controller
                 'docket_number',
                 'phone',
                 'driver_id',
-                'status'
+                'status',
+                'notes' 
             )
-            ->with('driver:id,name') // 👈 load driver name
             ->where('driver_id', $loggedInUserId)
             ->whereDate('assigned_at', today())
             ->orderBy('customer_name')
@@ -157,7 +157,7 @@ class DriverController extends Controller
                             'docket_number' => $item->docket_number,
                             'phone' => $item->phone,
                             'driver_id' => $item->driver_id,
-                            'driver_name' => optional($item->driver)->name,
+                            'notes' => $item->notes,
                             'status' => $item->status,
                         ];
                     }),
@@ -232,7 +232,8 @@ class DriverController extends Controller
                     'deliveries.docket_number',
                     'deliveries.phone',
                     'deliveries.driver_id',
-                    'deliveries.status'
+                    'deliveries.status',
+                    'dsh.notes'
                 )
                 ->join('delivery_status_history as dsh', 'dsh.delivery_id', '=', 'deliveries.id')
                 ->where('dsh.changed_by', $loggedInUserId)
@@ -494,9 +495,11 @@ class DriverController extends Controller
             $status = Delivery::STATUS_PASSED;
             
             $delivery->status = $status;
+            $delivery->note = 'Passed By '.$request->user()->name;
+
             
             $delivery->updateStatus($status, $request->user()->id, 
-                "Passed to driver ID: {$request->new_driver_id}");
+                "Passed to {$delivery->driver->name}");
             
             // Notify new driver
             //event(new DeliveryAssigned($delivery));
@@ -514,7 +517,7 @@ class DriverController extends Controller
                 'customer_name' => $delivery->customer_name,
                 'title'         => $title,
                 'message'       => $message,
-                'read_at'      => null,
+                'read_at'       => null,
             ];
             $this->notificationlog($data);
 
