@@ -117,7 +117,7 @@ class DriverController extends Controller
                 return response()->json(['message' => 'Unauthorized'], 403);
             }
             $loggedInUserId = $request->user()->id;
-            $query = Delivery::select(
+            $deliveriesRaw = Delivery::select(
                 'customer_name',
                 'id',
                 'company_name',
@@ -127,12 +127,54 @@ class DriverController extends Controller
                 'driver_id',
                 'status'
             )
+            ->with('driver:id,name') // 👈 load driver name
             ->where('driver_id', $loggedInUserId)
+            ->whereDate('assigned_at', today())
+            ->orderBy('customer_name')
+            ->get();
+            
+            $deliveries = $deliveriesRaw
+            ->map(function ($delivery) {
+                if ($delivery->status === Delivery::STATUS_PASSED) {
+                    $delivery->passed_driver_name = optional($delivery->driver)->name;
+                } else {
+                    $delivery->passed_driver_name = null;
+                }
+
+                return $delivery;
+            })
+            ->groupBy('customer_name');
+
+             /* $deliveries = $query->groupBy('customer_name')->map(function ($group) {
+                return [
+                    'customer_name' => $group->first()->customer_name,
+                    'company_name' => $group->first()->company_name,
+                    'address' => $group->first()->address,
+                    'docket_number' => $group->first()->docket_number,
+                    'phone' => $group->first()->phone,
+                    'driver_id' => $group->first()->driver_id,
+                    'status' => $group->first()->status,
+                    'deliveries' => $group->map(function ($item) {
+                        return [
+                            'id' => $item->id,
+                            'customer_name' => $item->customer_name,
+                            'company_name' => $item->company_name,
+                            'address' => $item->address,
+                            'docket_number' => $item->docket_number,
+                            'phone' => $item->phone,
+                            'driver_id' => $item->driver_id,
+                            'status' => $item->status,
+                        ];
+                    }),
+                ];
+            })->values(); */
+
+           /*  ->where('driver_id', $loggedInUserId)
             ->whereDate('assigned_at', today()) // assigned_at
             ->orderBy('customer_name');
 
-            $deliveriesRaw = $query->get();
-            $deliveries = $deliveriesRaw->groupBy('customer_name');
+            $deliveriesRaw1 = $deliveriesRaw->get();
+            $deliveries = $deliveriesRaw1->groupBy('customer_name'); */
 
             $deliveryCount = Delivery::where('driver_id', $loggedInUserId)
             ->whereDate('assigned_at', today())
