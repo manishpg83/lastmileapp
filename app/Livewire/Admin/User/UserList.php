@@ -27,6 +27,11 @@ class UserList extends Component
     public function delete($id)
     {
         $user = User::findOrFail($id);
+
+        if ($user->isSuperAdmin() || \Illuminate\Support\Str::contains(strtolower($user->name), 'superadmin') || \Illuminate\Support\Str::contains(strtolower($user->email), 'superadmin')) {
+            session()->flash('error', 'Super Admin cannot be deleted.');
+            return;
+        }
         
         // Delete profile image if exists
         if ($user->profile_image) {
