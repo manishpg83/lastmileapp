@@ -115,12 +115,28 @@ class DeliveryList extends Component
             return;
         }
 
-        Delivery::whereIn('id', $this->selectedDeliveries)->delete();
+        $deliveries = Delivery::whereIn('id', $this->selectedDeliveries)->get();
+
+        foreach ($deliveries as $delivery) {
+            // Cleanup related data
+            \App\Models\DeliveryTimer::where('delivery_id', $delivery->id)->delete();
+            \App\Models\Notification::where('delivery_id', $delivery->id)->delete();
+            
+            // Delete images
+            if ($delivery->pod_image) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete('pod/' . $delivery->pod_image);
+            }
+            if ($delivery->signature_image) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete('signatures/' . $delivery->signature_image);
+            }
+
+            $delivery->forceDelete();
+        }
 
         $this->selectedDeliveries = [];
         $this->selectAll = false;
 
-        session()->flash('message', 'Selected deliveries deleted successfully');
+        session()->flash('message', 'Selected deliveries and their related data deleted permanently');
         session()->flash('messageType', 'success');
     }
 
@@ -180,9 +196,22 @@ class DeliveryList extends Component
     public function delete($id)
     {
         $delivery = Delivery::findOrFail($id);
-        $delivery->delete();
         
-        session()->flash('message', 'Delivery deleted successfully');
+        // Cleanup related data
+        \App\Models\DeliveryTimer::where('delivery_id', $delivery->id)->delete();
+        \App\Models\Notification::where('delivery_id', $delivery->id)->delete();
+        
+        // Delete images
+        if ($delivery->pod_image) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete('pod/' . $delivery->pod_image);
+        }
+        if ($delivery->signature_image) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete('signatures/' . $delivery->signature_image);
+        }
+
+        $delivery->forceDelete();
+        
+        session()->flash('message', 'Delivery and its related data deleted permanently');
         session()->flash('messageType', 'success');
     }
 
