@@ -233,7 +233,7 @@ class DriverController extends Controller
                     'deliveries.phone',
                     'deliveries.driver_id',
                     'deliveries.status',
-                    'dsh.notes'
+                    'dsh.note as notes'
                 )
                 ->join('delivery_status_history as dsh', 'dsh.delivery_id', '=', 'deliveries.id')
                 ->where('dsh.changed_by', $loggedInUserId)
@@ -495,7 +495,7 @@ class DriverController extends Controller
             $status = Delivery::STATUS_PASSED;
             
             $delivery->status = $status;
-            $delivery->note = 'Passed By '.$request->user()->name;
+            $delivery->notes = 'Passed By '.$request->user()->name;
 
             
             $delivery->updateStatus($status, $request->user()->id, 
