@@ -10,7 +10,8 @@
     @endif
 
     <div class="card">
-        <div class="card-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 py-3">
+        <div
+            class="card-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 py-3">
             <h4 class="mb-0 fw-bold">Drivers</h4>
 
             <div class="d-flex flex-column flex-sm-row gap-2 align-items-stretch align-items-sm-center w-100 w-md-auto">
@@ -54,8 +55,8 @@
                     <div class="col-md-3 col-6 d-flex align-items-center gap-3">
                         {{-- Avatar with initials fallback --}}
                         @if ($user->profile_image_url)
-                            <img src="{{ $user->profile_image_url }}" class="rounded-circle border border-2"
-                                width="44" height="44" style="object-fit: cover;" alt="{{ $user->name }}">
+                            <img src="{{ $user->profile_image_url }}" class="rounded-circle border border-2" width="44"
+                                height="44" style="object-fit: cover;" alt="{{ $user->name }}">
                         @else
                             <div class="rounded-circle border border-2 d-flex align-items-center justify-content-center fw-bold text-white extra-small"
                                 style="width: 44px; height: 44px; background-color: {{ $user->avatar_color }};">
@@ -113,6 +114,12 @@
                                 title="Edit Driver">
                                 <i class="bx bx-edit fs-6"></i>
                             </a>
+
+                            <button wire:click="logout({{ $user->id }})"
+                                wire:confirm="Are you sure you want to log out this user from all sessions?"
+                                class="btn btn-sm btn-outline-warning" title="Revoke Sessions">
+                                <i class="bx bx-log-out-circle fs-6"></i>
+                            </button>
 
                             <button wire:click="delete({{ $user->id }})"
                                 wire:confirm="Are you sure you want to delete this driver?"

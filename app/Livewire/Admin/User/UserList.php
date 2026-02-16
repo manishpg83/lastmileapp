@@ -37,6 +37,28 @@ class UserList extends Component
         session()->flash('success', 'User deleted successfully');
     }
 
+    public function logout($id)
+    {
+        $user = User::findOrFail($id);
+        
+        // Revoke Sanctum tokens
+        $user->tokens()->delete();
+
+        // Rotate remember token
+        $user->forceFill([
+            'remember_token' => \Illuminate\Support\Str::random(60),
+        ])->save();
+
+        // Invalidate sessions
+        if (config('session.driver') === 'database') {
+            \Illuminate\Support\Facades\DB::table(config('session.table', 'sessions'))
+                ->where('user_id', $user->id)
+                ->delete();
+        }
+        
+        session()->flash('success', 'User sessions revoked successfully');
+    }
+
     public function render()
     {
         $query = User::query();
