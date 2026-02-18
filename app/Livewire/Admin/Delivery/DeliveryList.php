@@ -56,7 +56,7 @@ class DeliveryList extends Component
             }
             
             $this->selectedDeliveries = $query->latest()
-                ->paginate(10) // Match pagination size
+                ->paginate(50) // Match pagination size
                 ->pluck('id')
                 ->map(fn($id) => (string) $id)
                 ->toArray();
@@ -248,7 +248,7 @@ class DeliveryList extends Component
         $drivers = \App\Models\User::drivers()->active()->get();
 
         return view('livewire.admin.delivery.delivery-list', [
-            'deliveries' => $query->latest()->paginate(10),
+            'deliveries' => $query->latest()->paginate(50),
             'drivers' => $drivers
         ])->title('Deliveries List');
     }

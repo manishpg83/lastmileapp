@@ -82,7 +82,7 @@ class UserList extends Component
         }
 
         return view('livewire.admin.user.user-list', [
-            'users' => $query->latest()->paginate(10),
+            'users' => $query->latest()->paginate(50),
         ]);
     }
 }
