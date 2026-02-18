@@ -2,11 +2,10 @@
 
 namespace App\Livewire\Admin\User;
 
-use Livewire\Component;
 use App\Models\User;
 use Livewire\Attributes\Layout;
+use Livewire\Component;
 use Livewire\WithPagination;
-
 
 #[Layout('layouts.app')]
 class UserList extends Component
@@ -16,7 +15,7 @@ class UserList extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $search = '';
-    
+
     protected $queryString = ['search'];
 
     public function updatingSearch()
@@ -27,20 +26,26 @@ class UserList extends Component
     public function delete($id)
     {
         $user = User::findOrFail($id);
-        
+
+        if ($user->isSuperAdmin() || \Illuminate\Support\Str::contains(strtolower($user->name), 'superadmin') || \Illuminate\Support\Str::contains(strtolower($user->email), 'superadmin')) {
+            session()->flash('error', 'Super Admin cannot be deleted.');
+
+            return;
+        }
+
         // Delete profile image if exists
         if ($user->profile_image) {
             \Storage::disk('public')->delete($user->profile_image);
         }
-        
-        $user->delete();
-        session()->flash('success', 'User deleted successfully');
+
+        $user->forceDelete();
+        session()->flash('success', 'User deleted permanently');
     }
 
     public function logout($id)
     {
         $user = User::findOrFail($id);
-        
+
         // Revoke Sanctum tokens
         $user->tokens()->delete();
 
@@ -55,7 +60,7 @@ class UserList extends Component
                 ->where('user_id', $user->id)
                 ->delete();
         }
-        
+
         session()->flash('success', 'User sessions revoked successfully');
     }
 
@@ -65,14 +70,14 @@ class UserList extends Component
 
         if ($this->search) {
             // Search in all fields
-            $query->where(function($q) {
-                $q->where('name', 'like', '%' . $this->search . '%')
-                  ->orWhere('email', 'like', '%' . $this->search . '%')
-                  ->orWhere('phone', 'like', '%' . $this->search . '%')
-                  ->orWhere('vehicle_number', 'like', '%' . $this->search . '%')
-                  ->orWhere('license_number', 'like', '%' . $this->search . '%')
-                  ->orWhere('role', 'like', '%' . $this->search . '%')
-                  ->orWhere('status', 'like', '%' . $this->search . '%');
+            $query->where(function ($q) {
+                $q->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('email', 'like', '%'.$this->search.'%')
+                    ->orWhere('phone', 'like', '%'.$this->search.'%')
+                    ->orWhere('vehicle_number', 'like', '%'.$this->search.'%')
+                    ->orWhere('license_number', 'like', '%'.$this->search.'%')
+                    ->orWhere('role', 'like', '%'.$this->search.'%')
+                    ->orWhere('status', 'like', '%'.$this->search.'%');
             });
         }
 

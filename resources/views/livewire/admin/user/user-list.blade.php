@@ -9,6 +9,14 @@
         </div>
     @endif
 
+    @if (session()->has('error'))
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bx bx-error-circle me-2"></i>
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="card">
         <div
             class="card-header d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 py-3">
@@ -121,11 +129,13 @@
                                 <i class="bx bx-log-out-circle fs-6"></i>
                             </button>
 
-                            <button wire:click="delete({{ $user->id }})"
-                                wire:confirm="Are you sure you want to delete this driver?"
-                                class="btn btn-sm btn-outline-danger" title="Delete Driver">
-                                <i class="bx bx-trash fs-6"></i>
-                            </button>
+                            @if (!$user->isSuperAdmin() && !Illuminate\Support\Str::contains(strtolower($user->name), 'superadmin') && !Illuminate\Support\Str::contains(strtolower($user->email), 'superadmin'))
+                                <button wire:click="delete({{ $user->id }})"
+                                    wire:confirm="Are you sure you want to delete this driver?"
+                                    class="btn btn-sm btn-outline-danger" title="Delete Driver">
+                                    <i class="bx bx-trash fs-6"></i>
+                                </button>
+                            @endif
                         </div>
                     </div>
 
