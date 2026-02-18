@@ -130,9 +130,9 @@
                         <th style="width: 150px;">DATE</th>
                         <th style="width: 200px;">DOCKET / PHONE</th>
                         <th style="width: 40px;">Pkg</th>
-                        <th style="width: 150px;">GATI STATUS</th>
+                        <th style="width: 150px;">Partner Status</th>
                         <th style="width: 100px;" class="text-center">POD</th>
-                        <th style="width: 150px;">STATUS</th>
+                        <th style="width: 150px;">Delivery Status</th>
                         <th style="width: 200px;">ASSIGN DRIVER</th>
                         <th style="width: 100px;" class="text-end pe-4">ACTIONS</th>
                     </tr>
