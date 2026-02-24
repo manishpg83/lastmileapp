@@ -91,9 +91,9 @@
         <!--/ Dashboard Cards -->
 
         <!-- Shipment Lifecycle Table -->
-        <!-- <div class="col-12">
-            <livewire:admin.shipment-table :dateFilter="$dateFilter" />
-        </div> -->
+        <div class="col-12">
+            <!-- <livewire:admin.shipment-table :dateFilter="$dateFilter" /> -->
+        </div>
         <!--/ Shipment Lifecycle Table -->
 
     </div>
