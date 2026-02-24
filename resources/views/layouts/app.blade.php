@@ -34,6 +34,9 @@
     <link rel="stylesheet" href="{{ asset('admin/css/apex-charts.css') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css">
 
     <!-- Helper JS -->
     <script src="{{ asset('admin/js/helpers.js') }}"></script>
@@ -97,6 +100,7 @@
     <script src="{{ asset('admin/js/main.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <!-- Page specific scripts -->
     @stack('scripts')
@@ -141,6 +145,115 @@
             color: #666 !important;
             line-height: 1.4 !important;
         }
+
+        /* Select2 Premium Modern UI Overhaul */
+        .select2-container--bootstrap-5 .select2-selection--multiple {
+            min-height: 42px !important;
+            max-height: 120px !important;
+            overflow-y: auto !important;
+            border: 1px solid #e6e9ed !important;
+            border-radius: 10px !important;
+            /* Modern rounded corners */
+            padding: 4px 8px !important;
+            background-color: #ffffff !important;
+            transition: all 0.2s ease-in-out !important;
+        }
+
+        .select2-container--bootstrap-5.select2-container--focus .select2-selection--multiple {
+            border-color: #7367f0 !important;
+            box-shadow: 0 0 10px rgba(115, 103, 240, 0.15) !important;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection__rendered {
+            padding: 0 !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 6px !important;
+            /* More breathing room */
+            align-items: center !important;
+            width: 100% !important;
+        }
+
+        /* Pill-shaped Tags */
+        .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice {
+            background-color: rgba(115, 103, 240, 0.08) !important;
+            /* Soft Primary Tint */
+            border: 1px solid rgba(115, 103, 240, 0.15) !important;
+            border-radius: 50px !important;
+            /* Pill shape */
+            padding: 2px 12px !important;
+            margin: 0 !important;
+            font-size: 0.75rem !important;
+            font-weight: 500 !important;
+            color: #7367f0 !important;
+            display: flex !important;
+            align-items: center !important;
+            transition: background-color 0.2s !important;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice:hover {
+            background-color: rgba(115, 103, 240, 0.15) !important;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove {
+            margin-right: 6px !important;
+            color: rgba(115, 103, 240, 0.6) !important;
+            border: none !important;
+            font-weight: bold !important;
+            font-size: 14px !important;
+            transition: color 0.2s !important;
+        }
+
+        .select2-container--bootstrap-5 .select2-selection--multiple .select2-selection__choice__remove:hover {
+            color: #ff4d49 !important;
+            background: none !important;
+        }
+
+        .select2-container--bootstrap-5 .select2-search__field {
+            margin: 0 !important;
+            height: 32px !important;
+            font-size: 0.875rem !important;
+            width: auto !important;
+            flex-grow: 1 !important;
+            background: transparent !important;
+        }
+
+        /* Clean Dropdown */
+        .select2-dropdown {
+            border: 1px solid #e6e9ed !important;
+            border-radius: 12px !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
+            overflow: hidden !important;
+            margin-top: 5px !important;
+        }
+
+        .select2-results__option {
+            padding: 8px 12px !important;
+            font-size: 0.875rem !important;
+        }
+
+        .select2-container--bootstrap-5 .select2-results__option--highlighted[aria-selected] {
+            background-color: #7367f0 !important;
+            color: #fff !important;
+        }
+
+        /* Custom Discreet Scrollbar */
+        .select2-selection--multiple::-webkit-scrollbar {
+            width: 4px !important;
+        }
+
+        .select2-selection--multiple::-webkit-scrollbar-track {
+            background: transparent !important;
+        }
+
+        .select2-selection--multiple::-webkit-scrollbar-thumb {
+            background: #e0e0e0 !important;
+            border-radius: 10px !important;
+        }
+
+        .select2-selection--multiple::-webkit-scrollbar-thumb:hover {
+            background: #cdcdcd !important;
+        }
     </style>
 
     <script>
@@ -172,8 +285,8 @@
 
                 Toast.fire({
                     icon: icon,
-                    title: data.docket_number ? `Docket: ${data.docket_number}` :
-                        'New Notification',
+                    title: data.title || (data.docket_number ? `Docket: ${data.docket_number}` :
+                        'New Notification'),
                     html: `<div style="text-align: left;">${data.message}</div>`
                 });
             });

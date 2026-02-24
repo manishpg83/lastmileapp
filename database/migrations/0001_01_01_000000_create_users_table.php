@@ -17,8 +17,28 @@ return new class extends Migration
             $table->string('email')->nullable()->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->string('phone')->nullable()->unique();
+            $table->enum('role', ['super_admin', 'driver', 'manager'])->default('driver');
+            $table->string('vehicle_number')->nullable();
+            $table->string('license_number')->nullable();
+            $table->enum('status', ['active', 'inactive', 'suspended'])->default('active');
+            $table->string('fcm_token')->nullable();
+            $table->string('profile_image')->nullable();
+            $table->string('language')->default('en');
+            $table->json('preferences')->nullable();
+            
+            // 2FA columns
+            $table->text('two_factor_secret')->nullable();
+            $table->text('two_factor_recovery_codes')->nullable();
+            $table->timestamp('two_factor_confirmed_at')->nullable();
+
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
+
+            // Indexes
+            $table->index(['role', 'status']);
+            $table->index('phone');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

@@ -14,9 +14,12 @@ return new class extends Migration
         Schema::create('undelivered_reasons', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('code')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->integer('sort_order')->default(0);
             $table->timestamps();
-            $table->softDeletes();            
+            $table->softDeletes();
+            
             $table->index('status');
         });
     }

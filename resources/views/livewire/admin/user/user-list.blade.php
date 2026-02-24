@@ -63,8 +63,8 @@
                     <div class="col-md-3 col-6 d-flex align-items-center gap-3">
                         {{-- Avatar with initials fallback --}}
                         @if ($user->profile_image_url)
-                            <img src="{{ $user->profile_image_url }}" class="rounded-circle border border-2" width="44"
-                                height="44" style="object-fit: cover;" alt="{{ $user->name }}">
+                            <img src="{{ $user->profile_image_url }}" class="rounded-circle border border-2"
+                                width="44" height="44" style="object-fit: cover;" alt="{{ $user->name }}">
                         @else
                             <div class="rounded-circle border border-2 d-flex align-items-center justify-content-center fw-bold text-white extra-small"
                                 style="width: 44px; height: 44px; background-color: {{ $user->avatar_color }};">
@@ -123,13 +123,21 @@
                                 <i class="bx bx-edit fs-6"></i>
                             </a>
 
+                            <a href="{{ route('drivers.logs', $user) }}" class="btn btn-sm btn-outline-info"
+                                title="View Activity">
+                                <i class="bx bx-show"></i>
+                            </a>
+
                             <button wire:click="logout({{ $user->id }})"
                                 wire:confirm="Are you sure you want to log out this user from all sessions?"
                                 class="btn btn-sm btn-outline-warning" title="Revoke Sessions">
                                 <i class="bx bx-log-out-circle fs-6"></i>
                             </button>
 
-                            @if (!$user->isSuperAdmin() && !Illuminate\Support\Str::contains(strtolower($user->name), 'superadmin') && !Illuminate\Support\Str::contains(strtolower($user->email), 'superadmin'))
+                            @if (
+                                !$user->isSuperAdmin() &&
+                                    !Illuminate\Support\Str::contains(strtolower($user->name), 'superadmin') &&
+                                    !Illuminate\Support\Str::contains(strtolower($user->email), 'superadmin'))
                                 <button wire:click="delete({{ $user->id }})"
                                     wire:confirm="Are you sure you want to delete this driver?"
                                     class="btn btn-sm btn-outline-danger" title="Delete Driver">

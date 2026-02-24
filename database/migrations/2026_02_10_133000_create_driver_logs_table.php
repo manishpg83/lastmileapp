@@ -16,6 +16,8 @@ return new class extends Migration
             $blueprint->foreignId('driver_id')->constrained('users')->onDelete('cascade');
             $blueprint->string('action'); // 'start' or 'end'
             $blueprint->string('image');
+            $blueprint->decimal('km_reading', 10, 2)->nullable();
+            $blueprint->decimal('distance', 10, 2)->nullable();
             $blueprint->timestamps();
 
             $blueprint->index(['driver_id', 'created_at']);

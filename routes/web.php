@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/users', UserList::class)->name('users.index');
     Route::get('/users/create', UserForm::class)->name('users.create');
     Route::get('/users/{user}/edit', UserForm::class)->name('users.edit');
+    Route::get('/drivers/{driver}/logs', \App\Livewire\Admin\Driver\DriverLogList::class)->name('drivers.logs');
 
     Route::get('/uploads', [UploadController::class, 'index'])->name('uploads.index');
     Route::post('/uploads', [UploadController::class, 'store'])->name('uploads.store');
@@ -34,6 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/deliveries', \App\Livewire\Admin\Delivery\DeliveryList::class)->name('deliveries.index');
     Route::get('/deliveries/create', \App\Livewire\Admin\Delivery\DeliveryForm::class)->name('deliveries.create');
     Route::get('/deliveries/{delivery}/edit', \App\Livewire\Admin\Delivery\DeliveryForm::class)->name('deliveries.edit');
+
+    Route::get('/reports/master', \App\Livewire\Admin\Reports\MasterReport::class)->name('reports.master');
+    Route::get('/reports/driver-wise', \App\Livewire\Admin\Reports\DriverWiseReport::class)->name('reports.driver-wise');
 
     Route::post('/logout', function () {
         Auth::logout();

@@ -13,6 +13,8 @@ class DriverLog extends Model
         'driver_id',
         'action',
         'image',
+        'km_reading',
+        'distance',
     ];
 
     /**

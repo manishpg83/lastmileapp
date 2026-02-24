@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('customer_name');
             $table->string('company_name');
             $table->text('address');
+            $table->string('pincode')->nullable();
             $table->string('phone');
-            $table->string('package')->nullable()->default('1');;
+            $table->string('package')->nullable()->default('1');
             $table->string('email')->nullable();
             $table->text('notes')->nullable();
+            
             // Foreign keys
             $table->foreignId('driver_id')->nullable()->constrained('users');
             $table->foreignId('undelivered_reason_id')->nullable()->constrained('undelivered_reasons');
@@ -61,6 +63,7 @@ return new class extends Migration
             $table->integer('estimated_duration_minutes')->nullable();
             $table->integer('actual_duration_minutes')->nullable();
             $table->decimal('distance_km', 8, 2)->nullable();
+            $table->decimal('weight', 10, 2)->nullable();
             
             // Third-party sync
             $table->boolean('synced_to_third_party')->default(false);
@@ -75,6 +78,7 @@ return new class extends Migration
             $table->index('status');
             $table->index('driver_id');
             $table->index('customer_name');
+            $table->index('company_name');
             $table->index('phone');
             $table->index(['status', 'driver_id']);
             $table->index(['status', 'created_at']);

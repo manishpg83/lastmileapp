@@ -1044,7 +1044,7 @@ class DriverController extends Controller
             $path = $request->file('image')->store('driver_logs', 'public');
             $imageName = basename($path);
 
-            // Create log record
+            // Simple logging
             $log = \App\Models\DriverLog::create([
                 'driver_id' => $driver->id,
                 'action' => $action,
@@ -1070,11 +1070,10 @@ class DriverController extends Controller
                 'success' => true,
                 'message' => "Delivery {$action} logged successfully",
                 'data' => [
+                    'id' => $log->id,
                     'driver_id' => $log->driver_id,
                     'action' => $log->action,
-                    'image' => $log->image,
                     'created_at' => $log->created_at,
-                    'id' => $log->id,
                 ]
             ]);
 

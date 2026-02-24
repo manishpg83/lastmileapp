@@ -105,7 +105,25 @@
             </a>
         </li>
 
-
+        <!-- Reports -->
+        <li class="menu-item {{ request()->is('reports*') ? 'active open' : '' }}">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon icon-base bx bx-bar-chart-alt-2"></i>
+                <div data-i18n="Reports">Reports</div>
+            </a>
+            <ul class="menu-sub">
+                <li class="menu-item {{ request()->routeIs('reports.master') ? 'active' : '' }}">
+                    <a href="{{ route('reports.master') }}" class="menu-link">
+                        <div data-i18n="Master Report">Master Report</div>
+                    </a>
+                </li>
+                <li class="menu-item {{ request()->routeIs('reports.driver-wise') ? 'active' : '' }}">
+                    <a href="{{ route('reports.driver-wise') }}" class="menu-link">
+                        <div data-i18n="Driver Wise Report">Driver Wise Report</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
 
         <!-- Settings -->
         <li class="menu-item {{ request()->routeIs('settings.index') ? 'active' : '' }}">
