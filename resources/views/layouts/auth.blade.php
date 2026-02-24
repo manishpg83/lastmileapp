@@ -6,8 +6,8 @@
     <meta charset="utf-8" />
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <title>@yield('title', 'Authentication') | Admin</title>
-    <meta name="description" content="Admin Authentication" />
+    <title>@yield('title', 'Deliverywala') | Admin</title>
+    <meta name="description" content="Admin Deliverywala" />
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('admin/img/favicon/favicon.ico') }}" />

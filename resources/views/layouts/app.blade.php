@@ -7,11 +7,11 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Dashboard | Admin</title>
+    <title>Deliverywala | Admin</title>
 
     <!-- SEO -->
-    <meta name="description" content="Admin Dashboard">
-    <meta name="keywords" content="admin dashboard">
+    <meta name="description" content="Deliverywala Dashboard">
+    <meta name="keywords" content="Deliverywala dashboard">
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="#">
