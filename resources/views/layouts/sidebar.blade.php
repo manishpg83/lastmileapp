@@ -76,7 +76,7 @@
         </li>
 
         <!-- Users -->
-        <li class="menu-item {{ request()->is('users*') ? 'active' : '' }}">
+        <li class="menu-item {{ request()->is('users*', 'drivers.*') ? 'active' : '' }}">
             <a href="{{ route('users.index') }}" class="menu-link">
                 <i class="menu-icon icon-base bx bx-user"></i>
                 <div>Users</div>
