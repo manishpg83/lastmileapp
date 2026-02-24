@@ -35,8 +35,6 @@
                                 <h6 class="mb-1 {{ $notification->isUnread() ? 'fw-bold' : '' }}">
                                     {{ $notification->message }}</h6>
                                 <p class="mb-0 small text-muted">{{ $notification->created_at->diffForHumans() }}</p>
-                                <small
-                                    class="text-muted text-uppercase text-{{ $notification->border_color }}">{{ $notification->level }}</small>
                             </div>
                             <div class="flex-shrink-0 dropdown-notifications-actions">
                                 @if ($notification->isUnread())
