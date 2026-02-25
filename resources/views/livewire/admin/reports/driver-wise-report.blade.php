@@ -1,5 +1,33 @@
+<style>
+    /* ── Driver Wise Report – compact font ── */
+    .driver-report-wrap .table th,
+    .driver-report-wrap .table td {
+        font-size: 0.78rem !important;
+        padding: 0.45rem 0.65rem !important;
+        vertical-align: middle;
+    }
+    .driver-report-wrap .table thead th {
+        font-size: 0.7rem !important;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: #6c757d;
+        white-space: nowrap;
+    }
+    .driver-report-wrap .table .badge {
+        font-size: 0.7rem !important;
+    }
+    .driver-report-wrap .table .avatar-sm {
+        width: 1.6rem !important;
+        height: 1.6rem !important;
+        font-size: 0.65rem !important;
+    }
+    .driver-report-wrap .table .fw-medium {
+        font-size: 0.78rem !important;
+    }
+</style>
+
 <div class="container-xxl container-p-y">
-    <div class="card">
+    <div class="card driver-report-wrap">
         <div class="card-header border-bottom">
             <h4 class="card-title mb-0">Driver Wise Report (Daily Logs)</h4>
         </div>
@@ -117,8 +145,7 @@
             </table>
         </div>
 
-        <div
-            class="card-footer bg-white border-top py-3 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+        <div class="card-footer bg-white border-top py-3 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
             <div class="d-flex align-items-center gap-2">
                 <span class="text-muted small">Show</span>
                 <select class="form-select form-select-sm" wire:model.live="perPage" style="width: auto;">
@@ -173,10 +200,7 @@
         });
 
         // Re-initialize plugins after Livewire update
-        Livewire.hook('morph.updated', ({
-            el,
-            component
-        }) => {
+        Livewire.hook('morph.updated', ({ el, component }) => {
             initSelect2();
         });
     </script>

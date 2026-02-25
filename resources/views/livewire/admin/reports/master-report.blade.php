@@ -1,5 +1,32 @@
+<style>
+    .master-report-wrap .table th,
+    .master-report-wrap .table td {
+        font-size: 0.9rem !important;
+        padding: 0.45rem 0.65rem !important;
+        vertical-align: middle;
+    }
+
+    .master-report-wrap .table thead th {
+        font-size: 0.9rem !important;
+        text-transform: uppercase;
+        font-weight: 600;
+        color: #6c757d;
+        white-space: nowrap;
+    }
+
+    .master-report-wrap .badge {
+        font-size: 0.7rem !important;
+    }
+
+    .master-report-wrap .avatar-sm {
+        width: 1.6rem !important;
+        height: 1.6rem !important;
+        font-size: 0.65rem !important;
+    }
+</style>
+
 <div class="container-xxl container-p-y">
-    <div class="card">
+    <div class="card master-report-wrap">
         <div class="card-header border-bottom">
             <h4 class="card-title mb-0">Master Report</h4>
         </div>
@@ -149,9 +176,7 @@
                                                 {{ substr($delivery->driver->name, 0, 2) }}
                                             </span>
                                         </div>
-                                        <div class="d-flex flex-column">
-                                            <span class="fw-medium">{{ $delivery->driver->name }}</span>
-                                        </div>
+                                        <span class="fw-medium">{{ $delivery->driver->name }}</span>
                                     </div>
                                 @else
                                     <span class="badge bg-label-secondary">Unassigned</span>

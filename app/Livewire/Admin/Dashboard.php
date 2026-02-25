@@ -3,6 +3,9 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Delivery;
+use App\Models\DriverLog;
+use App\Models\User;
+use App\Models\DeliveryTimer;
 use Livewire\Component;
 use Livewire\Attributes\Title;
 use Livewire\Attributes\Layout;
@@ -20,31 +23,82 @@ class Dashboard extends Component
 
     public function render()
     {
-        $query = Delivery::query();
+        $deliveryQuery = Delivery::query();
+        $logQuery = DriverLog::query();
+        $timerQuery = DeliveryTimer::query();
 
         if ($this->dateFilter === 'today') {
-            $query->whereDate('created_at', today());
+            $deliveryQuery->whereDate('created_at', today());
+            $logQuery->whereDate('created_at', today());
+            $timerQuery->whereDate('created_at', today());
         } elseif ($this->dateFilter === 'yesterday') {
-            $query->whereDate('created_at', today()->subDay());
+            $deliveryQuery->whereDate('created_at', today()->subDay());
+            $logQuery->whereDate('created_at', today()->subDay());
+            $timerQuery->whereDate('created_at', today()->subDay());
         } elseif ($this->dateFilter === 'this_week') {
-            $query->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+            $deliveryQuery->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+            $logQuery->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+            $timerQuery->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
         } elseif ($this->dateFilter === 'this_month') {
-            $query->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year);
+            $deliveryQuery->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year);
+            $logQuery->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year);
+            $timerQuery->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year);
+        }
+        // If 'all', we don't apply any date filters
+
+        $totalDockets = (clone $deliveryQuery)->count();
+        $delivered = (clone $deliveryQuery)->where('status', 'delivered')->count();
+        $undelivered = (clone $deliveryQuery)->where('status', 'undelivered')->count();
+        $inProgress = (clone $deliveryQuery)->whereNotIn('status', ['delivered', 'undelivered'])->count();
+
+        // New Metrics - Always show Global Totals as requested
+        $totalDrivers = User::where('role', 'driver')->count();
+        $totalCustomers = Delivery::distinct('customer_name')->count('customer_name');
+        
+        $totalKm = DriverLog::where('action', 'end')->sum('distance');
+        
+        $totalSeconds = DeliveryTimer::sum('total_seconds');
+        
+        // Fallback: If no timer data, calculate hours from DriverLogs (global)
+        if ($totalSeconds == 0) {
+            $logsForHours = DriverLog::whereIn('action', ['start', 'end'])
+                ->orderBy('driver_id')
+                ->orderBy('created_at')
+                ->get();
+            
+            $tempTotalSeconds = 0;
+            $currentStarts = []; // [driver_id => start_time]
+
+            foreach ($logsForHours as $log) {
+                if ($log->action === 'start') {
+                    $currentStarts[$log->driver_id] = $log->created_at;
+                } elseif ($log->action === 'end' && isset($currentStarts[$log->driver_id])) {
+                    $tempTotalSeconds += $currentStarts[$log->driver_id]->diffInSeconds($log->created_at);
+                    unset($currentStarts[$log->driver_id]);
+                }
+            }
+            $totalSeconds = $tempTotalSeconds;
         }
 
-        $totalDockets = (clone $query)->count();
-        $delivered = (clone $query)->where('status', 'delivered')->count();
-        $undelivered = (clone $query)->where('status', 'undelivered')->count();
+        $totalHours = round($totalSeconds / 3600, 2);
+
+        // Calculate averages based on all active drivers in history
+        $totalActiveDrivers = Delivery::whereNotNull('driver_id')->distinct('driver_id')->count('driver_id');
         
-        // In Progress = Assigned or Pending (everything not final)
-        $inProgress = (clone $query)->whereNotIn('status', ['delivered', 'undelivered'])->count();
+        $avgKm = $totalActiveDrivers > 0 ? round($totalKm / $totalActiveDrivers, 2) : 0;
+        $avgHours = $totalActiveDrivers > 0 ? round($totalHours / $totalActiveDrivers, 2) : 0;
 
         return view('livewire.admin.dashboard', [
             'totalDockets' => $totalDockets,
             'delivered' => $delivered,
             'undelivered' => $undelivered,
             'inProgress' => $inProgress,
-            //'dateFilter' => $this->dateFilter,
+            'totalDrivers' => $totalDrivers,
+            'totalCustomers' => $totalCustomers,
+            'totalKm' => $totalKm,
+            'totalHours' => $totalHours,
+            'avgKm' => $avgKm,
+            'avgHours' => $avgHours,
         ]);
     }
 }

@@ -88,6 +88,112 @@
                 </div>
             </div>
         </div>
+
+        <!-- Row 2 -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded bg-label-info px-3">
+                                <i class="icon-base bx bx-user icon-lg"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="mb-0 text-muted">Total Drivers</p>
+                            <h4 class="mb-0">{{ $totalDrivers }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded bg-label-primary px-3">
+                                <i class="icon-base bx bx-group icon-lg"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="mb-0 text-muted">Total Customers</p>
+                            <h4 class="mb-0">{{ $totalCustomers }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded bg-label-secondary px-3">
+                                <i class="icon-base bx bx-map icon-lg"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="mb-0 text-muted">Total KM</p>
+                            <h4 class="mb-0">{{ number_format($totalKm, 2) }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded bg-label-dark px-3">
+                                <i class="icon-base bx bx-timer icon-lg"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="mb-0 text-muted">Total Hours</p>
+                            <h4 class="mb-0">{{ number_format($totalHours, 2) }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 3 -->
+        <div class="col-lg-3 col-sm-6">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded bg-label-warning px-3">
+                                <i class="icon-base bx bx-trending-up icon-lg"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="mb-0 text-muted">Average KM</p>
+                            <h4 class="mb-0">{{ number_format($avgKm, 2) }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card h-100">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <div class="avatar me-3">
+                            <span class="avatar-initial rounded bg-label-success px-3">
+                                <i class="icon-base bx bx-stopwatch icon-lg"></i>
+                            </span>
+                        </div>
+                        <div>
+                            <p class="mb-0 text-muted">Average Hours</p>
+                            <h4 class="mb-0">{{ number_format($avgHours, 2) }}</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--/ Dashboard Cards -->
 
         <!-- Shipment Lifecycle Table -->
