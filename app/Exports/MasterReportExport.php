@@ -20,7 +20,7 @@ class MasterReportExport implements FromView
 
     public function view(): View
     {
-        $query = Delivery::query()->with(['driver']);
+        $query = Delivery::query()->with(['driver', 'statusHistory']);
 
         if (!empty($this->filters['search'])) {
             $search = $this->filters['search'];

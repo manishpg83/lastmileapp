@@ -26,6 +26,13 @@ class DriverWiseReport extends Component
     public $maxHours = '';
     public $minKm = '';
     public $maxKm = '';
+    public $perPage = 25;
+
+    protected $queryString = [
+        'search',
+        'dateRange',
+        'perPage'
+    ];
 
     public function mount()
     {
@@ -33,6 +40,11 @@ class DriverWiseReport extends Component
     }
 
     public function updating($propertyName)
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPerPage()
     {
         $this->resetPage();
     }
@@ -188,7 +200,7 @@ class DriverWiseReport extends Component
         $paginatedGroups = $query->select('driver_id', DB::raw('DATE(created_at) as log_date'))
             ->groupBy('driver_id', 'log_date')
             ->orderBy('log_date', 'desc')
-            ->paginate(50);
+            ->paginate($this->perPage);
 
         $processedData = [];
 

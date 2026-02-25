@@ -138,7 +138,7 @@
                         <th>Delivery Status</th>
                     </tr>
                 </thead>
-                <tbody class="table-border-bottom-0">
+                <tbody class="table-border-bottom-0" wire:loading.class="opacity-50">
                     @forelse($deliveries as $delivery)
                         <tr>
                             <td>
@@ -211,14 +211,24 @@
             </table>
         </div>
 
-        <div class="card-footer d-flex justify-content-between align-items-center">
-            <div>
-                Showing {{ $deliveries->firstItem() ?? 0 }} to {{ $deliveries->lastItem() ?? 0 }} of
-                {{ $deliveries->total() }} entries
+        <div
+            class="card-footer bg-white border-top py-3 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-muted small">Show</span>
+                <select class="form-select form-select-sm" wire:model.live="perPage" style="width: auto;">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <span class="text-muted small">entries</span>
             </div>
-            <div>
-                {{ $deliveries->links() }}
-            </div>
+
+            @if ($deliveries->hasPages())
+                <div>
+                    {{ $deliveries->links() }}
+                </div>
+            @endif
         </div>
     </div>
 </div>

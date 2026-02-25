@@ -102,15 +102,17 @@
     <table>
         <thead>
             <tr>
-                <th>Driver</th>
-                <th>Customer</th>
-                <th>Company</th>
-                <th>Docket</th>
-                <th>Pkts</th>
+                <th>Driver Name</th>
+                <th>Customer Name</th>
+                <th>Company Name</th>
+                <th>Docket Number</th>
+                <th>Packets</th>
                 <th>Phone</th>
                 <th>Pincode</th>
-                <th>Date</th>
-                <th>Status</th>
+                <th>Delivery Date</th>
+                <th>Passed By</th>
+                <th>Partner Status</th>
+                <th>Delivery Status</th>
             </tr>
         </thead>
         <tbody>
@@ -124,6 +126,22 @@
                     <td>{{ $delivery->phone ?? '-' }}</td>
                     <td>{{ $delivery->pincode ?? '-' }}</td>
                     <td>{{ $delivery->delivered_at ? $delivery->delivered_at->format('d-m-Y') : '-' }}</td>
+                    <td>
+                        @php
+                            $passedBy = '-';
+                            if ($delivery->status === 'passed') {
+                                $passedLog = $delivery->statusHistory->where('new_status', 'passed')->first();
+                                if ($passedLog && $passedLog->changed_by) {
+                                    $user = \App\Models\User::find($passedLog->changed_by);
+                                    $passedBy = $user ? $user->name : 'Unknown';
+                                }
+                            }
+                        @endphp
+                        {{ $passedBy }}
+                    </td>
+                    <td>
+                        {{ $delivery->synced_to_third_party ? 'Synced' : 'Not Synced' }}
+                    </td>
                     <td>
                         <span class="badge">{{ ucfirst(str_replace('_', ' ', $delivery->status)) }}</span>
                     </td>

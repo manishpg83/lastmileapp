@@ -23,7 +23,13 @@ class DeliveryList extends Component
 
     public $dateRange = '';
     
-    protected $queryString = ['search', 'dateRange'];
+    public $perPage = 25;
+    
+    protected $queryString = [
+        'search', 
+        'dateRange',
+        'perPage',
+    ];
 
     public function updatingSearch()
     {
@@ -31,6 +37,11 @@ class DeliveryList extends Component
     }
 
     public function updatedDateRange()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPerPage()
     {
         $this->resetPage();
     }
@@ -56,7 +67,7 @@ class DeliveryList extends Component
             }
             
             $this->selectedDeliveries = $query->latest()
-                ->paginate(50) // Match pagination size
+                ->paginate($this->perPage) // Match pagination size
                 ->pluck('id')
                 ->map(fn($id) => (string) $id)
                 ->toArray();
@@ -248,7 +259,7 @@ class DeliveryList extends Component
         $drivers = \App\Models\User::drivers()->active()->get();
 
         return view('livewire.admin.delivery.delivery-list', [
-            'deliveries' => $query->latest()->paginate(50),
+            'deliveries' => $query->latest()->paginate($this->perPage),
             'drivers' => $drivers
         ])->title('Deliveries List');
     }

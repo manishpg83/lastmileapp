@@ -28,6 +28,13 @@ class MasterReport extends Component
     public $maxPackets = '';
     public $partnerStatus = '';
     public $selectedStatuses = [];
+    public $perPage = 25;
+
+    protected $queryString = [
+        'search', 
+        'dateRange',
+        'perPage',
+    ];
 
     public function updating($propertyName)
     {
@@ -128,7 +135,7 @@ class MasterReport extends Component
             $query->where('package', '<=', $this->maxPackets);
         }
 
-        $deliveries = $query->latest()->paginate(50);
+        $deliveries = $query->latest()->paginate($this->perPage);
         
         // Optimizing filter queries by limiting results or using a more efficient approach
         $customers = Delivery::select('customer_name')
