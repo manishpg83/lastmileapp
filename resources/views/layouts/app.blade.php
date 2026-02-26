@@ -42,6 +42,9 @@
     <script src="{{ asset('admin/js/helpers.js') }}"></script>
     <script src="{{ asset('admin/js/config.js') }}"></script>
 
+    <!-- Vite config for Tailwind v4 -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <style>
         .layout-menu-fixed .layout-navbar-full .layout-menu,
         .layout-menu-fixed-offcanvas .layout-navbar-full .layout-menu {
@@ -98,6 +101,7 @@
     <script src="{{ asset('admin/js/perfect-scrollbar.js') }}"></script>
     <script src="{{ asset('admin/js/menu.js') }}"></script>
     <script src="{{ asset('admin/js/main.js') }}"></script>
+    <script src="{{ asset('admin/js/apexcharts.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

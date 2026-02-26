@@ -88,6 +88,26 @@ class Dashboard extends Component
         $avgKm = $totalActiveDrivers > 0 ? round($totalKm / $totalActiveDrivers, 2) : 0;
         $avgHours = $totalActiveDrivers > 0 ? round($totalHours / $totalActiveDrivers, 2) : 0;
 
+        // Chart Data: Last 15 days performance
+        $chartData = [
+            'labels' => [],
+            'deliveries' => [],
+            'delivered' => [],
+            'undelivered' => []
+        ];
+
+        for ($i = 14; $i >= 0; $i--) {
+            $date = now()->subDays($i)->format('Y-m-d');
+            $dateLabel = now()->subDays($i)->format('d M');
+            
+            $chartData['labels'][] = $dateLabel;
+            
+            $dayQuery = Delivery::whereDate('created_at', $date);
+            $chartData['deliveries'][] = (clone $dayQuery)->count();
+            $chartData['delivered'][] = (clone $dayQuery)->where('status', 'delivered')->count();
+            $chartData['undelivered'][] = (clone $dayQuery)->where('status', 'undelivered')->count();
+        }
+
         return view('livewire.admin.dashboard', [
             'totalDockets' => $totalDockets,
             'delivered' => $delivered,
@@ -99,6 +119,7 @@ class Dashboard extends Component
             'totalHours' => $totalHours,
             'avgKm' => $avgKm,
             'avgHours' => $avgHours,
+            'chartData' => $chartData,
         ]);
     }
 }
