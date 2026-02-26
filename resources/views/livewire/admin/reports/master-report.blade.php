@@ -1,30 +1,3 @@
-<style>
-    .master-report-wrap .table th,
-    .master-report-wrap .table td {
-        font-size: 0.9rem !important;
-        padding: 0.45rem 0.65rem !important;
-        vertical-align: middle;
-    }
-
-    .master-report-wrap .table thead th {
-        font-size: 0.9rem !important;
-        text-transform: uppercase;
-        font-weight: 600;
-        color: #6c757d;
-        white-space: nowrap;
-    }
-
-    .master-report-wrap .badge {
-        font-size: 0.7rem !important;
-    }
-
-    .master-report-wrap .avatar-sm {
-        width: 1.6rem !important;
-        height: 1.6rem !important;
-        font-size: 0.65rem !important;
-    }
-</style>
-
 <div class="container-xxl container-p-y">
     <div class="card master-report-wrap">
         <div class="card-header border-bottom">
@@ -33,22 +6,21 @@
 
         <div class="card-body mt-3">
             <div class="row g-3">
-                <!-- Search and Primary Filters -->
                 <div class="col-md-3">
                     <label class="form-label small fw-bold">Search Deliveries</label>
                     <div class="input-group input-group-merge">
                         <span class="input-group-text"><i class="bx bx-search"></i></span>
-                        <input type="text" class="form-control form-control-sm"
-                            wire:model.live.debounce.500ms="search" placeholder="Docket, Phone, Pincode...">
+                        <input type="text" class="form-control form-control-sm" wire:model.live.debounce.500ms="search"
+                            placeholder="Docket, Phone, Pincode...">
                     </div>
                 </div>
 
                 <div class="col-md-3">
                     <label class="form-label small fw-bold">Date Range</label>
-                    <div class="input-group input-group-merge">
+                    <div class="input-group input-group-merge" wire:ignore>
                         <span class="input-group-text"><i class="bx bx-calendar"></i></span>
-                        <input type="text" class="form-control form-control-sm flatpickr" wire:model.live="dateRange"
-                            placeholder="Select date range" id="dateRangePicker">
+                        <input type="text" class="form-control form-control-sm" placeholder="Select date range"
+                            id="dateRangePicker">
                     </div>
                 </div>
 
@@ -73,61 +45,48 @@
                     </select>
                 </div>
 
-                <!-- Multi-select Filters -->
-                <div class="col-md-3">
-                    <div wire:ignore>
-                        <label class="form-label small fw-bold">Filter Customers</label>
-                        <select class="form-select select2" wire:model.live="selectedCustomers" multiple
-                            id="customersSelect" data-placeholder="Choose Customers">
-                            @foreach ($customers as $customer)
-                                @if ($customer)
-                                    <option value="{{ $customer }}">{{ $customer }}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="col-md-3" wire:ignore>
+                    <label class="form-label small fw-bold">Filter Customers</label>
+                    <select id="customersSelect" class="form-select" multiple data-placeholder="Choose Customers">
+                        @foreach ($customers as $customer)
+                            @if ($customer)
+                                <option value="{{ $customer }}">{{ $customer }}</option>
+                            @endif
+                        @endforeach
+                    </select>
                 </div>
 
-                <div class="col-md-3">
-                    <div wire:ignore>
-                        <label class="form-label small fw-bold">Filter Companies</label>
-                        <select class="form-select select2" wire:model.live="selectedCompanies" multiple
-                            id="companiesSelect" data-placeholder="Choose Companies">
-                            @foreach ($companies as $company)
-                                @if ($company)
-                                    <option value="{{ $company }}">{{ $company }}</option>
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="col-md-3" wire:ignore>
+                    <label class="form-label small fw-bold">Filter Companies</label>
+                    <select id="companiesSelect" class="form-select" multiple data-placeholder="Choose Companies">
+                        @foreach ($companies as $company)
+                            @if ($company)
+                                <option value="{{ $company }}">{{ $company }}</option>
+                            @endif
+                        @endforeach
+                    </select>
                 </div>
 
-                <div class="col-md-3">
-                    <div wire:ignore>
-                        <label class="form-label small fw-bold">Filter Drivers</label>
-                        <select class="form-select select2" wire:model.live="selectedDrivers" multiple
-                            id="driversSelect" data-placeholder="Choose Drivers">
-                            @foreach ($drivers as $driver)
-                                <option value="{{ $driver['id'] }}">{{ $driver['name'] }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="col-md-3" wire:ignore>
+                    <label class="form-label small fw-bold">Filter Drivers</label>
+                    <select id="driversSelect" class="form-select" multiple data-placeholder="Choose Drivers">
+                        @foreach ($drivers as $driver)
+                            <option value="{{ $driver['id'] }}">{{ $driver['name'] }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
-                <div class="col-md-3">
-                    <div wire:ignore>
-                        <label class="form-label small fw-bold">Delivery Status</label>
-                        <select class="form-select select2" wire:model.live="selectedStatuses" multiple
-                            id="statusesSelect" data-placeholder="Choose Statuses">
-                            <option value="pending">Pending</option>
-                            <option value="assigned">Assigned</option>
-                            <option value="in_transit">In Transit</option>
-                            <option value="delivered">Delivered</option>
-                            <option value="undelivered">Undelivered</option>
-                            <option value="passed">Passed</option>
-                            <option value="cancelled">Cancelled</option>
-                        </select>
-                    </div>
+                <div class="col-md-3" wire:ignore>
+                    <label class="form-label small fw-bold">Delivery Status</label>
+                    <select id="statusesSelect" class="form-select" multiple data-placeholder="Choose Statuses">
+                        <option value="pending">Pending</option>
+                        <option value="assigned">Assigned</option>
+                        <option value="in_transit">In Transit</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="undelivered">Undelivered</option>
+                        <option value="passed">Passed</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
                 </div>
 
                 <div class="col-12 text-end d-flex justify-content-end gap-2 mt-2">
@@ -167,7 +126,7 @@
                 </thead>
                 <tbody class="table-border-bottom-0" wire:loading.class="opacity-50">
                     @forelse($deliveries as $delivery)
-                        <tr>
+                        <tr wire:key="delivery-row-{{ $delivery->id }}">
                             <td>
                                 @if ($delivery->driver)
                                     <div class="d-flex justify-content-start align-items-center">
@@ -250,7 +209,7 @@
             </div>
 
             @if ($deliveries->hasPages())
-                <div>
+                <div class="w-100 mt-3 mt-md-0 d-flex justify-content-center justify-content-md-end">
                     {{ $deliveries->links() }}
                 </div>
             @endif
@@ -258,49 +217,103 @@
     </div>
 </div>
 
-@script
+@push('scripts')
     <script>
-        // Initialize date picker
-        flatpickr("#dateRangePicker", {
-            mode: "range",
-            dateFormat: "Y-m-d",
-            onChange: function(selectedDates, dateStr, instance) {
-                $wire.set('dateRange', dateStr);
-            }
-        });
+        document.addEventListener('livewire:initialized', function () {
 
-        // Initialize Select2 with Bootstrap 5 theme
-        const initSelect2 = () => {
-            $('.select2').each(function() {
-                $(this).select2({
-                    theme: 'bootstrap-5',
-                    placeholder: $(this).data('placeholder') || 'Select options',
-                    allowClear: true,
-                    closeOnSelect: false,
-                    width: '100%'
+            var datePickerInstance = null;
+
+            var select2Map = [
+                { id: '#customersSelect', placeholder: 'Choose Customers', prop: 'selectedCustomers' },
+                { id: '#companiesSelect', placeholder: 'Choose Companies', prop: 'selectedCompanies' },
+                { id: '#driversSelect', placeholder: 'Choose Drivers', prop: 'selectedDrivers' },
+                { id: '#statusesSelect', placeholder: 'Choose Statuses', prop: 'selectedStatuses' },
+            ];
+
+            function getWire() {
+                var el = document.querySelector('.master-report-wrap[wire\\:id], .master-report-wrap')
+                    ?.closest('[wire\\:id]');
+                if (!el) {
+                    var components = Livewire.all();
+                    for (var i = 0; i < components.length; i++) {
+                        if (components[i].name && components[i].name.includes('master-report')) {
+                            return components[i];
+                        }
+                    }
+                }
+                return el ? Livewire.find(el.getAttribute('wire:id')) : null;
+            }
+
+            function initDatePicker() {
+                var el = document.getElementById('dateRangePicker');
+                if (!el) return;
+                if (el._flatpickr) el._flatpickr.destroy();
+                datePickerInstance = flatpickr(el, {
+                    mode: 'range',
+                    dateFormat: 'Y-m-d',
+                    onClose: function (selectedDates, dateStr) {
+                        var wire = getWire();
+                        if (wire) wire.set('dateRange', dateStr);
+                    }
+                });
+            }
+
+            function initAllSelect2() {
+                select2Map.forEach(function (item) {
+                    var $el = jQuery(item.id);
+                    if (!$el.length) return;
+
+                    if ($el.hasClass('select2-hidden-accessible')) {
+                        $el.select2('destroy');
+                    }
+
+                    $el.select2({
+                        theme: 'bootstrap-5',
+                        placeholder: item.placeholder,
+                        allowClear: true,
+                        closeOnSelect: false,
+                        width: '100%',
+                    });
+                });
+            }
+
+            function bindSelect2Events() {
+                select2Map.forEach(function (item) {
+                    jQuery(item.id)
+                        .off('change.s2wire')
+                        .on('change.s2wire', function () {
+                            var wire = getWire();
+                            if (wire) wire.set(item.prop, jQuery(this).val() || []);
+                        });
+                });
+            }
+
+            initDatePicker();
+            initAllSelect2();
+            bindSelect2Events();
+
+            Livewire.on('reset-js-filters', function () {
+                if (datePickerInstance) {
+                    datePickerInstance.clear();
+                }
+
+                select2Map.forEach(function (item) {
+                    var $el = jQuery(item.id);
+                    if ($el.hasClass('select2-hidden-accessible')) {
+                        $el.val(null).trigger('change.select2');
+                    }
                 });
             });
-        };
 
-        initSelect2();
+            Livewire.hook('commit', function (params) {
+                params.succeed(function () {
+                    queueMicrotask(function () {
+                        initAllSelect2();
+                        bindSelect2Events();
+                    });
+                });
+            });
 
-        // Bind Select2 sets to Livewire
-        $(document).on('change', '.select2', function(e) {
-            var id = $(this).attr('id');
-            var data = $(this).val();
-
-            if (id === 'customersSelect') $wire.set('selectedCustomers', data);
-            if (id === 'companiesSelect') $wire.set('selectedCompanies', data);
-            if (id === 'driversSelect') $wire.set('selectedDrivers', data);
-            if (id === 'statusesSelect') $wire.set('selectedStatuses', data);
-        });
-
-        // Re-initialize plugins after Livewire update
-        Livewire.hook('morph.updated', ({
-            el,
-            component
-        }) => {
-            initSelect2();
         });
     </script>
-@endscript
+@endpush

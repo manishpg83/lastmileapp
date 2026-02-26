@@ -18,7 +18,6 @@ class MasterReport extends Component
 
     protected $paginationTheme = 'bootstrap';
 
-    // Filters
     public $dateRange = '';
     public $selectedCustomers = [];
     public $selectedCompanies = [];
@@ -36,15 +35,24 @@ class MasterReport extends Component
         'perPage',
     ];
 
-    public function updating($propertyName)
-    {
-        $this->resetPage();
-    }
+    public function updatingSearch() { $this->resetPage(); }
+    public function updatedDateRange() { $this->resetPage(); }
+    public function updatingPerPage() { $this->resetPage(); }
+    public function updatingMinPackets() { $this->resetPage(); }
+    public function updatingMaxPackets() { $this->resetPage(); }
+    public function updatingPartnerStatus() { $this->resetPage(); }
+    
+    public function updatedSelectedCustomers() { $this->resetPage(); }
+    public function updatedSelectedCompanies() { $this->resetPage(); }
+    public function updatedSelectedDrivers() { $this->resetPage(); }
+    public function updatedSelectedStatuses() { $this->resetPage(); }
 
     public function resetFilters()
     {
         $this->reset(['dateRange', 'selectedCustomers', 'selectedCompanies', 'selectedDrivers', 'search', 'minPackets', 'maxPackets', 'partnerStatus', 'selectedStatuses']);
         $this->resetPage();
+        
+        $this->dispatch('reset-js-filters'); 
     }
 
     public function export($format)
@@ -137,7 +145,6 @@ class MasterReport extends Component
 
         $deliveries = $query->latest()->paginate($this->perPage);
         
-        // Optimizing filter queries by limiting results or using a more efficient approach
         $customers = Delivery::select('customer_name')
             ->whereNotNull('customer_name')
             ->groupBy('customer_name')
@@ -161,6 +168,7 @@ class MasterReport extends Component
             'drivers' => $drivers,
         ])->title('Master Report');
     }
+    
     public function toJSON()
     {
         return [];
