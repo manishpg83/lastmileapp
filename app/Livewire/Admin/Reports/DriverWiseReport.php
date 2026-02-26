@@ -172,89 +172,73 @@ class DriverWiseReport extends Component
         if ($this->dateRange) {
             $dates = explode(' to ', $this->dateRange);
             if (count($dates) === 2) {
-                $dateFrom = Carbon::parse($dates[0]);
-                $dateTo = Carbon::parse($dates[1]);
+                $dateFrom = Carbon::parse($dates[0])->startOfDay();
+                $dateTo   = Carbon::parse($dates[1])->endOfDay();
             } else {
-                $dateFrom = Carbon::parse($dates[0]);
-                $dateTo = Carbon::parse($dates[0]);
+                $dateFrom = Carbon::parse($dates[0])->startOfDay();
+                $dateTo   = Carbon::parse($dates[0])->endOfDay();
             }
         }
 
-        $query = DriverLog::query();
-        
+        $query = DB::table('driver_logs as end_logs')
+            ->join('driver_logs as start_logs', function ($join) {
+                $join->on('end_logs.driver_id', '=', 'start_logs.driver_id')
+                    ->whereColumn('start_logs.created_at', '<', 'end_logs.created_at')
+                    ->where('start_logs.action', '=', 'start');
+            })
+            ->join('users', 'end_logs.driver_id', '=', 'users.id')
+            ->where('end_logs.action', '=', 'end')
+            ->select(
+                'end_logs.driver_id',
+                'users.name as driver_name',
+                DB::raw('DATE(end_logs.created_at) as log_date'),
+                DB::raw('SUM(GREATEST(end_logs.km_reading - start_logs.km_reading, 0)) as total_km'),
+                DB::raw('SUM(TIMESTAMPDIFF(MINUTE, start_logs.created_at, end_logs.created_at)) as total_minutes')
+            )
+            ->groupBy('end_logs.driver_id', 'log_date', 'users.name')
+            ->orderBy('log_date', 'desc');
+
         if (!empty($this->selectedDrivers)) {
-            $query->whereIn('driver_id', $this->selectedDrivers);
+            $query->whereIn('end_logs.driver_id', $this->selectedDrivers);
         }
 
         if ($this->search) {
-            $query->whereHas('driver', function ($q) {
-                $q->where('name', 'like', '%' . $this->search . '%');
-            });
+            $query->where('users.name', 'like', '%' . $this->search . '%');
         }
 
         if ($dateFrom && $dateTo) {
-            $query->whereDate('created_at', '>=', $dateFrom)
-                  ->whereDate('created_at', '<=', $dateTo);
+            $query->whereBetween('end_logs.created_at', [$dateFrom, $dateTo]);
         }
 
-        $paginatedGroups = $query->select('driver_id', DB::raw('DATE(created_at) as log_date'))
-            ->groupBy('driver_id', 'log_date')
-            ->orderBy('log_date', 'desc')
-            ->paginate($this->perPage);
-
-        $processedData = [];
-
-        foreach ($paginatedGroups as $group) {
-            $logs = DriverLog::where('driver_id', $group->driver_id)
-                ->whereDate('created_at', $group->log_date)
-                ->with('driver')
-                ->orderBy('created_at', 'asc')
-                ->get();
-
-            $totalKm = 0;
-            $totalMinutes = 0;
-
-            foreach ($logs as $log) {
-                if ($log->action === 'end') {
-                    if (isset($lastStart) && $lastStart->driver_id == $log->driver_id) {
-                         $startKm = $lastStart->km_reading;
-                         $endKm = $log->km_reading;
-                         if ($startKm !== null && $endKm !== null) {
-                             $totalKm += max(0, $endKm - $startKm);
-                         }
-                         $totalMinutes += Carbon::parse($lastStart->created_at)->diffInMinutes(Carbon::parse($log->created_at));
-                         unset($lastStart);
-                    }
-                } elseif ($log->action === 'start') {
-                    $lastStart = $log;
-                }
-            }
-
-            $hours = round($totalMinutes / 60, 2);
-            
-            $processedData[] = [
-                'driver_id'       => $group->driver_id,
-                'driver_name'     => $logs->first()->driver->name ?? 'Unknown',
-                'date'            => $group->log_date,
-                'total_km'        => $totalKm,
-                'total_minutes'   => $totalMinutes,
-                'hours'           => $hours,
-                'formatted_hours' => floor($totalMinutes / 60) . 'h ' . ($totalMinutes % 60) . 'm',
-                'km'              => round($totalKm, 2),
-            ];
+        if ($this->minKm !== '') {
+            $query->havingRaw('total_km >= ?', [(float) $this->minKm]);
         }
 
-        $filteredData = collect($processedData)->filter(function ($item) {
-            if ($this->minHours !== '' && $item['hours'] < (float)$this->minHours) return false;
-            if ($this->maxHours !== '' && $item['hours'] > (float)$this->maxHours) return false;
-            if ($this->minKm !== '' && $item['km'] < (float)$this->minKm) return false;
-            if ($this->maxKm !== '' && $item['km'] > (float)$this->maxKm) return false;
-            return true;
+        if ($this->maxKm !== '') {
+            $query->havingRaw('total_km <= ?', [(float) $this->maxKm]);
+        }
+
+        if ($this->minHours !== '') {
+            $query->havingRaw('(total_minutes / 60) >= ?', [(float) $this->minHours]);
+        }
+
+        if ($this->maxHours !== '') {
+            $query->havingRaw('(total_minutes / 60) <= ?', [(float) $this->maxHours]);
+        }
+
+        $reportData = $query->paginate($this->perPage);
+
+        // Format values for blade
+        $reportData->getCollection()->transform(function ($row) {
+            $row->hours = round($row->total_minutes / 60, 2);
+            $row->formatted_hours = floor($row->total_minutes / 60) . 'h ' . ($row->total_minutes % 60) . 'm';
+            $row->km = round($row->total_km, 2);
+            return $row;
         });
 
         return view('livewire.admin.reports.driver-wise-report', [
-            'reportData' => $paginatedGroups->setCollection($filteredData),
-            'driversList' => User::drivers()->get()
+            'reportData' => $reportData,
+            'driversList' => \App\Models\User::drivers()->get()
         ])->title('Driver Wise Report');
     }
 

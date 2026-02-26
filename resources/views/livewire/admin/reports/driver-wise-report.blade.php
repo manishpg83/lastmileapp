@@ -1,31 +1,3 @@
-<style>
-    /* ── Driver Wise Report – compact font ── */
-    .driver-report-wrap .table th,
-    .driver-report-wrap .table td {
-        font-size: 0.78rem !important;
-        padding: 0.45rem 0.65rem !important;
-        vertical-align: middle;
-    }
-    .driver-report-wrap .table thead th {
-        font-size: 0.7rem !important;
-        text-transform: uppercase;
-        font-weight: 600;
-        color: #6c757d;
-        white-space: nowrap;
-    }
-    .driver-report-wrap .table .badge {
-        font-size: 0.7rem !important;
-    }
-    .driver-report-wrap .table .avatar-sm {
-        width: 1.6rem !important;
-        height: 1.6rem !important;
-        font-size: 0.65rem !important;
-    }
-    .driver-report-wrap .table .fw-medium {
-        font-size: 0.78rem !important;
-    }
-</style>
-
 <div class="container-xxl container-p-y">
     <div class="card driver-report-wrap">
         <div class="card-header border-bottom">
@@ -120,15 +92,24 @@
                                 <div class="d-flex justify-content-start align-items-center">
                                     <div class="avatar avatar-sm me-2">
                                         <span class="avatar-initial rounded-circle bg-label-primary">
-                                            {{ substr($row['driver_name'], 0, 2) }}
+                                            {{ substr($row->driver_name, 0, 2) }}
                                         </span>
                                     </div>
-                                    <span class="fw-medium">{{ $row['driver_name'] }}</span>
+                                    <span class="fw-medium">{{ $row->driver_name }}</span>
                                 </div>
                             </td>
-                            <td>{{ \Carbon\Carbon::parse($row['date'])->format('M d, Y') }}</td>
-                            <td>{{ $row['formatted_hours'] }} ({{ $row['hours'] }}h)</td>
-                            <td><strong>{{ number_format($row['km'], 2) }} km</strong></td>
+
+                            <td>
+                                {{ \Carbon\Carbon::parse($row->log_date)->format('M d, Y') }}
+                            </td>
+
+                            <td>
+                                {{ $row->formatted_hours }} ({{ $row->hours }}h)
+                            </td>
+
+                            <td>
+                                <strong>{{ number_format($row->km, 2) }} km</strong>
+                            </td>
                         </tr>
                     @empty
                         <tr>
@@ -145,7 +126,8 @@
             </table>
         </div>
 
-        <div class="card-footer bg-white border-top py-3 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+        <div
+            class="card-footer bg-white border-top py-3 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
             <div class="d-flex align-items-center gap-2">
                 <span class="text-muted small">Show</span>
                 <select class="form-select form-select-sm" wire:model.live="perPage" style="width: auto;">
@@ -200,7 +182,10 @@
         });
 
         // Re-initialize plugins after Livewire update
-        Livewire.hook('morph.updated', ({ el, component }) => {
+        Livewire.hook('morph.updated', ({
+            el,
+            component
+        }) => {
             initSelect2();
         });
     </script>
