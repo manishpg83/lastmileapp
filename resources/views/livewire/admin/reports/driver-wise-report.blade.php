@@ -123,6 +123,13 @@
                         </tr>
                     @endforelse
                 </tbody>
+                <tfoot class="table-white fw-bold border-2">
+                    <tr>
+                        <td colspan="2" class="text-end">Page Total:</td>
+                        <td>{{ $totals['formatted_hours'] }} ({{ $totals['hours'] }}h)</td>
+                        <td><strong>{{ number_format($totals['km'], 2) }} km</strong></td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
 

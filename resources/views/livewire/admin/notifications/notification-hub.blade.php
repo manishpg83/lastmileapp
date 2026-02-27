@@ -95,7 +95,11 @@
                                             <span class="badge badge-dot bg-primary pulse-animation"></span>
                                         @endif
                                     </div>--}}
-                                    <small class="text-muted fw-medium">{{ $notification->time_ago }}</small>
+                                    <small class="text-muted fw-medium">
+                                        {{ \Carbon\Carbon::parse($notification->created_at)->format('M d, Y') }}
+                                        &bull;
+                                        {{ \Carbon\Carbon::parse($notification->created_at)->format('h:i:s A') }}
+                                    </small>
                                 </div>
                                 <h6 class="mb-1 {{ $notification->isUnread() ? 'fw-bold text-dark' : 'text-body' }}">
                                     @if ($notification->docket_number)

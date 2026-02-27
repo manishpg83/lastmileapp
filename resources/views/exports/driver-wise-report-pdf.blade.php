@@ -103,6 +103,19 @@
                 </tr>
             @endforeach
         </tbody>
+        <tfoot>
+            <tr class="total-row">
+                <td colspan="2"><strong>Grand Total</strong></td>
+                <td class="text-center">
+                    @php
+                        $totalMinutes = collect($entries)->sum('total_minutes');
+                        $totalKm = collect($entries)->sum('km');
+                    @endphp
+                    {{ floor($totalMinutes / 60) }}h {{ $totalMinutes % 60 }}m
+                </td>
+                <td class="text-center">{{ number_format($totalKm, 2) }} km</td>
+            </tr>
+        </tfoot>
     </table>
 
     <div class="footer">

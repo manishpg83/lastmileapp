@@ -236,9 +236,19 @@ class DriverWiseReport extends Component
             return $row;
         });
 
+        $totalMinutes = $reportData->sum('total_minutes');
+        $totalKm = $reportData->sum('total_km');
+
+        $totals = [
+            'formatted_hours' => floor($totalMinutes / 60) . 'h ' . ($totalMinutes % 60) . 'm',
+            'hours' => round($totalMinutes / 60, 2),
+            'km' => round($totalKm, 2),
+        ];
+
         return view('livewire.admin.reports.driver-wise-report', [
             'reportData' => $reportData,
-            'driversList' => \App\Models\User::drivers()->get()
+            'driversList' => \App\Models\User::drivers()->get(),
+            'totals' => $totals,
         ])->title('Driver Wise Report');
     }
 

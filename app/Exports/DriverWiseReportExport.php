@@ -95,23 +95,36 @@ class DriverWiseReportExport implements FromView
             }
 
             $hours = round($totalMinutes / 60, 2);
-            $km = round($totalKm, 2);
+            $km    = round($totalKm, 2);
 
-            if (!empty($this->filters['minHours']) && $hours < (float)$this->filters['minHours']) continue;
-            if (!empty($this->filters['maxHours']) && $hours > (float)$this->filters['maxHours']) continue;
-            if (!empty($this->filters['minKm']) && $km < (float)$this->filters['minKm']) continue;
-            if (!empty($this->filters['maxKm']) && $km > (float)$this->filters['maxKm']) continue;
+            if (!empty($this->filters['minHours']) && $hours < (float) $this->filters['minHours']) continue;
+            if (!empty($this->filters['maxHours']) && $hours > (float) $this->filters['maxHours']) continue;
+            if (!empty($this->filters['minKm'])    && $km   < (float) $this->filters['minKm'])    continue;
+            if (!empty($this->filters['maxKm'])    && $km   > (float) $this->filters['maxKm'])    continue;
 
             $processedData[] = [
-                'driver_name'   => $group['driver_name'],
-                'date'          => $group['date'],
+                'driver_name'     => $group['driver_name'],
+                'date'            => $group['date'],
                 'formatted_hours' => floor($totalMinutes / 60) . 'h ' . ($totalMinutes % 60) . 'm',
-                'km'            => $km,
+                'km'              => $km,
+                'total_minutes'   => $totalMinutes,
+                'total_km'        => $totalKm,      
             ];
         }
 
+        $entries = collect($processedData);
+
+        $grandTotalMinutes = $entries->sum('total_minutes');
+        $grandTotalKm      = $entries->sum('total_km');
+
+        $grandTotal = [
+            'formatted_hours' => floor($grandTotalMinutes / 60) . 'h ' . ($grandTotalMinutes % 60) . 'm',
+            'km'              => round($grandTotalKm, 2),
+        ];
+
         return view('exports.driver-wise-report-pdf', [
-            'entries' => collect($processedData)
+            'entries'    => $entries,
+            'grandTotal' => $grandTotal,
         ]);
     }
 }
