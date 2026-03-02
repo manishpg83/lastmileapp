@@ -36,12 +36,12 @@ class MasterReportExport implements FromView
         if (!empty($this->filters['dateRange'])) {
             $dates = explode(' to ', $this->filters['dateRange']);
             if (count($dates) === 2) {
-                $query->whereBetween('created_at', [
+                $query->whereBetween('updated_at', [
                     $dates[0] . ' 00:00:00',
                     $dates[1] . ' 23:59:59'
                 ]);
             } else {
-                $query->whereDate('created_at', $dates[0]);
+                $query->whereDate('updated_at', $dates[0]);
             }
         }
 

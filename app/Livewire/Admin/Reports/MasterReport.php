@@ -111,12 +111,12 @@ class MasterReport extends Component
         if ($this->dateRange) {
             $dates = explode(' to ', $this->dateRange);
             if (count($dates) === 2) {
-                $query->whereBetween('created_at', [
+                $query->whereBetween('updated_at', [
                     $dates[0] . ' 00:00:00',
                     $dates[1] . ' 23:59:59'
                 ]);
             } else {
-                $query->whereBetween('created_at', [
+                $query->whereBetween('updated_at', [
                     $dates[0] . ' 00:00:00',
                     $dates[0] . ' 23:59:59'
                 ]);

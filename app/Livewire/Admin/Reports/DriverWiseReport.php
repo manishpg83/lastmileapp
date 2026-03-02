@@ -63,7 +63,7 @@ class DriverWiseReport extends Component
     public function showActivity($driverId, $date)
     {
         $logs = DriverLog::where('driver_id', $driverId)
-            ->whereDate('created_at', $date)
+            ->whereDate('updated_at', $date)
             ->with('driver')
             ->orderBy('created_at', 'asc')
             ->get();
@@ -76,7 +76,7 @@ class DriverWiseReport extends Component
                 if ($log->action === 'start') {
                     if ($currentStart) {
                         $trips[] = [
-                            'start_time' => $currentStart->created_at,
+                            'start_time' => $currentStart->updated_at,
                             'end_time'   => null,
                             'start_pic'  => $currentStart->image,
                             'end_pic'    => null,
@@ -99,13 +99,13 @@ class DriverWiseReport extends Component
                             $distance = max(0, $log->distance);
                         }
 
-                        $diffMinutes = Carbon::parse($currentStart->created_at)->diffInMinutes(Carbon::parse($log->created_at));
+                        $diffMinutes = Carbon::parse($currentStart->updated_at)->diffInMinutes(Carbon::parse($log->updated_at));
                         $duration = floor($diffMinutes / 60) . 'h ' . ($diffMinutes % 60) . 'm';
                     }
 
                     $trips[] = [
-                        'start_time' => $currentStart ? $currentStart->created_at : null,
-                        'end_time'   => $log->created_at,
+                        'start_time' => $currentStart ? $currentStart->updated_at : null,
+                        'end_time'   => $log->updated_at,
                         'start_pic'  => $currentStart ? $currentStart->image : null,
                         'end_pic'    => $log->image,
                         'distance'   => round($distance, 2),
@@ -117,7 +117,7 @@ class DriverWiseReport extends Component
 
             if ($currentStart) {
                 $trips[] = [
-                    'start_time' => $currentStart->created_at,
+                    'start_time' => $currentStart->updated_at,
                     'end_time'   => null,
                     'start_pic'  => $currentStart->image,
                     'end_pic'    => null,
@@ -183,7 +183,7 @@ class DriverWiseReport extends Component
         $query = DB::table('driver_logs as end_logs')
             ->join('driver_logs as start_logs', function ($join) {
                 $join->on('end_logs.driver_id', '=', 'start_logs.driver_id')
-                    ->whereColumn('start_logs.created_at', '<', 'end_logs.created_at')
+                    ->whereColumn('start_logs.updated_at', '<', 'end_logs.updated_at')
                     ->where('start_logs.action', '=', 'start');
             })
             ->join('users', 'end_logs.driver_id', '=', 'users.id')
@@ -191,9 +191,9 @@ class DriverWiseReport extends Component
             ->select(
                 'end_logs.driver_id',
                 'users.name as driver_name',
-                DB::raw('DATE(end_logs.created_at) as log_date'),
+                DB::raw('DATE(end_logs.updated_at) as log_date'),
                 DB::raw('SUM(GREATEST(end_logs.km_reading - start_logs.km_reading, 0)) as total_km'),
-                DB::raw('SUM(TIMESTAMPDIFF(MINUTE, start_logs.created_at, end_logs.created_at)) as total_minutes')
+                DB::raw('SUM(TIMESTAMPDIFF(MINUTE, start_logs.updated_at, end_logs.updated_at)) as total_minutes')
             )
             ->groupBy('end_logs.driver_id', 'log_date', 'users.name')
             ->orderBy('log_date', 'desc');
@@ -207,7 +207,7 @@ class DriverWiseReport extends Component
         }
 
         if ($dateFrom && $dateTo) {
-            $query->whereBetween('end_logs.created_at', [$dateFrom, $dateTo]);
+            $query->whereBetween('end_logs.updated_at', [$dateFrom, $dateTo]);
         }
 
         if ($this->minKm !== '') {

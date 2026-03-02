@@ -42,15 +42,15 @@ class DriverWiseReportExport implements FromView
         }
 
         if ($dateFrom && $dateTo) {
-            $query->whereDate('created_at', '>=', $dateFrom)
-                  ->whereDate('created_at', '<=', $dateTo);
+            $query->whereDate('updated_at', '>=', $dateFrom)
+                  ->whereDate('updated_at', '<=', $dateTo);
         }
 
-        $logs = $query->orderBy('created_at', 'asc')->orderBy('id', 'asc')->get();
+        $logs = $query->orderBy('updated_at', 'asc')->orderBy('id', 'asc')->get();
 
         $groupedLogs = [];
         foreach ($logs as $log) {
-            $dateString = Carbon::parse($log->created_at)->format('Y-m-d');
+            $dateString = Carbon::parse($log->updated_at)->format('Y-m-d');
             $driverId = $log->driver_id;
             $key = $driverId . '_' . $dateString;
 
@@ -86,7 +86,7 @@ class DriverWiseReportExport implements FromView
                             $distance = max(0, $log->distance);
                         }
 
-                        $diffMinutes   = Carbon::parse($currentStart->created_at)->diffInMinutes(Carbon::parse($log->created_at));
+                        $diffMinutes   = Carbon::parse($currentStart->updated_at)->diffInMinutes(Carbon::parse($log->updated_at));
                         $totalMinutes += $diffMinutes;
                     }
                     $totalKm += $distance;
