@@ -28,21 +28,21 @@ class Dashboard extends Component
         $timerQuery = DeliveryTimer::query();
 
         if ($this->dateFilter === 'today') {
-            $deliveryQuery->whereDate('created_at', today());
-            $logQuery->whereDate('created_at', today());
-            $timerQuery->whereDate('created_at', today());
+            $deliveryQuery->whereDate('updated_at', today());
+            $logQuery->whereDate('updated_at', today());
+            $timerQuery->whereDate('updated_at', today());
         } elseif ($this->dateFilter === 'yesterday') {
-            $deliveryQuery->whereDate('created_at', today()->subDay());
-            $logQuery->whereDate('created_at', today()->subDay());
-            $timerQuery->whereDate('created_at', today()->subDay());
+            $deliveryQuery->whereDate('updated_at', today()->subDay());
+            $logQuery->whereDate('updated_at', today()->subDay());
+            $timerQuery->whereDate('updated_at', today()->subDay());
         } elseif ($this->dateFilter === 'this_week') {
-            $deliveryQuery->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
-            $logQuery->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
-            $timerQuery->whereBetween('created_at', [now()->startOfWeek(), now()->endOfWeek()]);
+            $deliveryQuery->whereBetween('updated_at', [now()->startOfWeek(), now()->endOfWeek()]);
+            $logQuery->whereBetween('updated_at', [now()->startOfWeek(), now()->endOfWeek()]);
+            $timerQuery->whereBetween('updated_at', [now()->startOfWeek(), now()->endOfWeek()]);
         } elseif ($this->dateFilter === 'this_month') {
-            $deliveryQuery->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year);
-            $logQuery->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year);
-            $timerQuery->whereMonth('created_at', now()->month)->whereYear('created_at', now()->year);
+            $deliveryQuery->whereMonth('updated_at', now()->month)->whereYear('updated_at', now()->year);
+            $logQuery->whereMonth('updated_at', now()->month)->whereYear('updated_at', now()->year);
+            $timerQuery->whereMonth('updated_at', now()->month)->whereYear('updated_at', now()->year);
         }
         // If 'all', we don't apply any date filters
 
@@ -107,7 +107,7 @@ class Dashboard extends Component
             
             $chartData['labels'][] = $dateLabel;
             
-            $dayQuery = Delivery::whereDate('created_at', $date);
+            $dayQuery = Delivery::whereDate('updated_at', $date);
             $chartData['deliveries'][] = (clone $dayQuery)->count();
             $chartData['delivered'][] = (clone $dayQuery)->where(function($q) {
                 $q->where('status', 'delivered')
