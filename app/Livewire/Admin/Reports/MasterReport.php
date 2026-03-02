@@ -33,6 +33,11 @@ class MasterReport extends Component
         'search', 
         'dateRange',
         'perPage',
+        'selectedDrivers',
+        'selectedStatuses',
+        'minPackets',
+        'maxPackets',
+        'partnerStatus',
     ];
 
     public function updatingSearch() { $this->resetPage(); }
@@ -111,7 +116,10 @@ class MasterReport extends Component
                     $dates[1] . ' 23:59:59'
                 ]);
             } else {
-                $query->whereDate('created_at', $dates[0]);
+                $query->whereBetween('created_at', [
+                    $dates[0] . ' 00:00:00',
+                    $dates[0] . ' 23:59:59'
+                ]);
             }
         }
 

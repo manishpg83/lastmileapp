@@ -10,8 +10,8 @@
                     <label class="form-label small fw-bold">Search Deliveries</label>
                     <div class="input-group input-group-merge">
                         <span class="input-group-text"><i class="bx bx-search"></i></span>
-                        <input type="text" class="form-control form-control-sm" wire:model.live.debounce.500ms="search"
-                            placeholder="Docket, Phone, Pincode...">
+                        <input type="text" class="form-control form-control-sm"
+                            wire:model.live.debounce.500ms="search" placeholder="Docket, Phone, Pincode...">
                     </div>
                 </div>
 
@@ -219,15 +219,30 @@
 
 @push('scripts')
     <script>
-        document.addEventListener('livewire:initialized', function () {
+        document.addEventListener('livewire:initialized', function() {
 
             var datePickerInstance = null;
 
-            var select2Map = [
-                { id: '#customersSelect', placeholder: 'Choose Customers', prop: 'selectedCustomers' },
-                { id: '#companiesSelect', placeholder: 'Choose Companies', prop: 'selectedCompanies' },
-                { id: '#driversSelect', placeholder: 'Choose Drivers', prop: 'selectedDrivers' },
-                { id: '#statusesSelect', placeholder: 'Choose Statuses', prop: 'selectedStatuses' },
+            var select2Map = [{
+                    id: '#customersSelect',
+                    placeholder: 'Choose Customers',
+                    prop: 'selectedCustomers'
+                },
+                {
+                    id: '#companiesSelect',
+                    placeholder: 'Choose Companies',
+                    prop: 'selectedCompanies'
+                },
+                {
+                    id: '#driversSelect',
+                    placeholder: 'Choose Drivers',
+                    prop: 'selectedDrivers'
+                },
+                {
+                    id: '#statusesSelect',
+                    placeholder: 'Choose Statuses',
+                    prop: 'selectedStatuses'
+                },
             ];
 
             function getWire() {
@@ -251,7 +266,7 @@
                 datePickerInstance = flatpickr(el, {
                     mode: 'range',
                     dateFormat: 'Y-m-d',
-                    onClose: function (selectedDates, dateStr) {
+                    onClose: function(selectedDates, dateStr) {
                         var wire = getWire();
                         if (wire) wire.set('dateRange', dateStr);
                     }
@@ -259,7 +274,7 @@
             }
 
             function initAllSelect2() {
-                select2Map.forEach(function (item) {
+                select2Map.forEach(function(item) {
                     var $el = jQuery(item.id);
                     if (!$el.length) return;
 
@@ -278,12 +293,11 @@
             }
 
             function bindSelect2Events() {
-                select2Map.forEach(function (item) {
+                select2Map.forEach(function(item) {
                     jQuery(item.id)
                         .off('change.s2wire')
-                        .on('change.s2wire', function () {
-                            var wire = getWire();
-                            if (wire) wire.set(item.prop, jQuery(this).val() || []);
+                        .on('change.s2wire', function() {
+                            @this.set(item.prop, jQuery(this).val() || []);
                         });
                 });
             }
@@ -292,12 +306,12 @@
             initAllSelect2();
             bindSelect2Events();
 
-            Livewire.on('reset-js-filters', function () {
+            Livewire.on('reset-js-filters', function() {
                 if (datePickerInstance) {
                     datePickerInstance.clear();
                 }
 
-                select2Map.forEach(function (item) {
+                select2Map.forEach(function(item) {
                     var $el = jQuery(item.id);
                     if ($el.hasClass('select2-hidden-accessible')) {
                         $el.val(null).trigger('change.select2');
@@ -305,9 +319,9 @@
                 });
             });
 
-            Livewire.hook('commit', function (params) {
-                params.succeed(function () {
-                    queueMicrotask(function () {
+            Livewire.hook('commit', function(params) {
+                params.succeed(function() {
+                    queueMicrotask(function() {
                         initAllSelect2();
                         bindSelect2Events();
                     });

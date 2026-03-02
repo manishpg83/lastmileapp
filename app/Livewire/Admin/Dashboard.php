@@ -47,9 +47,14 @@ class Dashboard extends Component
         // If 'all', we don't apply any date filters
 
         $totalDockets = (clone $deliveryQuery)->count();
-        $delivered = (clone $deliveryQuery)->where('status', 'delivered')->count();
+        $delivered = (clone $deliveryQuery)->where(function($q) {
+            $q->where('status', 'delivered')
+              ->orWhere('synced_to_third_party', true);
+        })->count();
         $undelivered = (clone $deliveryQuery)->where('status', 'undelivered')->count();
-        $inProgress = (clone $deliveryQuery)->whereNotIn('status', ['delivered', 'undelivered'])->count();
+        $inProgress = (clone $deliveryQuery)->whereNotIn('status', ['delivered', 'undelivered'])
+            ->where('synced_to_third_party', false)
+            ->count();
 
         // New Metrics - Always show Global Totals as requested
         $totalDrivers = User::where('role', 'driver')->count();
@@ -104,7 +109,10 @@ class Dashboard extends Component
             
             $dayQuery = Delivery::whereDate('created_at', $date);
             $chartData['deliveries'][] = (clone $dayQuery)->count();
-            $chartData['delivered'][] = (clone $dayQuery)->where('status', 'delivered')->count();
+            $chartData['delivered'][] = (clone $dayQuery)->where(function($q) {
+                $q->where('status', 'delivered')
+                  ->orWhere('synced_to_third_party', true);
+            })->count();
             $chartData['undelivered'][] = (clone $dayQuery)->where('status', 'undelivered')->count();
         }
 

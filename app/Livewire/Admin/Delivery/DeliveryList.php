@@ -230,9 +230,22 @@ class DeliveryList extends Component
     {
         $delivery = Delivery::findOrFail($id);
         $delivery->synced_to_third_party = !$delivery->synced_to_third_party;
+        
+        if ($delivery->synced_to_third_party) {
+            $delivery->status = Delivery::STATUS_DELIVERED;
+            if (!$delivery->delivered_at) {
+                $delivery->delivered_at = now();
+            }
+        } else {
+            // If marked back to In Progress, set to assigned or in_transit if it was delivered
+            if ($delivery->status === Delivery::STATUS_DELIVERED) {
+                $delivery->status = Delivery::STATUS_ASSIGNED;
+            }
+        }
+        
         $delivery->save();
 
-        session()->flash('message', 'Gati status updated successfully');
+        session()->flash('message', 'Gati status and delivery status updated successfully');
         session()->flash('messageType', 'success');
     }
 
