@@ -1,14 +1,13 @@
-<div class="container-xxl flex-grow-1 container-p-y font-sans">
+<div class="container-xxl flex-grow-1 container-p-y">
 
     <!-- Top Header & Filter -->
-    <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
         <div>
-            <h4 class="text-2xl font-bold text-gray-800 mb-1">Dashboard Overview</h4>
-            <p class="text-sm text-gray-500">Welcome back! Here's what's happening today.</p>
+            <h4 class="fw-bold mb-1" style="color:#343a40;">Dashboard Overview</h4>
+            <p class="text-muted mb-0" style="font-size:0.875rem;">Welcome back! Here's what's happening today.</p>
         </div>
-        <div class="w-full md:w-64">
-            <select wire:model.live="dateFilter"
-                class="form-select w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+        <div style="min-width:200px;">
+            <select wire:model.live="dateFilter" class="form-select">
                 <option value="today">Today</option>
                 <option value="yesterday">Yesterday</option>
                 <option value="this_week">This Week</option>
@@ -18,266 +17,279 @@
         </div>
     </div>
 
-    <!-- Global Stats Row (Drivers, Customers, Distance, Time) -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div
-            class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div class="rounded-full bg-blue-50 p-3 mr-4 flex items-center justify-center h-12 w-12">
-                <i class="bx bx-user text-2xl text-blue-600"></i>
-            </div>
-            <div>
-                <p class="text-sm font-medium text-gray-500">Total Drivers</p>
-                <h4 class="text-xl font-bold text-gray-900">{{ $totalDrivers }}</h4>
+    <!-- Global Stats Row -->
+    <div class="row g-4 mb-4">
+
+        <!-- Total Drivers -->
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
+                <div class="card-body d-flex align-items-center p-4">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                        style="width:48px;height:48px;background-color:#eff6ff;">
+                        <i class="bx bx-user fs-4" style="color:#2563eb;"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1" style="font-size:0.8rem;font-weight:500;">Total Drivers</p>
+                        <h4 class="fw-bold mb-0" style="color:#111827;">{{ $totalDrivers }}</h4>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div
-            class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div class="rounded-full bg-indigo-50 p-3 mr-4 flex items-center justify-center h-12 w-12">
-                <i class="bx bx-group text-2xl text-indigo-600"></i>
-            </div>
-            <div>
-                <p class="text-sm font-medium text-gray-500">Total Customers</p>
-                <h4 class="text-xl font-bold text-gray-900">{{ $totalCustomers }}</h4>
-            </div>
-        </div>
-
-        <div
-            class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div class="rounded-full bg-emerald-50 p-3 mr-4 flex items-center justify-center h-12 w-12">
-                <i class="bx bx-map-alt text-2xl text-emerald-600"></i>
-            </div>
-            <div>
-                <p class="text-sm font-medium text-gray-500">Overall KM</p>
-                <h4 class="text-xl font-bold text-gray-900">{{ number_format($totalKm, 2) }}</h4>
+        <!-- Total Customers -->
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
+                <div class="card-body d-flex align-items-center p-4">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                        style="width:48px;height:48px;background-color:#eef2ff;">
+                        <i class="bx bx-group fs-4" style="color:#4338ca;"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1" style="font-size:0.8rem;font-weight:500;">Total Customers</p>
+                        <h4 class="fw-bold mb-0" style="color:#111827;">{{ $totalCustomers }}</h4>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div
-            class="bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex items-center shadow-lg hover:shadow-xl transition-shadow duration-300">
-            <div class="rounded-full bg-purple-50 p-3 mr-4 flex items-center justify-center h-12 w-12">
-                <i class="bx bx-time text-2xl text-purple-600"></i>
-            </div>
-            <div>
-                <p class="text-sm font-medium text-gray-500">Overall Hours</p>
-                <h4 class="text-xl font-bold text-gray-900">{{ number_format($totalHours, 2) }}</h4>
+        <!-- Overall KM -->
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
+                <div class="card-body d-flex align-items-center p-4">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                        style="width:48px;height:48px;background-color:#ecfdf5;">
+                        <i class="bx bx-map-alt fs-4" style="color:#059669;"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1" style="font-size:0.8rem;font-weight:500;">Overall KM</p>
+                        <h4 class="fw-bold mb-0" style="color:#111827;">{{ number_format($totalKm, 2) }}</h4>
+                    </div>
+                </div>
             </div>
         </div>
+
+        <!-- Overall Hours -->
+        <div class="col-6 col-md-3">
+            <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
+                <div class="card-body d-flex align-items-center p-4">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center me-3 flex-shrink-0"
+                        style="width:48px;height:48px;background-color:#faf5ff;">
+                        <i class="bx bx-time fs-4" style="color:#7c3aed;"></i>
+                    </div>
+                    <div>
+                        <p class="text-muted mb-1" style="font-size:0.8rem;font-weight:500;">Overall Hours</p>
+                        <h4 class="fw-bold mb-0" style="color:#111827;">{{ number_format($totalHours, 2) }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Main Content Grid -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    <div class="row g-4 mb-4">
 
-        <!-- Left Column: Delivery Status (Takes up 2/3 on large screens) -->
-        <div class="lg:col-span-2 space-y-6">
+        <!-- Left Column: Delivery Status + Chart -->
+        <div class="col-lg-8">
+            <div class="d-flex flex-column gap-4">
 
-            <!-- Delivery Status Cards -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 shadow-lg">
-                <h5 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
-                    <i class="bx bx-package mr-2 text-indigo-500 text-xl font-bold"></i> Delivery
-                    Status
-                </h5>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <!-- Delivery Status Cards -->
+                <div class="card border-0 shadow-sm" style="border-radius:16px;">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-4 d-flex align-items-center" style="color:#1f2937;">
+                            <i class="bx bx-package me-2 fs-5" style="color:#4f46e5;"></i> Delivery Status
+                        </h5>
+                        <div class="row g-3">
 
-                    <div
-                        class="p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-indigo-50 transition-colors duration-200">
-                        <p class="text-sm font-semibold text-gray-500 mb-1">Total Dockets</p>
-                        <div class="flex items-baseline gap-2">
-                            <h3 class="text-3xl font-black text-indigo-700">{{ $totalDockets }}</h3>
+                            <div class="col-6 col-md-3">
+                                <div class="p-3 rounded-3 h-100 dashboard-stat-card"
+                                    style="background-color:#f9fafb;border:1px solid #f3f4f6;"
+                                    data-hover-color="#eef2ff">
+                                    <p class="fw-semibold text-muted mb-2" style="font-size:0.8rem;">Total Dockets</p>
+                                    <h3 class="fw-black mb-0" style="font-size:2rem;color:#4338ca;">{{ $totalDockets }}</h3>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-3">
+                                <div class="p-3 rounded-3 h-100 dashboard-stat-card"
+                                    style="background-color:#f9fafb;border:1px solid #f3f4f6;"
+                                    data-hover-color="#f0fdf4">
+                                    <p class="fw-semibold text-muted mb-2" style="font-size:0.8rem;">Delivered</p>
+                                    <h3 class="fw-black mb-0" style="font-size:2rem;color:#16a34a;">{{ $delivered }}</h3>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-3">
+                                <div class="p-3 rounded-3 h-100 dashboard-stat-card"
+                                    style="background-color:#f9fafb;border:1px solid #f3f4f6;"
+                                    data-hover-color="#fef2f2">
+                                    <p class="fw-semibold text-muted mb-2" style="font-size:0.8rem;">Undelivered</p>
+                                    <h3 class="fw-black mb-0" style="font-size:2rem;color:#dc2626;">{{ $undelivered }}</h3>
+                                </div>
+                            </div>
+
+                            <div class="col-6 col-md-3">
+                                <div class="p-3 rounded-3 h-100 dashboard-stat-card"
+                                    style="background-color:#f9fafb;border:1px solid #f3f4f6;"
+                                    data-hover-color="#fffbeb">
+                                    <p class="fw-semibold text-muted mb-2" style="font-size:0.8rem;">In Progress</p>
+                                    <h3 class="fw-black mb-0" style="font-size:2rem;color:#d97706;">{{ $inProgress }}</h3>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-
-                    <div
-                        class="p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-green-50 transition-colors duration-200">
-                        <p class="text-sm font-semibold text-gray-500 mb-1">Delivered</p>
-                        <div class="flex items-baseline gap-2">
-                            <h3 class="text-3xl font-black text-green-600">{{ $delivered }}</h3>
-                        </div>
-                    </div>
-
-                    <div
-                        class="p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-red-50 transition-colors duration-200">
-                        <p class="text-sm font-semibold text-gray-500 mb-1">Undelivered</p>
-                        <div class="flex items-baseline gap-2">
-                            <h3 class="text-3xl font-black text-red-600">{{ $undelivered }}</h3>
-                        </div>
-                    </div>
-
-                    <div
-                        class="p-4 rounded-xl bg-gray-50 border border-gray-100 hover:bg-amber-50 transition-colors duration-200">
-                        <p class="text-sm font-semibold text-gray-500 mb-1">In Progress</p>
-                        <div class="flex items-baseline gap-2">
-                            <h3 class="text-3xl font-black text-amber-500">{{ $inProgress }}</h3>
-                        </div>
-                    </div>
-
                 </div>
-            </div>
 
-            <!-- Performance Graph -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 shadow-lg">
-                <div class="flex justify-between items-center mb-4">
-                    <h5 class="text-lg font-bold text-gray-800 flex items-center">
-                        <i class="bx bx-trending-up mr-2 text-indigo-500 text-xl font-bold"></i>
-                        Performance (15 Days)
+                <!-- Performance Graph -->
+                <div class="card border-0 shadow-sm" style="border-radius:16px;">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold mb-3 d-flex align-items-center" style="color:#1f2937;">
+                            <i class="bx bx-trending-up me-2 fs-5" style="color:#4f46e5;"></i> Performance (15 Days)
+                        </h5>
+                        <div id="deliveryChart" style="min-height:350px;width:100%;"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Right Column: Performance Averages -->
+        <div class="col-lg-4">
+            <div class="card border-0 shadow h-100 position-relative overflow-hidden"
+                style="border-radius:16px;background:linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);">
+
+                <!-- Decorative circles -->
+                <div class="position-absolute rounded-circle"
+                    style="width:128px;height:128px;background:rgba(255,255,255,0.1);top:-32px;right:-32px;pointer-events:none;"></div>
+                <div class="position-absolute rounded-circle"
+                    style="width:96px;height:96px;background:rgba(255,255,255,0.1);bottom:-32px;left:-32px;pointer-events:none;"></div>
+
+                <div class="card-body p-4 position-relative" style="z-index:1;">
+                    <h5 class="fw-bold mb-4 d-flex align-items-center pb-3 text-white"
+                        style="border-bottom:1px solid rgba(255,255,255,0.25);font-size:1rem;">
+                        <i class="bx bx-bar-chart-alt-2 me-2 text-white"></i> Performance Averages
                     </h5>
-                </div>
-                <!-- Needs a wrapper with a fixed height or min-height for ApexCharts -->
-                <div class="relative w-full overflow-hidden rounded-lg">
-                    <div id="deliveryChart" class="w-full min-h-[350px]"></div>
-                </div>
-            </div>
 
-        </div>
-
-        <!-- Right Column: Averages (Takes up 1/3 on large screens) -->
-        <div class="lg:col-span-1 space-y-6">
-
-            <div
-                class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl shadow-lg p-6 text-white relative overflow-hidden group">
-                <!-- Decorative background elements -->
-                <div
-                    class="absolute top-0 right-0 -mr-8 -mt-8 w-32 h-32 rounded-full bg-white opacity-10 transition-transform duration-500 group-hover:scale-110">
-                </div>
-                <div
-                    class="absolute bottom-0 left-0 -ml-8 -mb-8 w-24 h-24 rounded-full bg-white opacity-10 transition-transform duration-500 group-hover:scale-110">
-                </div>
-
-                <h5
-                    class="text-lg font-bold mb-6 flex items-center relative z-10 text-white border-b border-indigo-400 pb-3">
-                    <i class="bx bx-bar-chart-alt-2 mr-2 text-white text-xl font-bold"></i>
-                    Performance Averages
-                </h5>
-
-                <div class="space-y-6 relative z-10">
-                    <div
-                        class="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20 hover:bg-white/20 transition-all duration-300">
-                        <div class="flex justify-between items-center mb-2">
-                            <p class="text-indigo-100 font-medium text-sm uppercase tracking-wider">Average Distance</p>
-                            <div class="bg-white/20 rounded-full p-2 flex items-center justify-center h-8 w-8">
-                                <i class="bx bx-car text-white"></i>
+                    <!-- Average Distance -->
+                    <div class="rounded-3 p-4 mb-3 perf-card"
+                        style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <p class="text-uppercase mb-0 fw-medium"
+                                style="font-size:0.7rem;color:rgba(199,210,254,1);letter-spacing:0.05em;">Average Distance</p>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                style="width:32px;height:32px;background:rgba(255,255,255,0.2);">
+                                <i class="bx bx-car text-white" style="font-size:0.9rem;"></i>
                             </div>
                         </div>
-                        <div class="flex items-end gap-2">
-                            <h3 class="text-4xl font-bold tracking-tight m-0 text-white">{{ number_format($avgKm, 2) }}
+                        <div class="d-flex align-items-end gap-2">
+                            <h3 class="fw-bold mb-0 text-white" style="font-size:2.25rem;line-height:1;">
+                                {{ number_format($avgKm, 2) }}
                             </h3>
-                            <span class="text-indigo-200 mb-1 font-medium">KM / Driver</span>
+                            <span class="mb-1 fw-medium" style="color:rgba(199,210,254,1);font-size:0.875rem;">KM / Driver</span>
                         </div>
                     </div>
 
-                    <div
-                        class="bg-white/10 backdrop-blur-sm rounded-xl p-5 border border-white/20 hover:bg-white/20 transition-all duration-300">
-                        <div class="flex justify-between items-center mb-2">
-                            <p class="text-indigo-100 font-medium text-sm uppercase tracking-wider">Average Duration</p>
-                            <div class="bg-white/20 rounded-full p-2 flex items-center justify-center h-8 w-8">
-                                <i class="bx bx-stopwatch text-white"></i>
+                    <!-- Average Duration -->
+                    <div class="rounded-3 p-4 perf-card"
+                        style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <p class="text-uppercase mb-0 fw-medium"
+                                style="font-size:0.7rem;color:rgba(199,210,254,1);letter-spacing:0.05em;">Average Duration</p>
+                            <div class="rounded-circle d-flex align-items-center justify-content-center"
+                                style="width:32px;height:32px;background:rgba(255,255,255,0.2);">
+                                <i class="bx bx-stopwatch text-white" style="font-size:0.9rem;"></i>
                             </div>
                         </div>
-                        <div class="flex items-end gap-2">
-                            <h3 class="text-4xl font-bold tracking-tight m-0 text-white">
-                                {{ number_format($avgHours, 2) }}</h3>
-                            <span class="text-indigo-200 mb-1 font-medium">Hrs / Driver</span>
+                        <div class="d-flex align-items-end gap-2">
+                            <h3 class="fw-bold mb-0 text-white" style="font-size:2.25rem;line-height:1;">
+                                {{ number_format($avgHours, 2) }}
+                            </h3>
+                            <span class="mb-1 fw-medium" style="color:rgba(199,210,254,1);font-size:0.875rem;">Hrs / Driver</span>
                         </div>
                     </div>
+
                 </div>
             </div>
-
         </div>
+
     </div>
 
     @push('scripts')
-        <script>
-            document.addEventListener('livewire:initialized', () => {
-                const chartOptions = {
-                    series: [{
-                        name: 'Total Dockets',
-                        data: @json($chartData['deliveries'])
-                    }, {
-                        name: 'Delivered',
-                        data: @json($chartData['delivered'])
-                    }, {
-                        name: 'Undelivered',
-                        data: @json($chartData['undelivered'])
-                    }],
-                    chart: {
-                        type: 'area',
-                        height: 350,
-                        fontFamily: 'inherit',
-                        toolbar: {
-                            show: false
-                        },
-                        zoom: {
-                            enabled: false
-                        }
-                    },
-                    colors: ['#4f46e5', '#10b981', '#ef4444'], // Tailwind indigo-600, emerald-500, red-500
-                    dataLabels: {
-                        enabled: false
-                    },
-                    stroke: {
-                        curve: 'smooth',
-                        width: 2
-                    },
-                    fill: {
-                        type: 'gradient',
-                        gradient: {
-                            shadeIntensity: 1,
-                            opacityFrom: 0.4,
-                            opacityTo: 0.05,
-                            stops: [0, 90, 100]
-                        }
-                    },
-                    xaxis: {
-                        categories: @json($chartData['labels']),
-                        axisBorder: {
-                            show: false
-                        },
-                        axisTicks: {
-                            show: false
-                        },
-                        labels: {
-                            style: {
-                                colors: '#6b7280' // gray-500
-                            }
-                        }
-                    },
-                    yaxis: {
-                        labels: {
-                            formatter: function(val) {
-                                return val.toFixed(0);
-                            },
-                            style: {
-                                colors: '#6b7280' // gray-500
-                            }
-                        }
-                    },
-                    grid: {
-                        borderColor: '#e5e7eb', // gray-200
-                        strokeDashArray: 4,
-                        padding: {
-                            top: -20,
-                            bottom: -10,
-                            left: 0
-                        }
-                    },
-                    tooltip: {
-                        theme: 'light',
-                        x: {
-                            show: true
-                        }
-                    },
-                    legend: {
-                        position: 'top',
-                        horizontalAlign: 'right',
-                        labels: {
-                            colors: '#374151' // gray-700
-                        }
-                    }
-                };
+    <script>
+        // Hover effects for stat cards
+        document.querySelectorAll('.dashboard-stat-card').forEach(function(el) {
+            var defaultBg = '#f9fafb';
+            var hoverBg = el.getAttribute('data-hover-color') || '#f3f4f6';
+            el.addEventListener('mouseenter', function() { el.style.backgroundColor = hoverBg; });
+            el.addEventListener('mouseleave', function() { el.style.backgroundColor = defaultBg; });
+        });
 
-                const chart = new ApexCharts(document.querySelector("#deliveryChart"), chartOptions);
-                chart.render();
-            });
-        </script>
+        document.querySelectorAll('.perf-card').forEach(function(el) {
+            el.addEventListener('mouseenter', function() { el.style.background = 'rgba(255,255,255,0.2)'; });
+            el.addEventListener('mouseleave', function() { el.style.background = 'rgba(255,255,255,0.1)'; });
+        });
+
+        document.addEventListener('livewire:initialized', () => {
+            const chartOptions = {
+                series: [{
+                    name: 'Total Dockets',
+                    data: @json($chartData['deliveries'])
+                }, {
+                    name: 'Delivered',
+                    data: @json($chartData['delivered'])
+                }, {
+                    name: 'Undelivered',
+                    data: @json($chartData['undelivered'])
+                }],
+                chart: {
+                    type: 'area',
+                    height: 350,
+                    fontFamily: 'inherit',
+                    toolbar: { show: false },
+                    zoom: { enabled: false }
+                },
+                colors: ['#4f46e5', '#10b981', '#ef4444'],
+                dataLabels: { enabled: false },
+                stroke: { curve: 'smooth', width: 2 },
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shadeIntensity: 1,
+                        opacityFrom: 0.4,
+                        opacityTo: 0.05,
+                        stops: [0, 90, 100]
+                    }
+                },
+                xaxis: {
+                    categories: @json($chartData['labels']),
+                    axisBorder: { show: false },
+                    axisTicks: { show: false },
+                    labels: { style: { colors: '#6b7280' } }
+                },
+                yaxis: {
+                    labels: {
+                        formatter: function(val) { return val.toFixed(0); },
+                        style: { colors: '#6b7280' }
+                    }
+                },
+                grid: {
+                    borderColor: '#e5e7eb',
+                    strokeDashArray: 4,
+                    padding: { top: -20, bottom: -10, left: 0 }
+                },
+                tooltip: { theme: 'light', x: { show: true } },
+                legend: {
+                    position: 'top',
+                    horizontalAlign: 'right',
+                    labels: { colors: '#374151' }
+                }
+            };
+
+            const chart = new ApexCharts(document.querySelector("#deliveryChart"), chartOptions);
+            chart.render();
+        });
+    </script>
     @endpush
+
 </div>
