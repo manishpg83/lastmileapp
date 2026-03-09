@@ -3,7 +3,7 @@
     <div class="app-brand demo ">
         <a href="{{ route('dashboard') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
-                <img src="{{ asset('frontend/images/delivery-wale.png') }}" alt="Delivery Wale" style="max-height: 40px; width: auto; object-fit: contain;">
+                <img src="{{ asset('frontend/images/delivery_wale.png') }}" alt="Delivery Wale" style="max-height: 40px; width: auto; object-fit: contain;">
             </span>
         </a>
 
