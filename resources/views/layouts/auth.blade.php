@@ -58,7 +58,7 @@
                     <div class="app-brand mb-5">
                         <a href="{{ url('/') }}" class="app-brand-link gap-2">
                             <span class="app-brand-logo demo">
-                                <img src="{{ asset('frontend/images/DELIVERY WALE.png') }}" alt="Delivery Wale"
+                                <img src="{{ asset('frontend/images/delivery-wale.png') }}" alt="Delivery Wale"
                                     style="max-width: 200px; height: auto;">
                             </span>
                         </a>

@@ -15,13 +15,13 @@
             </div>
             <div class="form-group">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" wire:model.defer="email" placeholder="Ajay@gmail.com">
+                <input type="email" id="email" wire:model.defer="email" placeholder="ajay@gmail.com">
                 @error('email') <span class="error" style="color: red; font-size: 0.875rem;">{{ $message }}</span>
                 @enderror
             </div>
             <div class="form-group">
                 <label for="phone">Phone Number</label>
-                <input type="tel" id="phone" wire:model.defer="phone" placeholder="+91 00000000">
+                <input type="tel" id="phone" wire:model.defer="phone" placeholder="+91 9876543210">
                 @error('phone') <span class="error" style="color: red; font-size: 0.875rem;">{{ $message }}</span>
                 @enderror
             </div>

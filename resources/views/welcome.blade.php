@@ -23,7 +23,7 @@
     <nav class="navbar">
         <div class="container nav-container">
             <a href="#home" class="logo">
-                <img src="{{ asset('frontend/images/DELIVERY WALE.png') }}" alt="Delivery Wale"
+                <img src="{{ asset('frontend/images/delivery-wale.png') }}" alt="Delivery Wale"
                     style="max-height: 48px; width: auto;">
             </a>
             <div class="nav-links">
@@ -33,18 +33,9 @@
                 <a href="#partner">Partner</a>
                 <a href="#contact">Contact</a>
             </div>
-            <div style="display: flex; align-items: center; gap: 15px;">
-                @auth
-                    <a href="{{ route('dashboard') }}" class="btn btn-primary"
-                        style="padding: 8px 20px; font-size: 0.9rem;">Dashboard</a>
-                @else
-                    <a href="{{ route('login') }}" class="btn btn-primary"
-                        style="padding: 8px 20px; font-size: 0.9rem;">Login</a>
-                @endauth
-                <div class="mobile-menu-btn">
-                    <i class="fa-solid fa-bars"></i>
-                </div>
-            </div>
+            <div class="mobile-menu-btn">
+                <i class="fa-solid fa-bars"></i>
+            </div>    
         </div>
     </nav>
 
@@ -275,7 +266,7 @@
                 <div class="footer-brand">
                     <a href="#" class="logo footer-logo">
 
-                        <img src="{{ asset('frontend/images/DELIVERY WALE.png') }}" alt="Delivery Wale"
+                        <img src="{{ asset('frontend/images/delivery-wale.png') }}" alt="Delivery Wale"
                             style="max-height: 48px; width: auto; background-color: white; padding: 4px; border-radius: 4px;">
                     </a>
                     <p>Your trusted partner for fast and reliable last-mile logistics solutions across the city.</p>
@@ -300,7 +291,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Delivery Wale. All rights reserved.</p>
+                <p>&copy; {{ date('Y') }} Delivery Wale. All rights reserved.</p>
             </div>
         </div>
     </footer>

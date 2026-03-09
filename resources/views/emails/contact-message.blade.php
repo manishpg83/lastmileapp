@@ -31,7 +31,7 @@
                                     <td style="text-align: center;">
                                         <!-- Logo Image -->
                                         <div style="margin-bottom: 15px;">
-                                            <img src="{{ asset('frontend/images/DELIVERY WALE.png') }}"
+                                            <img src="{{ asset('frontend/images/delivery-wale.png') }}"
                                                  alt="Delivery Wale Logo"
                                                  style="max-width: 180px; height: auto; display: block; margin: 0 auto;">
                                         </div>
