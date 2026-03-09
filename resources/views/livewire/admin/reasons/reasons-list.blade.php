@@ -14,7 +14,7 @@
                     <form wire:submit.prevent="addReason" class="d-flex flex-column flex-sm-row gap-2">
                         <input type="text" wire:model="newReason" class="form-control"
                             placeholder="Type a new failure reason..." required>
-                        <button type="submit" class="btn btn-dark text-nowrap">
+                        <button type="submit" class="btn btn-primary text-nowrap">
                             <i class="bx bx-plus me-1"></i> Add Reason
                         </button>
                     </form>

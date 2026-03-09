@@ -6,8 +6,8 @@
         <!-- Email -->
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
-            <input type="email" wire:model="email" class="form-control @error('email') is-invalid @enderror"
-                id="email" placeholder="Enter your email" autofocus>
+            <input type="email" wire:model="email" class="form-control @error('email') is-invalid @enderror" id="email"
+                placeholder="Enter your email" autofocus>
             @error('email')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -54,4 +54,12 @@
         </div>
     </form>
 
+    <div class="mt-4 text-center">
+        <p class="mb-2 text-muted">Get our mobile app for the best experience</p>
+        <a href="{{ asset('apk/delivery-wale.apk') }}"
+            class="btn btn-outline-primary d-inline-flex align-items-center gap-2" download>
+            <i class="bx bxl-android fs-4"></i>
+            Download APK
+        </a>
+    </div>
 </div>

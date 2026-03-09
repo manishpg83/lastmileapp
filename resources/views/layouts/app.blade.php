@@ -58,6 +58,24 @@
         .content-wrapper {
             padding-bottom: 54px !important;
         }
+
+        .icon-primary {
+            color: #f97316;
+        }
+
+        .card {
+            transition: all 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.15);
+        }
+
+        .form-select:focus {
+            border-color: #f97316;
+            box-shadow: 0 0 0 0.15rem rgba(249, 115, 22, 0.25);
+        }
     </style>
 </head>
 
