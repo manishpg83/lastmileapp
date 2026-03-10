@@ -200,7 +200,7 @@
     <section class="statistics bg-accent">
         <div class="container stats-container">
             <div class="stat-box">
-                <div class="stat-number">5M+</div>
+                <div class="stat-number">400K+</div>
                 <div class="stat-label">Parcels Delivered</div>
             </div>
             <div class="stat-box">
