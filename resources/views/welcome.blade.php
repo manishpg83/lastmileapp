@@ -267,8 +267,7 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <a href="#" class="logo footer-logo"
-                        style="background-color: white; padding: 4px 4px 4px 8px; border-radius: 4px;">
+                    <a href="#" class="logo footer-logo">
                         <img src="{{ asset('frontend/images/delivery_wale.png') }}" alt="Delivery Wale"
                             style="max-height: 48px; width: auto; background-color: white; padding: 4px; border-radius: 4px;">
                     </a>
