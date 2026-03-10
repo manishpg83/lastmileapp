@@ -59,16 +59,15 @@
                     <tr>
                         <td style="background-color: #ffffff; padding: 30px 40px; text-align: center; border-bottom: 4px solid #f97316;"
                             class="content-padding">
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
-                                    <td style="vertical-align: middle;">
-                                        <img src="{{ asset('frontend/images/truck_logo.png') }}" alt="Truck Icon"
-                                            style="max-width: 40px; height: auto; display: block;">
-                                    </td>
-                                    <td style="vertical-align: middle; padding-left: 10px;">
-                                        <img src="{{ asset('frontend/images/delivery_wale.png') }}"
-                                            alt="Delivery Wale Logo"
-                                            style="max-width: 150px; height: auto; display: block;">
+                                    <td style="text-align: center;">
+                                        <!-- Logo Image -->
+                                        <div style="margin-bottom: 0;">
+                                            <img src="{{ asset('frontend/images/delivery_wale.png') }}"
+                                                alt="Delivery Wale Logo"
+                                                style="max-width: 180px; height: auto; display: block; margin: 0 auto;">
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
@@ -186,20 +185,8 @@
                     <tr>
                         <td style="background-color: #0F172A; padding: 40px; text-align: center;"
                             class="content-padding">
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center"
-                                style="margin-bottom: 20px; background-color: #ffffff; padding: 10px; border-radius: 8px;">
-                                <tr>
-                                    <td style="vertical-align: middle;">
-                                        <img src="{{ asset('frontend/images/truck_logo.png') }}" alt="Truck Icon"
-                                            style="max-width: 30px; height: auto; display: block;">
-                                    </td>
-                                    <td style="vertical-align: middle; padding-left: 8px;">
-                                        <img src="{{ asset('frontend/images/delivery_wale.png') }}"
-                                            alt="Delivery Wale Logo"
-                                            style="max-width: 120px; height: auto; display: block;">
-                                    </td>
-                                </tr>
-                            </table>
+                            <img src="{{ asset('frontend/images/delivery_wale.png') }}" alt="Delivery Wale"
+                                style="max-height: 40px; width: auto; background-color: #ffffff; padding: 5px; border-radius: 4px; margin-bottom: 20px;">
 
                             <p
                                 style="margin: 0 0 10px 0; color: #ffffff; font-size: 15px; font-weight: 700; letter-spacing: 0.5px;">
@@ -207,8 +194,8 @@
                             <p style="margin: 0 0 25px 0; color: #94A3B8; font-size: 13px;">Fast & Reliable Delivery
                                 Wale Solution</p>
 
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0"
-                                align="center" style="margin: 0 auto 30px auto;">
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center"
+                                style="margin: 0 auto 30px auto;">
                                 <tr>
                                     <td
                                         style="border-top: 1px solid rgba(255,255,255,0.1); width: 200px; padding-top: 25px;">

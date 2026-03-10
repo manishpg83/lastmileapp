@@ -25,10 +25,8 @@
     <nav class="navbar">
         <div class="container nav-container">
             <a href="#home" class="logo">
-                <i class="fa-solid fa-truck-fast"></i>
-
                 <img src="{{ asset('frontend/images/delivery_wale.png') }}" alt="Delivery Wale"
-                    style="max-height: 48px; width: auto; margin-left: -13px;">
+                    style="max-height: 48px; width: auto;">
             </a>
             <div class="nav-links">
                 <a href="#services">Services</a>
@@ -271,9 +269,8 @@
                 <div class="footer-brand">
                     <a href="#" class="logo footer-logo"
                         style="background-color: white; padding: 4px 4px 4px 8px; border-radius: 4px;">
-                        <i class="fa-solid fa-truck-fast"></i>
                         <img src="{{ asset('frontend/images/delivery_wale.png') }}" alt="Delivery Wale"
-                            style="max-height: 48px; width: auto; margin-left: -13px;">
+                            style="max-height: 48px; width: auto; background-color: white; padding: 4px; border-radius: 4px;">
                     </a>
                     <p>Your trusted partner for fast and reliable last-mile logistics solutions across the city.</p>
                 </div>
