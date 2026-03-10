@@ -22,7 +22,7 @@ class ContactForm extends Component
             'name' => 'required|min:3',
             'email' => 'required|email:rfc,dns',
             'phone' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
-            'message' => 'required|min:10',
+            'message' => 'nullable',
         ];
     }
 

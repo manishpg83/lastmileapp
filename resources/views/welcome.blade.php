@@ -15,7 +15,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="{{ asset('frontend/images/truck_logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
     @livewireStyles
 </head>
@@ -25,8 +25,8 @@
     <nav class="navbar">
         <div class="container nav-container">
             <a href="#home" class="logo">
-                <i class="fa-solid fa-truck-fast"></i>
-                <span>Delivery Wale</span>
+                <img src="{{ asset('frontend/images/delivery_wale.png') }}" alt="Delivery Wale"
+                    style="max-height: 48px; width: auto;">
             </a>
             <div class="nav-links">
                 <a href="#services">Services</a>
@@ -268,8 +268,8 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="#" class="logo footer-logo">
-                        <i class="fa-solid fa-truck-fast"></i>
-                        <span>Delivery Wale</span>
+                        <img src="{{ asset('frontend/images/delivery_wale.png') }}" alt="Delivery Wale"
+                            style="max-height: 48px; width: auto;">
                     </a>
                     <p>Your trusted partner for fast and reliable delivery wale logistics solutions across the city.</p>
                 </div>

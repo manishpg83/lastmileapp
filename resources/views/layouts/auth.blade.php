@@ -10,7 +10,7 @@
     <meta name="description" content="Admin Deliverywala" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('admin/img/favicon/favicon.ico') }}" />
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}" />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
