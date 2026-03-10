@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delivery Wale - Fast & Reliable Last-Mile Delivery</title>
+    <title>Delivery Wale - Fast & Reliable Delivery Wale</title>
     <meta name="description"
         content="Delivery Wale provides fast, reliable, pincode-based delivery services for businesses and e-commerce.">
     <!-- Google Fonts -->
@@ -14,6 +14,8 @@
         rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ asset('frontend/images/truck_logo.png') }}">
     <link rel="stylesheet" href="{{ asset('frontend/css/style.css') }}">
     @livewireStyles
 </head>
@@ -23,8 +25,8 @@
     <nav class="navbar">
         <div class="container nav-container">
             <a href="#home" class="logo">
-                <img src="{{ asset('frontend/images/delivery_wale.png') }}" alt="Delivery Wale"
-                    style="max-height: 48px; width: auto;">
+                <i class="fa-solid fa-truck-fast"></i>
+                <span>Delivery Wale</span>
             </a>
             <div class="nav-links">
                 <a href="#services">Services</a>
@@ -35,7 +37,7 @@
             </div>
             <div class="mobile-menu-btn">
                 <i class="fa-solid fa-bars"></i>
-            </div>    
+            </div>
         </div>
     </nav>
 
@@ -43,7 +45,7 @@
     <header class="hero" id="home">
         <div class="hero-overlay"></div>
         <div class="container hero-content">
-            <h1 class="hero-title">Fast & Reliable Last-Mile Delivery Across Your City</h1>
+            <h1 class="hero-title">Fast & Reliable Delivery Wale Across Your City</h1>
             <p class="hero-subtitle">Delivery Wale provides pincode-based delivery services for businesses and
                 e-commerce.</p>
             <div class="hero-buttons">
@@ -102,7 +104,8 @@
                 <div class="divider"></div>
                 <p>Delivery Wale was founded with a clear mission: to simplify local logistics through the power of
                     technology and a network of highly reliable delivery partners.</p>
-                <p>We understand that the "last mile" is often the most critical part of the supply chain. That's why we
+                <p>We understand that the "delivery wale" is often the most critical part of the supply chain. That's
+                    why we
                     have built a robust, pincode-based framework that ensures every parcel reaches its destination
                     quickly, safely, and affordably.</p>
                 <a href="#contact" class="btn btn-secondary mt-4">Learn More</a>
@@ -142,7 +145,7 @@
                     <div class="step-number">3</div>
                     <div class="step-icon"><i class="fa-solid fa-truck-fast"></i></div>
                     <h3>Local Delivery</h3>
-                    <p>Our fleet of trusted delivery partners handles the last-mile transit.</p>
+                    <p>Our fleet of trusted delivery partners handles the delivery wale transit.</p>
                 </div>
                 <div class="step-arrow"><i class="fa-solid fa-chevron-right"></i></div>
                 <div class="step">
@@ -161,7 +164,7 @@
             <div class="section-title text-center">
                 <h2>Why Choose Us</h2>
                 <div class="divider"></div>
-                <p>The smartest choice for your last-mile logistics.</p>
+                <p>The smartest choice for your delivery wale logistics.</p>
             </div>
             <div class="benefits-grid">
                 <div class="benefit-item">
@@ -265,11 +268,10 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <a href="#" class="logo footer-logo">
-
-                        <img src="{{ asset('frontend/images/delivery_wale.png') }}" alt="Delivery Wale"
-                            style="max-height: 48px; width: auto; background-color: white; padding: 4px; border-radius: 4px;">
+                        <i class="fa-solid fa-truck-fast"></i>
+                        <span>Delivery Wale</span>
                     </a>
-                    <p>Your trusted partner for fast and reliable last-mile logistics solutions across the city.</p>
+                    <p>Your trusted partner for fast and reliable delivery wale logistics solutions across the city.</p>
                 </div>
                 <div class="footer-links">
                     <h4>Quick Links</h4>

@@ -1,181 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Contact Message - Delivery Wale</title>
     <style>
-        body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-        table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
-        img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
-        
+        body,
+        table,
+        td,
+        a {
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+        }
+
+        table,
+        td {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+        }
+
+        img {
+            -ms-interpolation-mode: bicubic;
+            border: 0;
+            outline: none;
+            text-decoration: none;
+        }
+
         @media screen and (max-width: 600px) {
-            .email-container { width: 100% !important; }
-            .content-padding { padding: 20px !important; }
-            .header-text { font-size: 20px !important; }
+            .email-container {
+                width: 100% !important;
+            }
+
+            .content-padding {
+                padding: 20px !important;
+            }
+
+            .header-text {
+                font-size: 20px !important;
+            }
         }
     </style>
 </head>
-<body style="margin: 0; padding: 0; background-color: #f4f4f4; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-    
-    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #f4f4f4;">
+
+<body
+    style="margin: 0; padding: 0; background-color: #F8FAFC; font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+
+    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"
+        style="background-color: #F8FAFC;">
         <tr>
             <td align="center" style="padding: 40px 0;">
-                
-                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" class="email-container" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
-                    
+
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600"
+                    class="email-container"
+                    style="max-width: 600px; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #E2E8F0;">
+
+                    <!-- Header -->
                     <tr>
-                        <td style="background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); padding: 30px 40px; text-align: center;" class="content-padding">
+                        <td style="background-color: #ffffff; padding: 30px 40px; text-align: center; border-bottom: 4px solid #f97316;"
+                            class="content-padding">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
                                 <tr>
                                     <td style="text-align: center;">
                                         <!-- Logo Image -->
-                                        <div style="margin-bottom: 15px;">
+                                        <div style="margin-bottom: 0;">
                                             <img src="{{ asset('frontend/images/delivery_wale.png') }}"
-                                                 alt="Delivery Wale Logo"
-                                                 style="max-width: 180px; height: auto; display: block; margin: 0 auto;">
+                                                alt="Delivery Wale Logo"
+                                                style="max-width: 180px; height: auto; display: block; margin: 0 auto;">
                                         </div>
-                                        <p style="color: #94A3B8; margin: 8px 0 0 0; font-size: 13px; text-transform: uppercase; letter-spacing: 1px;">New Contact Message</p>
                                     </td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
-                    
+
                     <!-- Main Content -->
                     <tr>
                         <td style="padding: 40px;" class="content-padding">
                             <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                                
+
                                 <!-- Greeting -->
                                 <tr>
                                     <td style="padding-bottom: 25px;">
-                                        <h2 style="color: #0F172A; margin: 0 0 15px 0; font-size: 22px; font-weight: 600;">Hello Admin,</h2>
+                                        <h2
+                                            style="color: #0F172A; margin: 0 0 15px 0; font-size: 24px; font-weight: 800; letter-spacing: -0.5px;">
+                                            New Inquiry Received!</h2>
                                         <p style="color: #64748B; margin: 0; font-size: 16px; line-height: 1.6;">
-                                            You have received a new contact message from your website. Here are the details:
+                                            Hello Admin, you have received a new message through the website contact
+                                            form.
                                         </p>
                                     </td>
                                 </tr>
-                                
+
                                 <!-- Message Details Card -->
                                 <tr>
                                     <td style="padding-bottom: 30px;">
-                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #F8FAFC; border-radius: 10px; border-left: 4px solid #f97316;">
+                                        <table role="presentation" cellspacing="0" cellpadding="0" border="0"
+                                            width="100%"
+                                            style="background-color: #F8FAFC; border-radius: 12px; border: 1px solid #E2E8F0;">
                                             <tr>
-                                                <td style="padding: 25px;">
-                                                    
+                                                <td style="padding: 30px;">
+
                                                     <!-- Name -->
-                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 18px;">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0"
+                                                        border="0" width="100%" style="margin-bottom: 20px;">
                                                         <tr>
-                                                            <td width="30" style="vertical-align: top;">
-                                                                <span style="display: inline-block; width: 24px; height: 24px; background-color: #f97316; border-radius: 50%; text-align: center; line-height: 24px; color: #ffffff; font-size: 12px;">👤</span>
-                                                            </td>
-                                                            <td style="vertical-align: top; padding-left: 12px;">
-                                                                <p style="margin: 0; color: #94A3B8; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Name</p>
-                                                                <p style="margin: 4px 0 0 0; color: #0F172A; font-size: 16px; font-weight: 600;">{{ $data['name'] }}</p>
+                                                            <td style="vertical-align: top;">
+                                                                <p
+                                                                    style="margin: 0; color: #94A3B8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                                                                    Customer Name</p>
+                                                                <p
+                                                                    style="margin: 4px 0 0 0; color: #0F172A; font-size: 17px; font-weight: 600;">
+                                                                    {{ $data['name'] }}</p>
                                                             </td>
                                                         </tr>
                                                     </table>
-                                                    
-                                                    <!-- Email -->
-                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 18px;">
+
+                                                    <!-- Contact Details Info Row -->
+                                                    <table role="presentation" cellspacing="0" cellpadding="0"
+                                                        border="0" width="100%" style="margin-bottom: 24px;">
                                                         <tr>
-                                                            <td width="30" style="vertical-align: top;">
-                                                                <span style="display: inline-block; width: 24px; height: 24px; background-color: #f97316; border-radius: 50%; text-align: center; line-height: 24px; color: #ffffff; font-size: 12px;">✉️</span>
+                                                            <td width="50%"
+                                                                style="vertical-align: top; padding-right: 15px;">
+                                                                <p
+                                                                    style="margin: 0; color: #94A3B8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                                                                    Email Address</p>
+                                                                <p
+                                                                    style="margin: 4px 0 0 0; color: #f97316; font-size: 15px; font-weight: 600;">
+                                                                    <a href="mailto:{{ $data['email'] }}"
+                                                                        style="color: #f97316; text-decoration: none;">{{ $data['email'] }}</a>
+                                                                </p>
                                                             </td>
-                                                            <td style="vertical-align: top; padding-left: 12px;">
-                                                                <p style="margin: 0; color: #94A3B8; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Email</p>
-                                                                <p style="margin: 4px 0 0 0; color: #0F172A; font-size: 16px; font-weight: 600;">
-                                                                    <a href="mailto:{{ $data['email'] }}" style="color: #0F172A; text-decoration: none;">{{ $data['email'] }}</a>
+                                                            <td width="50%" style="vertical-align: top;">
+                                                                <p
+                                                                    style="margin: 0; color: #94A3B8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                                                                    Phone Number</p>
+                                                                <p
+                                                                    style="margin: 4px 0 0 0; color: #0F172A; font-size: 15px; font-weight: 600;">
+                                                                    <a href="tel:{{ $data['phone'] }}"
+                                                                        style="color: #0F172A; text-decoration: none;">{{ $data['phone'] }}</a>
                                                                 </p>
                                                             </td>
                                                         </tr>
                                                     </table>
-                                                    
-                                                    <!-- Phone -->
-                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 18px;">
-                                                        <tr>
-                                                            <td width="30" style="vertical-align: top;">
-                                                                <span style="display: inline-block; width: 24px; height: 24px; background-color: #f97316; border-radius: 50%; text-align: center; line-height: 24px; color: #ffffff; font-size: 12px;">📞</span>
-                                                            </td>
-                                                            <td style="vertical-align: top; padding-left: 12px;">
-                                                                <p style="margin: 0; color: #94A3B8; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Phone</p>
-                                                                <p style="margin: 4px 0 0 0; color: #0F172A; font-size: 16px; font-weight: 600;">
-                                                                    <a href="tel:{{ $data['phone'] }}" style="color: #0F172A; text-decoration: none;">{{ $data['phone'] }}</a>
-                                                                </p>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                    
+
                                                     <!-- Message -->
-                                                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                    <table role="presentation" cellspacing="0" cellpadding="0"
+                                                        border="0" width="100%">
                                                         <tr>
-                                                            <td width="30" style="vertical-align: top;">
-                                                                <span style="display: inline-block; width: 24px; height: 24px; background-color: #f97316; border-radius: 50%; text-align: center; line-height: 24px; color: #ffffff; font-size: 12px;">💬</span>
-                                                            </td>
-                                                            <td style="vertical-align: top; padding-left: 12px;">
-                                                                <p style="margin: 0; color: #94A3B8; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">Message</p>
-                                                                <div style="margin: 8px 0 0 0; padding: 15px; background-color: #ffffff; border-radius: 8px; border: 1px solid #E2E8F0;">
-                                                                    <p style="margin: 0; color: #334155; font-size: 15px; line-height: 1.6; font-style: italic;">"{{ $data['message'] }}"</p>
+                                                            <td style="vertical-align: top;">
+                                                                <p
+                                                                    style="margin: 0; color: #94A3B8; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">
+                                                                    Message Brief</p>
+                                                                <div
+                                                                    style="margin: 10px 0 0 0; padding: 20px; background-color: #ffffff; border-radius: 8px; border: 1px solid #E2E8F0; border-left: 4px solid #f97316;">
+                                                                    <p
+                                                                        style="margin: 0; color: #334155; font-size: 15px; line-height: 1.6; font-style: normal;">
+                                                                        {{ $data['message'] }}</p>
                                                                 </div>
                                                             </td>
                                                         </tr>
                                                     </table>
-                                                    
+
                                                 </td>
                                             </tr>
                                         </table>
                                     </td>
                                 </tr>
-                                
-                                <!-- Timestamp -->
+
+                                <!-- CTA -->
                                 <tr>
-                                    <td style="border-top: 1px solid #E2E8F0; padding-top: 25px;">
-                                        <p style="margin: 0; color: #94A3B8; font-size: 13px; text-align: center;">
-                                            📅 Received on {{ now()->format('F j, Y \a\t g:i A') }}
+                                    <td align="center">
+                                        <a href="mailto:{{ $data['email'] }}"
+                                            style="background-color: #f97316; color: #ffffff; padding: 14px 35px; border-radius: 50px; text-decoration: none; font-weight: 700; font-size: 16px; display: inline-block; box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);">Reply
+                                            to {{ explode(' ', trim($data['name']))[0] }}</a>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td style="background-color: #0F172A; padding: 40px; text-align: center;"
+                            class="content-padding">
+                            <img src="{{ asset('frontend/images/delivery_wale.png') }}" alt="Delivery Wale"
+                                style="max-height: 40px; width: auto; background-color: #ffffff; padding: 5px; border-radius: 4px; margin-bottom: 20px;">
+
+                            <p
+                                style="margin: 0 0 10px 0; color: #ffffff; font-size: 15px; font-weight: 700; letter-spacing: 0.5px;">
+                                Delivery Wale</p>
+                            <p style="margin: 0 0 25px 0; color: #94A3B8; font-size: 13px;">Fast & Reliable Delivery
+                                Wale Solution</p>
+
+                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center"
+                                style="margin: 0 auto 30px auto;">
+                                <tr>
+                                    <td
+                                        style="border-top: 1px solid rgba(255,255,255,0.1); width: 200px; padding-top: 25px;">
+                                        <p style="margin: 0; color: #64748B; font-size: 12px; line-height: 1.5;">
+                                            © {{ date('Y') }} Delivery Wale. All rights reserved.<br>
+                                            This is an automated notification from your website.
                                         </p>
                                     </td>
                                 </tr>
-                                
                             </table>
                         </td>
                     </tr>
-                    
-                    <!-- Footer -->
-                    <tr>
-                        <td style="background-color: #0F172A; padding: 30px 40px; text-align: center;" class="content-padding">
-                            <p style="margin: 0 0 10px 0; color: #ffffff; font-size: 16px; font-weight: 700;">Delivery Wale</p>
-                            <p style="margin: 0 0 20px 0; color: #94A3B8; font-size: 13px;">Fast & Reliable Last-Mile Delivery</p>
-                            
-                            <!-- Social Links -->
-                            <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 0 auto 20px auto;">
-                                <tr>
-                                    <td style="padding: 0 8px;">
-                                        <a href="#" style="display: inline-block; width: 36px; height: 36px; background-color: rgba(255,255,255,0.1); border-radius: 50%; text-align: center; line-height: 36px; color: #ffffff; text-decoration: none; font-size: 14px;">in</a>
-                                    </td>
-                                    <td style="padding: 0 8px;">
-                                        <a href="#" style="display: inline-block; width: 36px; height: 36px; background-color: rgba(255,255,255,0.1); border-radius: 50%; text-align: center; line-height: 36px; color: #ffffff; text-decoration: none; font-size: 14px;">X</a>
-                                    </td>
-                                    <td style="padding: 0 8px;">
-                                        <a href="#" style="display: inline-block; width: 36px; height: 36px; background-color: rgba(255,255,255,0.1); border-radius: 50%; text-align: center; line-height: 36px; color: #ffffff; text-decoration: none; font-size: 14px;">f</a>
-                                    </td>
-                                </tr>
-                            </table>
-                            
-                            <p style="margin: 0; color: #64748B; font-size: 12px;">
-                                © {{ date('Y') }} Delivery Wale. All rights reserved.
-                            </p>
-                            <p style="margin: 8px 0 0 0; color: #64748B; font-size: 11px;">
-                                This is an automated message from your website contact form.
-                            </p>
-                        </td>
-                    </tr>
-                    
+
                 </table>
-                
+
             </td>
         </tr>
     </table>
-    
+
 </body>
+
 </html>

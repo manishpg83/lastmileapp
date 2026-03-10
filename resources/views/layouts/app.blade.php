@@ -14,7 +14,10 @@
     <meta name="keywords" content="Deliverywala dashboard">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="#">
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -75,6 +78,26 @@
         .form-select:focus {
             border-color: #f97316;
             box-shadow: 0 0 0 0.15rem rgba(249, 115, 22, 0.25);
+        }
+
+        /* Sidebar Logo Toggle */
+        .logo-collapsed {
+            display: none !important;
+        }
+
+        .logo-full {
+            display: block !important;
+        }
+
+        .layout-menu-collapsed .logo-collapsed {
+            display: flex !important;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .layout-menu-collapsed .logo-full {
+            display: none !important;
         }
     </style>
 </head>

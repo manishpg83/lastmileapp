@@ -49,7 +49,7 @@ class ContactForm extends Component
             'message' => $this->message,
         ];
 
-        Mail::to('deliveryvaale@gmail.com')->send(new ContactMessageMail($data));
+        Mail::to('Info@deliverywale.co.in')->send(new ContactMessageMail($data));
 
         $this->reset();
 
