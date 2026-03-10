@@ -3,9 +3,13 @@
     <div class="app-brand demo ">
         <a href="{{ route('dashboard') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
-                <i class="fa-solid fa-truck-fast text-primary logo-collapsed" style="font-size: 1.8rem;"></i>
-                <img src="{{ asset('frontend/images/delivery_wale.png') }}" class="logo-full" alt="Delivery Wale"
-                    style="max-height: 40px; width: auto; object-fit: contain;">
+                <i class="fa-solid fa-truck-fast text-primary logo-collapsed"
+                    style="font-size: 1.5rem; margin-left: -4px"></i>
+                <div class="logo-full d-flex align-items-center">
+                    <i class="fa-solid fa-truck-fast text-primary me-2" style="font-size: 1.4rem;"></i>
+                    <img src="{{ asset('frontend/images/delivery_wale.png') }}" alt="Delivery Wale"
+                        style="max-height: 28px; width: auto; object-fit: contain; margin-left: -5px;">
+                </div>
             </span>
         </a>
 

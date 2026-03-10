@@ -86,18 +86,29 @@
         }
 
         .logo-full {
-            display: block !important;
+            display: flex !important;
+            align-items: center;
         }
 
-        .layout-menu-collapsed .logo-collapsed {
+        .layout-menu-collapsed:not(.layout-menu-hover) .logo-collapsed {
             display: flex !important;
             justify-content: center;
             align-items: center;
             width: 100%;
         }
 
-        .layout-menu-collapsed .logo-full {
+        /* Show full logo when hovered while collapsed OR when fully expanded */
+        .layout-menu-collapsed:not(.layout-menu-hover) .logo-full {
             display: none !important;
+        }
+
+        .layout-menu-hover .logo-collapsed {
+            display: none !important;
+        }
+
+        .layout-menu-hover .logo-full {
+            display: flex !important;
+            align-items: center;
         }
     </style>
 </head>
