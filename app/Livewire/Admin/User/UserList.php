@@ -23,26 +23,27 @@ class UserList extends Component
         $this->resetPage();
     }
 
-    public function delete($id)
+    public function deleteDriver($id)
     {
         $user = User::findOrFail($id);
 
         if ($user->isSuperAdmin() || \Illuminate\Support\Str::contains(strtolower($user->name), 'superadmin') || \Illuminate\Support\Str::contains(strtolower($user->email), 'superadmin')) {
             session()->flash('error', 'Super Admin cannot be deleted.');
-
             return;
         }
 
-        // Delete profile image if exists
         if ($user->profile_image) {
             \Storage::disk('public')->delete($user->profile_image);
         }
 
+        // Nullify driver reference in deliveries instead of deleting them
+        \DB::table('deliveries')->where('driver_id', $user->id)->update(['driver_id' => null]);
+
         $user->forceDelete();
-        session()->flash('success', 'User deleted permanently');
+        session()->flash('success', 'Driver deleted permanently');
     }
 
-    public function logout($id)
+    public function logoutDriver($id)
     {
         $user = User::findOrFail($id);
 
