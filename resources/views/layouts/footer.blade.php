@@ -6,7 +6,7 @@
                 © {{ date('Y') }}, Powered by <a href="https://www.briskbraintech.com" target="_blank">BriskBrain Technologies</a>
             </div>
             <div class="d-none d-lg-inline-block">
-                <a href="#" class="footer-link me-4">Deliverywala</a>
+                <a href="#" class="footer-link me-4">Deliverywale</a>
                 <a href="#" class="footer-link me-4">Version 1.0</a>
                 <a href="#" class="footer-link">Support</a>
             </div>

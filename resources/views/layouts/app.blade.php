@@ -7,11 +7,11 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
     <meta name="robots" content="noindex, nofollow">
-    <title>Deliverywala | Admin</title>
+    <title>Deliverywale | Admin</title>
 
     <!-- SEO -->
-    <meta name="description" content="Deliverywala Dashboard">
-    <meta name="keywords" content="Deliverywala dashboard">
+    <meta name="description" content="Deliverywale Dashboard">
+    <meta name="keywords" content="Deliverywale dashboard">
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
@@ -26,7 +26,7 @@
 
     <!-- Icons -->
     <link rel="stylesheet" href="{{ asset('admin/css/iconify-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}">--}}
 
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ asset('admin/css/core.css') }}">
