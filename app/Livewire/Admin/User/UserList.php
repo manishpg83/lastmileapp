@@ -37,7 +37,8 @@ class UserList extends Component
         }
 
         // Nullify driver reference in deliveries instead of deleting them
-        \DB::table('deliveries')->where('driver_id', $user->id)->update(['driver_id' => null]);
+        \DB::table('deliveries')->where('driver_id', $user->id)->update(['s' => null]);
+        \DB::table('delivery_status_history')->where('changed_by', $user->id)->update(['changed_by' => null]);
 
         $user->forceDelete();
         session()->flash('success', 'Driver deleted permanently');
