@@ -1,3 +1,4 @@
+<div>
 <style>
     /* ── Drivers List – compact font ── */
     .drivers-wrap .driver-row {
@@ -42,7 +43,7 @@
 </style>
 
 <div class="container-xxl container-p-y">
-
+<button wire:click="$refresh" class="btn btn-primary">Test Livewire</button>
     {{-- Success Message --}}
     @if (session()->has('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -165,8 +166,8 @@
                                 <i class="bx bx-show"></i>
                             </a>
 
-                            <button wire:click="logout({{ $user->id }})"
-                                wire:confirm="Are you sure you want to log out this user from all sessions?"
+                            <button wire:click="logoutDriver({{ $user->id }})"
+                                onclick="return confirm('Are you sure you want to log out this user from all sessions?')"
                                 class="btn btn-sm btn-outline-warning" title="Revoke Sessions">
                                 <i class="bx bx-log-out-circle"></i>
                             </button>
@@ -175,8 +176,8 @@
                                 !$user->isSuperAdmin() &&
                                 !Illuminate\Support\Str::contains(strtolower($user->name), 'superadmin') &&
                                 !Illuminate\Support\Str::contains(strtolower($user->email), 'superadmin'))
-                                <button wire:click="delete({{ $user->id }})"
-                                    wire:confirm="Are you sure you want to delete this driver?"
+                               <button wire:click="deleteDriver({{ $user->id }})"
+                                    onclick="return confirm('Are you sure you want to delete this driver?')"
                                     class="btn btn-sm btn-outline-danger" title="Delete Driver">
                                     <i class="bx bx-trash"></i>
                                 </button>
@@ -213,4 +214,5 @@
         @endif
     </div>
 
+</div>
 </div>
