@@ -225,8 +225,12 @@
                                         class="btn btn-sm btn-icon btn-label-primary" title="Edit">
                                         <i class="bx bx-edit-alt"></i>
                                     </a>
-                                    <button wire:click="delete({{ $delivery->id }})" wire:confirm="Are you sure?"
+                                    {{-- <button wire:click="delete({{ $delivery->id }})" wire:confirm="Are you sure?"
                                         class="btn btn-sm btn-icon btn-label-danger" title="Delete">
+                                        <i class="bx bx-trash"></i>
+                                    </button> --}}
+                                    <button type="button" class="btn btn-icon btn-sm btn-label-danger"
+                                        onclick="confirmDelete('{{ $delivery->id }}')">
                                         <i class="bx bx-trash"></i>
                                     </button>
                                 </div>
@@ -409,6 +413,21 @@
         }
     </style>
     <script>
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Delete Delivery?',
+                text: 'Are you sure you want to delete this delivery?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    @this.call('delete', id);
+                }
+            });
+        }
         document.addEventListener('livewire:initialized', () => {
             const resetBtn = document.getElementById('resetDate');
             const picker = flatpickr("#dateRangePicker", {

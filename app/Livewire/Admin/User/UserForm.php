@@ -12,20 +12,20 @@ use Illuminate\Support\Facades\Storage;
 #[Layout('layouts.app')]
 class UserForm extends Component
 {
-    use WithFileUploads;
+        use WithFileUploads;
 
-    public ?User $user = null;
+        public ?User $user = null;
 
-    public $name, $email, $phone;
-    public $role = 'driver';
-    public $status = 'active';
-    public $vehicle_number, $license_number;
-    public $password;
-    public $profile_image;
-    public $existing_image;
+        public $name, $email, $phone;
+        public $role = 'driver';
+        public $status = 'active';
+        public $vehicle_number, $license_number;
+        public $password;
+        public $profile_image;
+        public $existing_image;
 
-    public function mount(User $user = null)
-    {
+        public function mount(User $user = null)
+        {
         if ($user && $user->exists) {
             $this->user = $user;
             $this->fill($user->only([
